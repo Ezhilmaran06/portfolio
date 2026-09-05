@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-carbon: #08080a;
+  --bg-carbon-card: rgba(14, 15, 20, 0.82);
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --racing-red: #e10600;
+  --racing-red-glow: #ff1801;
+  --racing-red-alpha: rgba(225, 6, 0, 0.45);
+  --speed-white: #ffffff;
+  --telemetry-silver: #8e8e93;
+  --telemetry-muted: #545458;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  background-color: var(--bg-carbon);
+  color: var(--speed-white);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Custom Typography Utilities */
+.font-racing {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-chakra {
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+.font-mono-tech {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Carbon Fiber Texture Overlay */
+.carbon-pattern {
+  background-color: #08080a;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0),
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 24px 24px, 12px 12px, 12px 12px;
+}
+
+/* Circuit Track Background Grid */
+.circuit-grid {
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(225, 6, 0, 0.15) 0%, transparent 65%),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: rgba(14, 15, 20, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-active {
+  background: rgba(18, 19, 26, 0.88);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(225, 6, 0, 0.4);
+  box-shadow: 0 0 25px rgba(225, 6, 0, 0.25), inset 0 1px 0 rgba(255, 24, 1, 0.2);
+}
+
+/* Racing Red Glow Effects */
+.red-glow {
+  box-shadow: 0 0 25px rgba(225, 6, 0, 0.5);
+}
+
+.red-glow-sm {
+  box-shadow: 0 0 12px rgba(225, 6, 0, 0.4);
+}
+
+.red-text-glow {
+  text-shadow: 0 0 15px rgba(225, 6, 0, 0.7);
+}
+
+/* Slanted Racing Badges & Buttons */
+.racing-slant {
+  transform: skewX(-8deg);
+}
+
+.racing-slant-content {
+  transform: skewX(8deg);
+}
+
+/* Red Racing Monogram 'E' */
+.racing-badge-e {
+  background: linear-gradient(135deg, #e10600 0%, #b30000 100%);
+  color: #ffffff;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(225, 6, 0, 0.5);
+}
+
+/* Primary CTA Button (Glowing Red) */
+.btn-racing-primary {
+  background: linear-gradient(180deg, #ff1801 0%, #d40500 100%);
+  color: #ffffff;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 20px rgba(225, 6, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-racing-primary:hover {
+  background: linear-gradient(180deg, #ff331e 0%, #e10600 100%);
+  box-shadow: 0 0 30px rgba(255, 24, 1, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-racing-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 15px rgba(225, 6, 0, 0.4);
+}
+
+/* Secondary CTA Button (Dark Outline Pill) */
+.btn-racing-secondary {
+  background: rgba(18, 19, 24, 0.7);
+  color: #f5f5f7;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-racing-secondary:hover {
+  background: rgba(30, 32, 40, 0.9);
+  border-color: rgba(225, 6, 0, 0.5);
+  box-shadow: 0 0 15px rgba(225, 6, 0, 0.3);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Telemetry Gauge Bar */
+.telemetry-gauge {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.telemetry-gauge-fill {
+  background: linear-gradient(90deg, #b30000 0%, #e10600 70%, #ff3b30 100%);
+  box-shadow: 0 0 10px rgba(225, 6, 0, 0.6);
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 4px;
+}
+
+/* Checkered Flag Pattern */
+.checkered-pattern {
+  background-image: 
+    linear-gradient(45deg, #181920 25%, transparent 25%),
+    linear-gradient(-45deg, #181920 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #181920 75%),
+    linear-gradient(-45deg, transparent 75%, #181920 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+}
+
+/* Starting Lights */
+.f1-light-off {
+  background: #15161b;
+  border: 2px solid #282a36;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.f1-light-on {
+  background: radial-gradient(circle at 40% 35%, #ffffff 0%, #ff4d4d 30%, #e10600 70%, #800000 100%);
+  border: 2px solid #ff7b7b;
+  box-shadow: 0 0 25px #ff1801, 0 0 50px rgba(225, 6, 0, 0.8), inset 0 0 10px #ffffff;
+}
+
+/* Burnout Tyre Spinning Animation */
+@keyframes tyre-burnout {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-fast {
+  animation: tyre-burnout 0.8s linear infinite;
+}
+
+/* Custom Scrollbar for Project Modals */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08080a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #23242c;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e10600;
+}
