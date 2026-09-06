@@ -1,0 +1,225 @@
+/* ============================================================
+   TRACKMAP.CSS — F1 MASSIVE MULTI-ROUTE CIRCUIT MAP
+   ============================================================ */
+
+.trackmap-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #050507;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Modal Overlay Mode */
+.trackmap-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  background: rgba(5, 5, 8, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 16px 24px;
+}
+
+/* Background Artwork */
+.trackmap-bg-artwork {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.92;
+  filter: contrast(1.15) brightness(0.95);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Vignette & Cinematic Lighting Overlay */
+.trackmap-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(3, 3, 5, 0.75) 100%),
+              linear-gradient(to bottom, rgba(5, 5, 8, 0.7) 0%, transparent 20%, transparent 80%, rgba(5, 5, 8, 0.9) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Interactive SVG Layer */
+.trackmap-svg-canvas {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  max-height: calc(100vh - 120px);
+  display: block;
+}
+
+/* Racing Line Pulse Animation */
+@keyframes racingLineFlow {
+  0% {
+    stroke-dashoffset: 200;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.racing-line-flow {
+  animation: racingLineFlow 15s linear infinite;
+}
+
+/* Beacon Pulse Ring */
+@keyframes beaconPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.beacon-pulse {
+  transform-origin: center;
+  animation: beaconPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+/* Checkpoint Node Interaction */
+.checkpoint-node {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.checkpoint-node:hover {
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 12px rgba(255, 30, 45, 0.9));
+}
+
+.checkpoint-pill {
+  transition: all 0.25s ease;
+}
+
+.checkpoint-node:hover .checkpoint-pill {
+  fill: #ff1e2d;
+  stroke: #ffffff;
+}
+
+.checkpoint-node:hover .checkpoint-text {
+  fill: #ffffff;
+  font-weight: 800;
+}
+
+/* Floating Telemetry Card (Reference Match: Bottom-Left) */
+.floating-telemetry-card {
+  position: absolute;
+  bottom: 84px;
+  left: 36px;
+  z-index: 40;
+  background: rgba(8, 9, 13, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 3px solid #ff1e2d;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 8px;
+  padding: 12px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7),
+              0 0 20px rgba(255, 30, 45, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  pointer-events: auto;
+  transition: transform 0.2s ease;
+}
+
+.floating-telemetry-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 30, 45, 0.4);
+}
+
+/* Right-Side F1 Typography Banner (Reference Match) */
+.trackmap-f1-banner {
+  position: absolute;
+  top: 130px;
+  right: 36px;
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+  user-select: none;
+}
+
+.f1-banner-logo {
+  filter: drop-shadow(0 0 10px rgba(225, 6, 0, 0.5));
+  margin-bottom: 18px;
+}
+
+.f1-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: right;
+}
+
+.f1-banner-item {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 3.5px;
+  color: #71717a;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.f1-banner-item.active {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 30, 45, 0.6);
+}
+
+/* Vehicle Glow & Trail */
+.f1-car-shadow {
+  filter: drop-shadow(0 0 8px rgba(255, 24, 1, 0.85))
+          drop-shadow(0 0 16px rgba(255, 24, 1, 0.4));
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .floating-telemetry-card {
+    left: 20px;
+    bottom: 74px;
+    gap: 16px;
+    padding: 10px 14px;
+  }
+  .trackmap-f1-banner {
+    right: 18px;
+    top: 90px;
+  }
+  .f1-banner-item {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-telemetry-card {
+    left: 12px;
+    right: 12px;
+    bottom: 68px;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  .trackmap-f1-banner {
+    display: none;
+  }
+}

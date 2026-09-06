@@ -3,7 +3,7 @@ import '../styles/home.css';
 
 const SECTION_LABELS = {
   hero:           'HOME',
-  trackmap:       'CIRCUIT',
+  trackmap:       'TRACK MAP',
   about:          'ABOUT',
   education:      'EDUCATION',
   skills:         'SKILLS',
@@ -27,6 +27,7 @@ const SECTION_PROGRESS = {
   experience:     6,
   achievements:   7,
   certifications: 8,
+  trackmap:       8,
   coding:         9,
   resume:         9,
   contact:        10,
