@@ -20,6 +20,13 @@ export const Projects = ({ onNext, onPrev }) => {
 
   return (
     <section id="projects" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+      {/* Background Atmosphere */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/08-projects.webp')` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/70 to-[#08080a]/90 pointer-events-none" />
+
       {/* Top Telemetry Bar matching Reference Screen 08 */}
       <div className="w-full mb-6 px-4 py-2 rounded-lg bg-black/60 border border-white/10 flex items-center justify-between text-xs font-mono-tech text-[#8e8e93]">
         <div className="flex items-center gap-6">
@@ -144,7 +151,7 @@ export const Projects = ({ onNext, onPrev }) => {
                   alt={currentProject.title}
                   className="w-full h-full object-contain filter contrast-110 group-hover:scale-105 transition-transform duration-500"
                   onError={(e) => {
-                    (e.target).src = '/images/screens/08_projects.png';
+                    (e.target).src = '/assets/portfolio/08-projects.webp';
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">

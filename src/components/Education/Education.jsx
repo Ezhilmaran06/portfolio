@@ -9,6 +9,13 @@ export const Education = ({ onNext, onPrev }) => {
 
   return (
     <section id="education" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+      {/* Background Atmosphere */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/06-education.webp')` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/70 to-[#08080a]/90 pointer-events-none" />
+
       {/* Header */}
       <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
         <div>
@@ -42,8 +49,8 @@ export const Education = ({ onNext, onPrev }) => {
         {/* Left Column: Pit-lane visual */}
         <div className="lg:col-span-5 relative rounded-2xl overflow-hidden glass-panel border border-white/15 p-2 h-full min-h-[340px] flex flex-col justify-end">
           <div
-            className="absolute inset-0 bg-cover bg-center filter brightness-75 contrast-125"
-            style={{ backgroundImage: `url('/images/screens/10_experience.jpg')` }}
+            className="absolute inset-0 bg-cover bg-center filter brightness-95 contrast-110"
+            style={{ backgroundImage: `url('/assets/portfolio/06-education.webp')` }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 

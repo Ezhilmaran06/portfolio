@@ -52,10 +52,10 @@ export const FinishLine = ({ onRestart, onDownloadResume }) => {
     <section id="finish" className="relative w-full min-h-screen flex flex-col justify-between p-6 md:p-12 overflow-hidden select-none">
       {/* Background Finish Line Visual */}
       <div
-        className="absolute inset-0 bg-cover bg-center filter brightness-60 contrast-125"
-        style={{ backgroundImage: `url('/images/screens/16_finish_line.jpg')` }}
+        className="absolute inset-0 bg-cover bg-center filter brightness-90 contrast-110 pointer-events-none"
+        style={{ backgroundImage: `url('/assets/portfolio/16-finish-line.webp')` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-black/60 to-[#08080a]/80" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-black/40 to-[#08080a]/70 pointer-events-none" />
 
       {/* Top Header Bar */}
       <div className="relative z-10 flex items-center justify-between w-full max-w-7xl mx-auto">

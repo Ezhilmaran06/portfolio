@@ -23,6 +23,13 @@ export const Resume = ({ onNext, onPrev }) => {
 
   return (
     <section id="resume" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+      {/* Background Atmosphere */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/14-resume.webp')` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/70 to-[#08080a]/90 pointer-events-none" />
+
       {/* Header matching Reference Screen 14 */}
       <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
         <div>
@@ -55,10 +62,10 @@ export const Resume = ({ onNext, onPrev }) => {
       <div className="relative rounded-3xl overflow-hidden glass-panel border border-white/15 p-6 sm:p-12 flex flex-col justify-center items-center shadow-2xl min-h-[460px]">
         {/* Pit Lane Atmosphere Background */}
         <div
-          className="absolute inset-0 bg-cover bg-center filter brightness-50 contrast-125"
-          style={{ backgroundImage: `url('/images/screens/10_experience.jpg')` }}
+          className="absolute inset-0 bg-cover bg-center filter brightness-90 contrast-110"
+          style={{ backgroundImage: `url('/assets/portfolio/14-resume.webp')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/65" />
 
         <div className="relative z-10 max-w-2xl w-full flex flex-col sm:flex-row items-center gap-8 justify-center">
           {/* Document Sheet Thumbnail Card */}

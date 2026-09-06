@@ -59,6 +59,13 @@ export const ProjectDetailsModal = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-[#08080a]/95 backdrop-blur-2xl flex flex-col p-4 sm:p-8 select-none overflow-y-auto">
+      {/* Background Specs Blueprint Imagery */}
+      <div
+        className="fixed inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/09-project-details.webp')` }}
+      />
+      <div className="fixed inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/75 to-[#08080a]/90 pointer-events-none" />
+
       {/* Header matching Reference Screen 09 */}
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between border-b border-white/10 pb-4 mb-6">
         <div className="flex items-center gap-3">

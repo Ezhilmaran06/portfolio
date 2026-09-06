@@ -21,6 +21,13 @@ export const Certifications = ({ onNext, onPrev }) => {
 
   return (
     <section id="certifications" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+      {/* Background Atmosphere */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/12-certifications.webp')` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/70 to-[#08080a]/90 pointer-events-none" />
+
       {/* Header matching Reference Screen 12 */}
       <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
         <div>

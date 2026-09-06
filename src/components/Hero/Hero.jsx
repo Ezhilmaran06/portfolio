@@ -12,8 +12,8 @@ export const Hero = ({ onStartJourney, onViewProjects }) => {
       {/* Background Circuit Grid & Subtle Night Track Overlay */}
       <div className="absolute inset-0 circuit-grid opacity-80 pointer-events-none" />
       <div 
-        className="absolute inset-0 bg-cover bg-right md:bg-center opacity-15 pointer-events-none filter grayscale contrast-150"
-        style={{ backgroundImage: `url('/images/screens/03_home_hero_section.jpg')` }}
+        className="absolute inset-0 bg-cover bg-right md:bg-center opacity-70 pointer-events-none filter contrast-110 brightness-90"
+        style={{ backgroundImage: `url('/assets/portfolio/03-home-hero.webp')` }}
       />
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-[#e10600]/15 blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#ff1801]/10 blur-3xl pointer-events-none" />
@@ -125,12 +125,11 @@ export const Hero = ({ onStartJourney, onViewProjects }) => {
 
               <div className="relative w-full h-full rounded-xl overflow-hidden bg-black/50">
                 <img
-                  src="/images/driver/racer-helmet.jpg"
-                  alt="Formula 1 Racing Driver Helmet"
-                  className="w-full h-full object-cover object-center filter contrast-110 hover:scale-105 transition-transform duration-500"
+                  src="/assets/portfolio/03-home-hero.webp"
+                  alt="Formula 1 Racing Driver and Cockpit"
+                  className="w-full h-full object-cover object-right filter contrast-110 hover:scale-105 transition-transform duration-500"
                   onError={(e) => {
-                    // Fallback to full screen reference image
-                    (e.target).src = '/images/screens/03_home_hero_section.jpg';
+                    (e.target).style.display = 'none';
                   }}
                 />
                 

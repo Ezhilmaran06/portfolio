@@ -46,10 +46,10 @@ export const RaceStart = ({ onStartComplete, onSkip }) => {
     >
       {/* Background Starting Grid with F1 Car Rear */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-40 filter brightness-90 contrast-125"
-        style={{ backgroundImage: `url('/images/screens/02_race_start_sequence.jpg')` }}
+        className="absolute inset-0 bg-cover bg-center opacity-75 filter brightness-90 contrast-110 pointer-events-none"
+        style={{ backgroundImage: `url('/assets/portfolio/02-race-start.webp')` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-[#08080a]/80" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-[#08080a]/80 pointer-events-none" />
 
       {/* Top Header */}
       <div className="relative z-10 flex items-center justify-between w-full">

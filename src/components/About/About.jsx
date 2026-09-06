@@ -9,6 +9,13 @@ export const About = ({ onNext, onPrev }) => {
 
   return (
     <section id="about" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+      {/* Background Circuit Night Track */}
+      <div
+        className="absolute inset-0 bg-cover bg-left md:bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/05-about-me.webp')` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#08080a]/90 via-[#08080a]/60 to-[#08080a]/80 pointer-events-none" />
+
       {/* Section Header Matching Reference Screen 05 */}
       <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
         <div>
@@ -48,11 +55,11 @@ export const About = ({ onNext, onPrev }) => {
           {/* Driver Portrait */}
           <div className="relative w-full aspect-square max-h-[380px] rounded-xl overflow-hidden mb-6 bg-black/60 border border-white/10 shadow-lg">
             <img
-              src="/images/driver/ezhilmaran-driver.png"
+              src="/assets/portfolio/05-about-me.webp"
               alt="Ezhilmaran E - Driver Profile"
-              className="w-full h-full object-cover object-top filter contrast-110"
+              className="w-full h-full object-cover object-left md:object-center filter contrast-110"
               onError={(e) => {
-                (e.target).src = '/images/screens/05_about_me.png';
+                (e.target).style.display = 'none';
               }}
             />
             {/* Monogram Overlay */}

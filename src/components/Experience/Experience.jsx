@@ -9,6 +9,13 @@ export const Experience = ({ onNext, onPrev }) => {
 
   return (
     <section id="experience" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+      {/* Background Atmosphere */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/10-experience.webp')` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/70 to-[#08080a]/90 pointer-events-none" />
+
       {/* Header matching Reference Screen 10 */}
       <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
         <div>
@@ -41,8 +48,8 @@ export const Experience = ({ onNext, onPrev }) => {
       <div className="relative rounded-3xl overflow-hidden glass-panel border border-white/15 p-6 sm:p-12 min-h-[440px] flex flex-col justify-between shadow-2xl">
         {/* Background Visual */}
         <div
-          className="absolute inset-0 bg-cover bg-center filter brightness-60 contrast-125"
-          style={{ backgroundImage: `url('/images/screens/10_experience.jpg')` }}
+          className="absolute inset-0 bg-cover bg-center filter brightness-90 contrast-110"
+          style={{ backgroundImage: `url('/assets/portfolio/10-experience.webp')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent" />
 

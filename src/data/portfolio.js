@@ -90,7 +90,7 @@ export const portfolioData = {
       tags: ['React', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
       githubUrl: 'https://github.com/Ezhilmaran06',
       liveDemoUrl: '',
-      image: '/images/projects/dpc-tool-mockup.png',
+      image: '/assets/portfolio/08-projects.webp',
       details: {
         overview:
           'The Digital Processing Compliance Tool (DPC Tool) is an enterprise-grade compliance monitoring platform engineered to oversee, audit, and validate digital processing activities against organizational policies and security protocols.',
@@ -114,7 +114,7 @@ export const portfolioData = {
         ],
         myContribution:
           'Engineered full-stack responsive dashboard, designed RESTful APIs for compliance event ingestion, authored role-based middleware, and implemented data visualization components for telemetry monitoring.',
-        screenshots: ['/images/screens/09_project_details.png', '/images/projects/dpc-tool-mockup.png'],
+        screenshots: ['/assets/portfolio/09-project-details.webp', '/assets/portfolio/08-projects.webp'],
         futureScope:
           'Integrating automated AI compliance anomaly detectors and webhook integrations with enterprise Slack/Teams channels.',
       },
@@ -128,7 +128,7 @@ export const portfolioData = {
       tags: ['React', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Chart.js'],
       githubUrl: 'https://github.com/Ezhilmaran06',
       liveDemoUrl: '',
-      image: '/images/screens/08_projects.png',
+      image: '/assets/portfolio/08-projects.webp',
       details: {
         overview:
           'A comprehensive personal wealth telemetry dashboard that centralizes transactions, automates expenditure tagging, tracks monthly savings targets, and projects cash-flow health.',
@@ -138,22 +138,22 @@ export const portfolioData = {
           'Created a responsive, interactive dashboard that computes dynamic savings rates, visualizes spending distributions via interactive charts, and enforces budget thresholds.',
         features: [
           'Automated expense categorization and custom recurring payment tags',
-          'Interactive visual analytics including monthly expenditure breakdowns and trends',
-          'Dynamic savings target meters with milestone progress indicators',
-          'Sub-50ms API response times through MongoDB aggregation query optimization',
-          'Multi-account ledger isolation with secure JWT session authentication',
+          'Interactive spending telemetry charts (monthly expense breakdown, cash flow velocity)',
+          'Budget threshold alerts and visual progress gauges',
+          'JWT authentication with secure multi-account session management',
+          'Exportable CSV telemetry reports for financial auditing',
         ],
         techStack: [
-          { category: 'Frontend', technologies: 'React.js, Chart.js, Vanilla CSS Glassmorphism' },
-          { category: 'Backend', technologies: 'Node.js, Express.js REST APIs' },
-          { category: 'Database', technologies: 'MongoDB with indexed transactional collections' },
-          { category: 'Authentication', technologies: 'JWT, Secure Cookies, CORS Policies' },
+          { category: 'Frontend', technologies: 'React.js, Tailwind CSS, Chart.js, Lucide Icons' },
+          { category: 'Backend', technologies: 'Node.js, Express.js REST API' },
+          { category: 'Database', technologies: 'MongoDB & Mongoose Schema Validation' },
+          { category: 'Security', technologies: 'JWT, CORS whitelist, Helmet.js headers' },
         ],
         myContribution:
-          'Architected complete database schema, built visual charting widgets using Chart.js, configured aggregation pipelines for financial summaries, and refined mobile responsiveness.',
-        screenshots: ['/images/screens/08_projects.png'],
+          'Architected MongoDB schema for double-entry tracking, created custom Chart.js telemetry widgets, and designed responsive layout with dark-mode aesthetic.',
+        screenshots: ['/assets/portfolio/09-project-details.webp', '/assets/portfolio/08-projects.webp'],
         futureScope:
-          'Open Banking API integration for automated sync and machine learning-powered predictive budgeting advice.',
+          'Bank statement OCR parsing and automated crypto/stock portfolio tracking feeds.',
       },
     },
     {
@@ -165,7 +165,7 @@ export const portfolioData = {
       tags: ['Java', 'Spring Boot', 'Microservices', 'Docker', 'PostgreSQL'],
       githubUrl: 'https://github.com/Ezhilmaran06',
       liveDemoUrl: '',
-      image: '/images/screens/08_projects.png',
+      image: '/assets/portfolio/08-projects.webp',
       details: {
         overview:
           'New backend engineering and cloud-native microservices currently under active development, focusing on distributed caching, concurrency patterns, and event-driven architecture in Java.',
@@ -183,7 +183,7 @@ export const portfolioData = {
           { category: 'DevOps', technologies: 'Docker, Git, Postman' },
         ],
         myContribution: 'Full-cycle architectural design, unit testing, and performance profiling.',
-        screenshots: ['/images/screens/08_projects.png'],
+        screenshots: ['/assets/portfolio/09-project-details.webp', '/assets/portfolio/08-projects.webp'],
         futureScope: 'Production cloud deployment on AWS / GCP with CI/CD automation.',
       },
     },
@@ -247,7 +247,7 @@ export const portfolioData = {
       issuer: 'Infosys Springboard',
       year: '2024',
       credentialUrl: '#',
-      previewImage: '/images/screens/12_certifications.png',
+      previewImage: '/assets/portfolio/12-certifications.webp',
     },
     {
       id: 'react-coursera',
@@ -255,7 +255,7 @@ export const portfolioData = {
       issuer: 'Coursera',
       year: '2024',
       credentialUrl: '#',
-      previewImage: '/images/screens/12_certifications.png',
+      previewImage: '/assets/portfolio/12-certifications.webp',
     },
     {
       id: 'git-udemy',
@@ -263,7 +263,7 @@ export const portfolioData = {
       issuer: 'Udemy',
       year: '2023',
       credentialUrl: '#',
-      previewImage: '/images/screens/12_certifications.png',
+      previewImage: '/assets/portfolio/12-certifications.webp',
     },
   ],
   codingProfiles: {

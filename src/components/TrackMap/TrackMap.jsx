@@ -32,7 +32,7 @@ export const TrackMap = ({
 
   const handleCheckpointClick = (id) => {
     soundManager.playCheckpoint();
-    setSpeed(Math.floor(Math.random() * 50) + 290);
+    setSpeed(315 + (id.length % 20));
     onNavigate(id);
     if (!isInline) {
       onClose();
@@ -57,6 +57,13 @@ export const TrackMap = ({
           : 'fixed inset-0 z-50 bg-[#08080a]/95 backdrop-blur-xl flex flex-col justify-between p-4 sm:p-8 select-none'
       }
     >
+      {/* Background Circuit Atmosphere */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-65 pointer-events-none filter brightness-85 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/04-track-map.webp')` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-[#08080a]/60 pointer-events-none" />
+
       {/* Top Header Controls */}
       <div className="flex items-center justify-between w-full max-w-7xl mx-auto mb-4">
         {/* Compass & Lap Info */}

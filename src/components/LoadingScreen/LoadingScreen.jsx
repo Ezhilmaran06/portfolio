@@ -6,12 +6,12 @@ import { soundManager } from '../../utils/audio';
 
 export const LoadingScreen = ({ onComplete, onSkip }) => {
   const [progress, setProgress] = useState(15);
-  const [checklist, setChecklist] = useState([
-    { id: 1, text: 'Loading assets', done: false },
-    { id: 2, text: 'Preparing circuit', done: false },
-    { id: 3, text: 'Starting engine', done: false },
-    { id: 4, text: 'Calibrating telemetry', done: false },
-  ]);
+  const checklist = [
+    { id: 1, text: 'Loading assets', done: progress >= 30 },
+    { id: 2, text: 'Preparing circuit', done: progress >= 55 },
+    { id: 3, text: 'Starting engine', done: progress >= 80 },
+    { id: 4, text: 'Calibrating telemetry', done: progress >= 95 },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,27 +31,15 @@ export const LoadingScreen = ({ onComplete, onSkip }) => {
     return () => clearInterval(interval);
   }, [onComplete]);
 
-  // Update checklist items according to progress
-  useEffect(() => {
-    setChecklist((prev) =>
-      prev.map((item) => {
-        if (item.id === 1 && progress >= 30) return { ...item, done: true };
-        if (item.id === 2 && progress >= 55) return { ...item, done: true };
-        if (item.id === 3 && progress >= 80) return { ...item, done: true };
-        if (item.id === 4 && progress >= 95) return { ...item, done: true };
-        return item;
-      })
-    );
-  }, [progress]);
-
   return (
     <div className="relative w-full min-h-screen bg-[#08080a] flex flex-col justify-between p-6 md:p-12 overflow-hidden select-none">
       {/* Background Circuit Track Visual */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(225,6,0,0.12)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(225,6,0,0.18)_0%,transparent_70%)] pointer-events-none" />
       <div 
-        className="absolute inset-0 opacity-20 bg-cover bg-center pointer-events-none filter brightness-50"
-        style={{ backgroundImage: `url('/images/screens/01_loading_screen.jpg')` }}
+        className="absolute inset-0 opacity-70 bg-cover bg-center pointer-events-none filter brightness-90 contrast-110"
+        style={{ backgroundImage: `url('/assets/portfolio/01-loading-screen.webp')` }}
       />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-[#08080a]/70 pointer-events-none" />
       
       {/* Top Header Bar */}
       <div className="relative z-10 flex items-center justify-between w-full">
@@ -86,11 +74,10 @@ export const LoadingScreen = ({ onComplete, onSkip }) => {
           {/* Burning Tyre Asset */}
           <div className="relative w-40 h-40 sm:w-52 sm:h-52 rounded-full overflow-hidden border-4 border-[#ff1801] shadow-[0_0_35px_#e10600] bg-black">
             <img
-              src="/images/racing/f1-hot-tyre.jpg"
+              src="/assets/portfolio/01-loading-screen.webp"
               alt="Spinning F1 Wheel"
               className="w-full h-full object-cover animate-spin-fast filter contrast-125"
               onError={(e) => {
-                // Fallback to high-tech SVG wheel if image fails
                 (e.target).style.display = 'none';
               }}
             />
