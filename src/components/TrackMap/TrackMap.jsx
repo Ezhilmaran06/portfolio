@@ -1,37 +1,169 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Compass, X, Flag } from 'lucide-react';
+import { Compass, X, Flag, Camera, Eye, Zap, Shield, CheckCircle2, ChevronRight, Gauge } from 'lucide-react';
 import { soundManager } from '../../utils/audio';
 import '../../styles/trackmap.css';
 
-// 13 Grand Prix Checkpoints mapped with precision to the circuit layout
-const CHECKPOINTS = [
-  { id: 'hero',           label: 'HOME',           x: 289, y: 299, progress: 0,   speed: 322, sector: 'MAIN STRAIGHT', desc: 'Starting Grid & Launch Control' },
-  { id: 'about',          label: 'ABOUT',          x: 252, y: 195, progress: 8,   speed: 212, sector: 'SECTOR 1',      desc: 'Driver Profile & Bio' },
-  { id: 'education',      label: 'EDUCATION',      x: 404, y: 177, progress: 18,  speed: 318, sector: 'TOP STRAIGHT',  desc: 'Academic Milestones (B.Tech IT)' },
-  { id: 'skills',         label: 'SKILLS',         x: 609, y: 204, progress: 28,  speed: 228, sector: 'S-CURVES',      desc: 'Technical Telemetry & Stack' },
-  { id: 'projects',       label: 'PROJECTS',       x: 853, y: 249, progress: 40,  speed: 334, sector: 'SECTOR 2',      desc: 'Race Machinery & Live Apps' },
-  { id: 'certifications', label: 'CERTIFICATIONS', x: 890, y: 324, progress: 50,  speed: 196, sector: 'HAIRPIN',       desc: 'Verified Driver Credentials' },
-  { id: 'achievements',   label: 'ACHIEVEMENTS',   x: 698, y: 308, progress: 60,  speed: 242, sector: 'INNER LOOP',    desc: 'Podium Finishes & Milestones' },
-  { id: 'experience',     label: 'EXPERIENCE',     x: 524, y: 287, progress: 68,  speed: 268, sector: 'FLYOVER BRIDGE',desc: 'Career Grand Prix & Readiness' },
-  { id: 'coding',         label: 'CODING',         x: 576, y: 369, progress: 76,  speed: 218, sector: 'INFIELD',       desc: 'GitHub & LeetCode Telemetry' },
-  { id: 'trackmap',       label: 'TRACK',          x: 335, y: 355, progress: 84,  speed: 282, sector: 'PIT STRAIGHT',  desc: 'Interactive Circuit Map' },
-  { id: 'resume',         label: 'RESUME',         x: 354, y: 394, progress: 90,  speed: 254, sector: 'SECTOR 4',      desc: 'Technical Dossier & Download' },
-  { id: 'contact',        label: 'CONTACT',        x: 492, y: 440, progress: 95,  speed: 310, sector: 'APPROACH',      desc: 'Pit Wall Radio Channels' },
-  { id: 'finish',         label: 'FINISH',         x: 604, y: 415, progress: 100, speed: 338, sector: 'CHECKERED',    desc: 'Victory Lap & Checkered Flag' },
+// 12 Professional Grand Prix Sectors + Navigation Data mapped across 1600x900 canvas
+export const SECTOR_CHECKPOINTS = [
+  {
+    id: 'hero',
+    sectorNum: '01',
+    label: 'HOME',
+    title: 'STARTING GRID & LAUNCH CONTROL',
+    x: 300,
+    y: 700,
+    progress: 0,
+    speed: 328,
+    sector: 'SECTOR 1',
+    desc: 'Main pit straight launch, driver profile, and cockpit readiness.',
+  },
+  {
+    id: 'about',
+    sectorNum: '02',
+    label: 'ABOUT',
+    title: "TURN 1 SENNA 'S' & BIOGRAPHY",
+    x: 170,
+    y: 490,
+    progress: 8,
+    speed: 215,
+    sector: 'SECTOR 1',
+    desc: 'Driver background, problem-solving philosophy, and technical roots.',
+  },
+  {
+    id: 'education',
+    sectorNum: '03',
+    label: 'EDUCATION',
+    title: 'KEMMEL STRAIGHT & ACADEMIC DOSSIER',
+    x: 230,
+    y: 270,
+    progress: 17,
+    speed: 295,
+    sector: 'SECTOR 1',
+    desc: 'B.Tech in Information Technology, core CS foundations, and academic honors.',
+  },
+  {
+    id: 'experience',
+    sectorNum: '04',
+    label: 'EXPERIENCE',
+    title: 'HIGH-SPEED CREST & CAREER GRAND PRIX',
+    x: 500,
+    y: 155,
+    progress: 26,
+    speed: 322,
+    sector: 'SECTOR 1',
+    desc: 'Professional engineering readiness, internships, and production delivery.',
+  },
+  {
+    id: 'skills',
+    sectorNum: '05',
+    label: 'SKILLS',
+    title: 'TECHNICAL S-CURVES & ENGINE TELEMETRY',
+    x: 800,
+    y: 185,
+    progress: 36,
+    speed: 238,
+    sector: 'SECTOR 2',
+    desc: 'React, Node.js, Next.js, TypeScript, Tailwind, and full-stack performance.',
+  },
+  {
+    id: 'projects',
+    sectorNum: '06',
+    label: 'PROJECTS',
+    title: 'DRS BACK STRAIGHT & PRODUCTION APPS',
+    x: 1160,
+    y: 155,
+    progress: 48,
+    speed: 342,
+    sector: 'SECTOR 2',
+    desc: 'Flagship full-stack machines, live deployments, and architecture blueprints.',
+  },
+  {
+    id: 'achievements',
+    sectorNum: '07',
+    label: 'ACHIEVEMENTS',
+    title: 'NORTH HAIRPIN & CHAMPIONSHIP PODIUMS',
+    x: 1460,
+    y: 280,
+    progress: 59,
+    speed: 172,
+    sector: 'SECTOR 2',
+    desc: 'Hackathon victories, national competition awards, and elite recognitions.',
+  },
+  {
+    id: 'certifications',
+    sectorNum: '08',
+    label: 'CERTIFICATIONS',
+    title: 'DOUBLE CHICANE & VERIFIED LICENSES',
+    x: 1380,
+    y: 490,
+    progress: 69,
+    speed: 208,
+    sector: 'SECTOR 2',
+    desc: 'Industry-standard cloud, web, and software development certifications.',
+  },
+  {
+    id: 'coding',
+    sectorNum: '09',
+    label: 'CODING',
+    title: 'FLYOVER OVERPASS & CODE METRICS',
+    x: 1100,
+    y: 505,
+    progress: 79,
+    speed: 276,
+    sector: 'SECTOR 3',
+    desc: 'LeetCode, GitHub commit streaks, algorithmic problem solving & DSA.',
+  },
+  {
+    id: 'resume',
+    sectorNum: '10',
+    label: 'RESUME',
+    title: 'SWITCHBACK SWEEPER & TECHNICAL CV',
+    x: 860,
+    y: 640,
+    progress: 87,
+    speed: 242,
+    sector: 'SECTOR 3',
+    desc: 'Comprehensive engineering CV, verified milestones, and 1-click PDF download.',
+  },
+  {
+    id: 'contact',
+    sectorNum: '11',
+    label: 'CONTACT',
+    title: 'PARABOLICA ARENA & PIT WALL RADIO',
+    x: 580,
+    y: 740,
+    progress: 94,
+    speed: 304,
+    sector: 'SECTOR 3',
+    desc: 'Direct communication channels, pit wall radio, and career inquiries.',
+  },
+  {
+    id: 'finish',
+    sectorNum: '12',
+    label: 'FINISH',
+    title: 'CHECKERED FLAG & VICTORY LAP',
+    x: 390,
+    y: 700,
+    progress: 100,
+    speed: 338,
+    sector: 'SECTOR 3',
+    desc: 'Final lap celebration, career summary, and restart journey command.',
+  },
 ];
 
-// Multi-route racing circuit vectors (1024 x 576 coordinate system)
-const MAIN_CIRCUIT_PATH =
-  'M 289.0 299.0 C 270.3 297.5, 232.1 298.9, 215.0 290.0 C 197.9 281.1, 177.3 252.8, 175.0 240.0 C 172.8 227.3, 188.4 211.8, 200.0 205.0 C 211.6 198.3, 233.3 198.4, 252.0 195.0 C 270.8 191.6, 302.2 184.7, 325.0 182.0 C 347.8 179.3, 378.5 177.3, 404.0 177.0 C 429.5 176.7, 473.1 176.6, 495.0 180.0 C 516.9 183.4, 532.9 196.4, 550.0 200.0 C 567.1 203.6, 590.3 204.3, 609.0 204.0 C 627.8 203.7, 653.1 196.3, 675.0 198.0 C 696.9 199.7, 728.3 207.3, 755.0 215.0 C 781.7 222.7, 829.0 237.0, 853.0 249.0 C 877.0 261.0, 909.5 283.8, 915.0 295.0 C 920.5 306.3, 905.8 318.0, 890.0 324.0 C 874.3 330.0, 831.8 335.6, 810.0 335.0 C 788.3 334.4, 761.8 324.1, 745.0 320.0 C 728.2 315.9, 715.3 311.8, 698.0 308.0 C 680.8 304.3, 648.5 298.0, 630.0 295.0 C 611.5 292.0, 590.9 289.2, 575.0 288.0 C 559.1 286.8, 539.0 283.7, 524.0 287.0 C 509.0 290.3, 480.9 301.3, 475.0 310.0 C 469.1 318.7, 476.0 336.8, 485.0 345.0 C 494.0 353.3, 521.4 361.4, 535.0 365.0 C 548.6 368.6, 573.8 363.0, 576.0 369.0 C 578.3 375.0, 565.9 401.1, 550.0 405.0 C 534.1 408.9, 494.8 401.0, 470.0 395.0 C 445.3 389.0, 405.3 371.0, 385.0 365.0 C 364.8 359.0, 348.5 353.5, 335.0 355.0 C 321.5 356.5, 292.1 369.1, 295.0 375.0 C 297.9 380.9, 335.3 386.5, 354.0 394.0 C 372.8 401.5, 399.3 418.1, 420.0 425.0 C 440.7 431.9, 471.0 438.9, 492.0 440.0 C 513.0 441.1, 543.2 435.8, 560.0 432.0 C 576.8 428.3, 591.3 422.1, 604.0 415.0 C 616.8 407.9, 642.6 397.0, 645.0 385.0 C 647.4 373.0, 638.8 349.3, 620.0 335.0 C 601.3 320.8, 551.5 296.0, 520.0 290.0 C 488.5 284.0, 437.0 293.5, 410.0 295.0 C 383.0 296.5, 358.1 299.4, 340.0 300.0 C 321.9 300.6, 307.8 300.5, 289.0 299.0 Z';
+// Coordinate geometry on 1600x900 canvas spanning 85% of screen
+export const PRIMARY_CIRCUIT_PATH =
+  'M 300 700 C 230 700, 160 630, 150 540 C 140 450, 150 380, 190 320 C 230 260, 290 220, 380 180 C 470 140, 560 145, 660 160 C 740 175, 780 195, 840 215 C 900 235, 960 215, 1020 175 C 1070 140, 1140 145, 1240 155 C 1340 165, 1430 195, 1475 255 C 1515 315, 1495 395, 1445 445 C 1395 495, 1335 505, 1260 520 C 1190 535, 1140 520, 1060 500 C 990 480, 940 520, 890 590 C 840 660, 780 725, 680 750 C 570 775, 470 750, 410 715 C 360 690, 335 700, 300 700 Z';
 
-const INNER_LOOP_PATH =
-  'M 698.0 308.0 C 717.3 311.7, 730.1 316.4, 745.0 320.0 C 759.9 323.6, 805.3 329.0, 810.0 335.0 C 814.7 341.0, 793.3 359.7, 780.0 365.0 C 766.7 370.3, 728.7 375.7, 710.0 375.0 C 691.3 374.3, 657.9 360.8, 640.0 360.0 C 622.1 359.2, 590.0 368.3, 576.0 369.0 C 562.0 369.7, 541.9 375.9, 535.0 365.0 C 528.1 354.1, 515.3 296.7, 524.0 287.0 C 532.7 277.3, 576.8 289.2, 600.0 292.0 C 623.2 294.8, 678.7 304.3, 698.0 308.0 Z';
+// Secondary Routes
+export const INNER_LOOP_PATH =
+  'M 840 215 C 890 270, 930 350, 940 430 C 950 510, 930 560, 890 590';
 
-const OUTER_LOOP_PATH =
-  'M 252.0 195.0 C 282.5 186.6, 356.4 175.8, 404.0 177.0 C 451.6 178.2, 562.2 198.9, 609.0 204.0 C 655.8 209.1, 722.5 209.0, 755.0 215.0 C 787.5 221.0, 831.7 238.3, 853.0 249.0 C 874.3 259.7, 910.1 285.0, 915.0 295.0 C 919.9 305.0, 901.3 314.0, 890.0 324.0 C 878.7 334.0, 850.0 357.9, 830.0 370.0 C 810.0 382.1, 770.1 409.0, 740.0 415.0 C 709.9 421.0, 637.1 411.7, 604.0 415.0 C 570.9 418.3, 525.3 442.8, 492.0 440.0 C 458.7 437.2, 380.3 402.7, 354.0 394.0 C 327.7 385.3, 313.5 388.9, 295.0 375.0 C 276.5 361.1, 231.0 308.0, 215.0 290.0 C 199.0 272.0, 170.1 252.7, 175.0 240.0 C 179.9 227.3, 221.5 203.4, 252.0 195.0 Z';
+export const OUTER_BYPASS_PATH =
+  'M 190 320 C 140 240, 220 120, 450 100 C 700 80, 1100 85, 1340 110 C 1470 125, 1540 200, 1475 255';
 
-const PIT_LANE_PATH =
-  'M 370.0 355.0 C 350.0 352.0, 335.0 355.0, 315.0 340.0 C 298.0 328.0, 292.0 312.0, 289.0 299.0';
+export const PIT_LANE_PATH =
+  'M 560 735 C 470 705, 400 660, 300 660 C 230 660, 190 620, 175 540';
 
 export const TrackMap = ({
   currentSection = 'hero',
@@ -40,37 +172,79 @@ export const TrackMap = ({
   onClose,
   isInline = false,
 }) => {
-  const [prevSection, setPrevSection] = useState(currentSection);
-  const [activeCheckpoint, setActiveCheckpoint] = useState(currentSection);
+  // Normalize section id to match checkpoint list
+  const activeId = currentSection === 'trackmap' ? 'hero' : currentSection;
+  const initialCp = SECTOR_CHECKPOINTS.find((c) => c.id === activeId) || SECTOR_CHECKPOINTS[0];
 
-  const initialCp = CHECKPOINTS.find((c) => c.id === currentSection) || CHECKPOINTS[0];
-  const [carState, setCarState] = useState({ x: initialCp.x, y: initialCp.y, angle: -160 });
+  const [activeCheckpoint, setActiveCheckpoint] = useState(activeId);
+  const [carState, setCarState] = useState({ x: initialCp.x, y: initialCp.y, angle: -170 });
   const [currentSpeed, setCurrentSpeed] = useState(initialCp.speed);
   const [isDriving, setIsDriving] = useState(false);
   const [hoveredCp, setHoveredCp] = useState(null);
+  const [cameraMode, setCameraMode] = useState('full'); // 'full', 'follow', 'focus', 'sector'
+  const [stageTilt, setStageTilt] = useState({ rx: 0, ry: 0 });
 
   const pathRef = useRef(null);
   const animFrameRef = useRef(null);
 
-  // Sync active checkpoint and car when currentSection prop changes
-  if (currentSection !== prevSection) {
-    setPrevSection(currentSection);
-    setActiveCheckpoint(currentSection);
-    const cp = CHECKPOINTS.find((c) => c.id === currentSection) || CHECKPOINTS[0];
+  // Sync state if external section changes
+  useEffect(() => {
+    const targetId = currentSection === 'trackmap' ? 'hero' : currentSection;
+    setActiveCheckpoint(targetId);
+    const cp = SECTOR_CHECKPOINTS.find((c) => c.id === targetId) || SECTOR_CHECKPOINTS[0];
     setCarState((prev) => ({ ...prev, x: cp.x, y: cp.y }));
     setCurrentSpeed(cp.speed);
-  }
+  }, [currentSection]);
 
-  // Find checkpoint details
+  // Find active checkpoint record
   const activeCpData = useMemo(() => {
     return (
-      CHECKPOINTS.find((c) => c.id === activeCheckpoint) ||
-      CHECKPOINTS.find((c) => c.id === currentSection) ||
-      CHECKPOINTS[0]
+      SECTOR_CHECKPOINTS.find((c) => c.id === activeCheckpoint) ||
+      SECTOR_CHECKPOINTS.find((c) => c.id === activeId) ||
+      SECTOR_CHECKPOINTS[0]
     );
-  }, [activeCheckpoint, currentSection]);
+  }, [activeCheckpoint, activeId]);
 
-  // Drive vehicle smoothly along SVG path to target checkpoint
+  // Check if checkpoint is completed
+  const activeIdx = SECTOR_CHECKPOINTS.findIndex((c) => c.id === activeCheckpoint);
+
+  // 3D Parallax Mouse reaction
+  const handleMouseMove = (e) => {
+    if (cameraMode !== 'full') return;
+    const { innerWidth, innerHeight } = window;
+    const normX = (e.clientX / innerWidth - 0.5) * 2; // -1 to 1
+    const normY = (e.clientY / innerHeight - 0.5) * 2;
+    setStageTilt({
+      rx: normY * -3.5, // tilt up/down
+      ry: normX * 4.5,  // tilt left/right
+    });
+  };
+
+  // Dynamic Camera Transform Calculation
+  const cameraTransform = useMemo(() => {
+    if (cameraMode === 'follow') {
+      const cx = 800 - carState.x;
+      const cy = 450 - carState.y;
+      return `scale(1.45) translate(${cx}px, ${cy}px)`;
+    }
+    if (cameraMode === 'focus') {
+      const cx = 800 - activeCpData.x;
+      const cy = 450 - activeCpData.y;
+      return `scale(1.6) translate(${cx}px, ${cy}px)`;
+    }
+    if (cameraMode === 'sector') {
+      if (activeCpData.sector === 'SECTOR 1') {
+        return 'scale(1.35) translate(300px, 120px)';
+      }
+      if (activeCpData.sector === 'SECTOR 2') {
+        return 'scale(1.35) translate(-280px, 160px)';
+      }
+      return 'scale(1.35) translate(-80px, -140px)';
+    }
+    return 'scale(1) translate(0px, 0px)';
+  }, [cameraMode, carState.x, carState.y, activeCpData]);
+
+  // Smooth car driving animation along SVG circuit path
   const driveToTarget = useCallback(
     (targetCp, onArrive) => {
       const pathEl = pathRef.current;
@@ -83,13 +257,13 @@ export const TrackMap = ({
       setIsDriving(true);
       const totalLen = pathEl.getTotalLength();
 
-      // Sample path to find nearest distance to current car position and target position
+      // Sample path to locate closest current point and target point
       let bestCurrentDist = 0;
       let minCurrentDiff = Infinity;
       let bestTargetDist = 0;
       let minTargetDiff = Infinity;
 
-      const samples = 200;
+      const samples = 300;
       for (let i = 0; i <= samples; i++) {
         const d = (i / samples) * totalLen;
         const pt = pathEl.getPointAtLength(d);
@@ -107,25 +281,26 @@ export const TrackMap = ({
         }
       }
 
-      // If wrapping around circuit
       if (bestTargetDist < bestCurrentDist) {
         bestTargetDist += totalLen;
       }
 
+      const travelDistance = bestTargetDist - bestCurrentDist;
       const startTime = performance.now();
-      const duration = Math.min(1400, Math.max(650, (bestTargetDist - bestCurrentDist) * 1.6));
+      const duration = Math.min(1600, Math.max(700, travelDistance * 1.5));
 
       const animate = (time) => {
         const elapsed = time - startTime;
         const progressRatio = Math.min(1, elapsed / duration);
-        // Easing: easeInOutQuad
+
+        // Smooth cubic easeInOut
         const ease =
           progressRatio < 0.5
-            ? 2 * progressRatio * progressRatio
-            : -1 + (4 - 2 * progressRatio) * progressRatio;
+            ? 4 * progressRatio * progressRatio * progressRatio
+            : 1 - Math.pow(-2 * progressRatio + 2, 3) / 2;
 
-        const currentD = (bestCurrentDist + (bestTargetDist - bestCurrentDist) * ease) % totalLen;
-        const nextD = (currentD + 2) % totalLen;
+        const currentD = (bestCurrentDist + travelDistance * ease) % totalLen;
+        const nextD = (currentD + 3) % totalLen;
 
         const pt = pathEl.getPointAtLength(currentD);
         const ptNext = pathEl.getPointAtLength(nextD);
@@ -133,10 +308,11 @@ export const TrackMap = ({
 
         setCarState({ x: pt.x, y: pt.y, angle });
 
-        // Dynamic speed simulation based on turn sharpness
-        const turnSharpness = Math.abs(angle % 90);
-        const dynSpeed = Math.round(targetCp.speed + (progressRatio < 0.7 ? 15 : -8) - (turnSharpness > 40 ? 30 : 0));
-        setCurrentSpeed(Math.max(185, Math.min(345, dynSpeed)));
+        // Realistic F1 physics: deceleration on cornering, acceleration on straights
+        const dynSpeed = Math.round(
+          targetCp.speed + (progressRatio > 0.2 && progressRatio < 0.8 ? 20 : -10)
+        );
+        setCurrentSpeed(Math.max(160, Math.min(348, dynSpeed)));
 
         if (progressRatio < 1) {
           animFrameRef.current = requestAnimationFrame(animate);
@@ -155,7 +331,7 @@ export const TrackMap = ({
     [carState.x, carState.y]
   );
 
-  // Checkpoint click handler: drives car and navigates
+  // Checkpoint selection handler
   const handleCheckpointClick = (cp) => {
     soundManager.playClick();
     setActiveCheckpoint(cp.id);
@@ -168,29 +344,30 @@ export const TrackMap = ({
     });
   };
 
-  // Complete the circuit hot-lap demo
+  // Full circuit hot lap demo
   const handleHotLap = () => {
     soundManager.playFinishLine();
     let currentIdx = 0;
 
     const driveNext = () => {
-      if (currentIdx >= CHECKPOINTS.length) {
+      if (currentIdx >= SECTOR_CHECKPOINTS.length) {
         soundManager.playFinishLine();
         onNavigate('finish');
         if (!isInline && onClose) onClose();
         return;
       }
-      const nextCp = CHECKPOINTS[currentIdx];
+      const nextCp = SECTOR_CHECKPOINTS[currentIdx];
       setActiveCheckpoint(nextCp.id);
       driveToTarget(nextCp, () => {
         currentIdx += 1;
-        setTimeout(driveNext, 300);
+        setTimeout(driveNext, 350);
       });
     };
 
     driveNext();
   };
 
+  // Clean up animation on unmount
   useEffect(() => {
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
@@ -200,41 +377,96 @@ export const TrackMap = ({
   if (!isOpen && !isInline) return null;
 
   return (
-    <div className={`trackmap-container ${isInline ? 'relative' : 'trackmap-modal'}`}>
-      {/* Background High-Definition Circuit World Artwork */}
-      <div
-        className="trackmap-bg-artwork"
-        style={{ backgroundImage: `url('/assets/portfolio/04-track-map.webp')` }}
-      />
+    <div
+      className={`trackmap-container ${isInline ? 'relative' : 'trackmap-modal'}`}
+      onMouseMove={handleMouseMove}
+    >
+      {/* 1. Deep Atmospheric & World Environment Background */}
+      <div className="trackmap-world-env" />
+      <div className="trackmap-stars" />
       <div className="trackmap-vignette" />
 
-      {/* Top Header Controls */}
-      <div className="relative z-30 flex items-center justify-between w-full max-w-7xl mx-auto px-4 pt-3 pb-1 select-none">
-        {/* Compass, Telemetry & Status */}
+      {/* 2. Top Tactical Telemetry Header */}
+      <header className="trackmap-top-bar" aria-label="Grand Prix circuit telemetry header">
+        {/* Left: Tactical Compass & Status */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/75 border border-white/15 shadow-[0_0_15px_rgba(0,0,0,0.8)]">
-            <Compass className="w-4 h-4 text-[#ff1e2d] animate-spin-slow" />
+          <div className="tactical-pill flex items-center gap-2.5 px-3 py-1.5">
+            <Compass className="w-4 h-4 text-[#ff1801] animate-spin-slow" />
             <span className="font-racing font-bold text-xs tracking-widest text-white">N</span>
-            <span className="text-[#545458] font-mono-tech text-xs">|</span>
-            <span className="font-orbitron text-xs text-[#d1d1d6]">CIRCUIT 01</span>
-            <span className="text-[#545458] font-mono-tech text-xs">|</span>
-            <span className="font-mono-tech text-xs text-[#ff1e2d] tracking-wider uppercase font-semibold">
+            <span className="text-[#3a3f4e] font-mono-tech text-xs">|</span>
+            <span className="font-orbitron text-xs text-[#d1d5db]">AUTODROME GP</span>
+            <span className="text-[#3a3f4e] font-mono-tech text-xs">|</span>
+            <span className="font-mono-tech text-xs text-[#ff1801] tracking-wider uppercase font-semibold">
               {activeCpData.sector}
             </span>
           </div>
 
-          <span className="hidden md:inline-block font-mono-tech text-[11px] tracking-[2px] text-[#a1a1aa] uppercase">
-            GRAND PRIX MULTI-ROUTE CIRCUIT TELEMETRY
-          </span>
+          <div className="hidden xl:flex items-center gap-3 tactical-pill px-3 py-1.5 font-mono-tech text-[11px] text-[#9ca3af]">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse" />
+              TRACK: DRY 32°C
+            </span>
+            <span className="text-[#3a3f4e]">|</span>
+            <span>AIR: 24°C</span>
+            <span className="text-[#3a3f4e]">|</span>
+            <span className="text-[#ff1801] font-semibold">GRIP: 98%</span>
+          </div>
         </div>
 
-        {/* Action Buttons */}
+        {/* Center: Camera Mode Controls */}
+        <div className="tactical-pill flex items-center gap-1 p-1">
+          <span className="text-[10px] font-mono-tech text-[#6b7280] uppercase tracking-wider px-2 hidden sm:inline">
+            CAMERA:
+          </span>
+          <button
+            onClick={() => {
+              soundManager.playClick();
+              setCameraMode('full');
+            }}
+            className={`camera-btn ${cameraMode === 'full' ? 'active' : ''}`}
+            title="Full Circuit Panoramic View"
+          >
+            CIRCUIT
+          </button>
+          <button
+            onClick={() => {
+              soundManager.playClick();
+              setCameraMode('follow');
+            }}
+            className={`camera-btn ${cameraMode === 'follow' ? 'active' : ''}`}
+            title="Dynamic Camera Following Vehicle"
+          >
+            FOLLOW
+          </button>
+          <button
+            onClick={() => {
+              soundManager.playClick();
+              setCameraMode('focus');
+            }}
+            className={`camera-btn ${cameraMode === 'focus' ? 'active' : ''}`}
+            title="Magnified Checkpoint Focus View"
+          >
+            FOCUS
+          </button>
+          <button
+            onClick={() => {
+              soundManager.playClick();
+              setCameraMode('sector');
+            }}
+            className={`camera-btn ${cameraMode === 'sector' ? 'active' : ''}`}
+            title="Sector Framing View"
+          >
+            SECTOR
+          </button>
+        </div>
+
+        {/* Right: Action Buttons (Hot-Lap & Close) */}
         <div className="flex items-center gap-3">
           <button
             onClick={handleHotLap}
             disabled={isDriving}
             className="group flex items-center gap-2 px-4 py-1.5 rounded-lg bg-[#e10600]/25 hover:bg-[#e10600] border border-[#e10600]/60 text-xs font-racing font-bold tracking-[1.5px] text-white uppercase transition-all duration-200 cursor-pointer shadow-[0_0_20px_rgba(225,6,0,0.35)] active:scale-95"
-            title="Start automated full lap drive through all portfolio checkpoints"
+            title="Automated Full Lap Drive through all portfolio sectors"
           >
             <Flag className="w-3.5 h-3.5 text-white group-hover:scale-110 transition-transform" />
             <span>{isDriving ? 'DRIVING LAP...' : 'COMPLETE THE CIRCUIT'}</span>
@@ -246,27 +478,33 @@ export const TrackMap = ({
                 soundManager.playClick();
                 onClose();
               }}
-              className="p-1.5 rounded-lg bg-black/60 hover:bg-white/20 border border-white/15 text-white cursor-pointer transition-all active:scale-95"
+              className="p-1.5 rounded-lg bg-black/70 hover:bg-white/20 border border-white/15 text-white cursor-pointer transition-all active:scale-95"
               title="Close Circuit Map (Esc)"
             >
               <X className="w-5 h-5" />
             </button>
           )}
         </div>
-      </div>
+      </header>
 
-      {/* Center Interactive Circuit Canvas SVG */}
-      <div className="relative z-20 flex-1 flex items-center justify-center w-full max-w-[1500px] mx-auto px-2 sm:px-6">
+      {/* 3. Interactive 3D Multi-Route Circuit Canvas (ViewBox: 1600 x 900) */}
+      <main
+        className="trackmap-stage-wrapper"
+        style={{
+          transform: `perspective(1200px) rotateX(${stageTilt.rx}deg) rotateY(${stageTilt.ry}deg)`,
+        }}
+      >
         <svg
-          viewBox="0 0 1024 576"
+          viewBox="0 0 1600 900"
           preserveAspectRatio="xMidYMid meet"
-          className="trackmap-svg-canvas"
+          className={`trackmap-svg-canvas camera-${cameraMode}`}
+          style={{ transform: cameraTransform }}
         >
           <defs>
-            {/* Red Neon Glow Filter */}
-            <filter id="f1NeonRedGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="3.5" result="blur1" />
-              <feGaussianBlur stdDeviation="7" result="blur2" />
+            {/* Red Neon Glow */}
+            <filter id="circuitRedGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="4" result="blur1" />
+              <feGaussianBlur stdDeviation="9" result="blur2" />
               <feMerge>
                 <feMergeNode in="blur2" />
                 <feMergeNode in="blur1" />
@@ -274,228 +512,625 @@ export const TrackMap = ({
               </feMerge>
             </filter>
 
-            {/* Subtle Vehicle Shadow */}
-            <filter id="carShadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000" floodOpacity="0.9" />
+            {/* Vehicle Ground Shadow */}
+            <filter id="f1CarShadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#000000" floodOpacity="0.9" />
             </filter>
 
-            {/* Asphalt Surface Gradient */}
-            <linearGradient id="asphaltGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#1a1c24" />
-              <stop offset="50%" stopColor="#222530" />
-              <stop offset="100%" stopColor="#181a22" />
+            {/* Bridge 3D Cast Shadow onto Lower Track */}
+            <filter id="bridgeElevationShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="8" stdDeviation="8" floodColor="#000000" floodOpacity="0.95" />
+            </filter>
+
+            {/* Wet Asphalt Sheen Gradient */}
+            <linearGradient id="wetAsphaltSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#1e2230" />
+              <stop offset="35%" stopColor="#292e40" />
+              <stop offset="50%" stopColor="#1a1c26" />
+              <stop offset="80%" stopColor="#252a38" />
+              <stop offset="100%" stopColor="#141620" />
             </linearGradient>
 
-            {/* Glowing Red Racing Line */}
-            <linearGradient id="racingLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            {/* Glowing Red Racing Line Gradient */}
+            <linearGradient id="redRacingLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#ff1801" />
               <stop offset="50%" stopColor="#ff4d4d" />
               <stop offset="100%" stopColor="#e10600" />
             </linearGradient>
 
-            {/* Radial Terrain Glow */}
-            <radialGradient id="infieldGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#ff1e2d" stopOpacity="0.09" />
-              <stop offset="70%" stopColor="#ff1e2d" stopOpacity="0.02" />
-              <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+            {/* Headlight Beam Cone Gradient */}
+            <radialGradient id="headlightBeam" cx="10%" cy="50%" r="90%">
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.85)" />
+              <stop offset="40%" stopColor="rgba(255, 240, 200, 0.4)" />
+              <stop offset="80%" stopColor="rgba(255, 30, 45, 0.15)" />
+              <stop offset="100%" stopColor="transparent" />
+            </radialGradient>
+
+            {/* Infield Lake Water Gradient */}
+            <radialGradient id="lakeWaterGrad" cx="45%" cy="50%" r="55%">
+              <stop offset="0%" stopColor="#091b26" />
+              <stop offset="60%" stopColor="#06121a" />
+              <stop offset="100%" stopColor="#040b10" />
+            </radialGradient>
+
+            {/* Stadium Floodlight Radial Cones */}
+            <radialGradient id="floodlightCone" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="rgba(255, 250, 240, 0.22)" />
+              <stop offset="40%" stopColor="rgba(255, 230, 200, 0.08)" />
+              <stop offset="100%" stopColor="transparent" />
             </radialGradient>
           </defs>
 
-          {/* LAYER 1: Ambient Infield Lighting */}
-          <circle cx="580" cy="340" r="220" fill="url(#infieldGlow)" pointerEvents="none" />
+          {/* ========================================================
+              LAYER 1: BACKGROUND ENVIRONMENT (HORIZON, MOUNTAINS, CITY)
+              ======================================================== */}
+          {/* Distant Mountain Ridges */}
+          <polygon
+            points="0,180 180,110 320,150 480,95 620,140 760,80 940,135 1100,75 1280,125 1420,90 1600,145 1600,260 0,260"
+            fill="#060912"
+            opacity="0.8"
+          />
+          <polygon
+            points="0,210 140,155 290,180 430,140 580,175 720,130 890,165 1040,120 1210,160 1370,135 1520,170 1600,195 1600,290 0,290"
+            fill="#080c18"
+            opacity="0.9"
+          />
 
-          {/* LAYER 2: Secondary Routes & Connecting Roads */}
-          {/* Outer Ring Route */}
+          {/* Distant Metropolitan City Skyline (Illuminated Skyscrapers & Towers) */}
+          <g opacity="0.65">
+            {/* City Silhouette Blocks */}
+            <rect x="360" y="110" width="22" height="60" fill="#0b1020" />
+            <rect x="385" y="90" width="30" height="80" fill="#0e1428" />
+            <rect x="420" y="125" width="25" height="45" fill="#090d1a" />
+            <rect x="680" y="95" width="35" height="75" fill="#0d1326" />
+            <rect x="720" y="70" width="18" height="100" fill="#101830" />
+            <rect x="742" y="115" width="28" height="55" fill="#0a0f1e" />
+            <rect x="1010" y="80" width="40" height="90" fill="#0d1326" />
+            <rect x="1055" y="105" width="26" height="65" fill="#090d1a" />
+            <rect x="1220" y="90" width="34" height="80" fill="#0e1428" />
+            <rect x="1260" y="65" width="16" height="105" fill="#101830" />
+
+            {/* Glowing Skyscraper Windows (Subtle golden & cyan specks) */}
+            <circle cx="395" cy="110" r="1" fill="#fde047" opacity="0.8" />
+            <circle cx="402" cy="120" r="1" fill="#38bdf8" opacity="0.7" />
+            <circle cx="700" cy="115" r="1.2" fill="#fde047" opacity="0.9" />
+            <circle cx="730" cy="85" r="1.5" fill="#ff1801" className="animate-ping" />
+            <circle cx="1030" cy="100" r="1.2" fill="#fde047" opacity="0.8" />
+            <circle cx="1270" cy="80" r="1.5" fill="#ff1801" className="animate-ping" />
+          </g>
+
+          {/* ========================================================
+              LAYER 2: INFIELD CIRCUIT LAKE & PADDOCK COMPLEX
+              ======================================================== */}
+          {/* Infield Reflection Lake */}
           <path
-            d={OUTER_LOOP_PATH}
+            d="M 520 340 C 600 300, 720 310, 760 360 C 800 410, 750 480, 680 500 C 610 520, 500 510, 460 450 C 420 390, 470 360, 520 340 Z"
+            fill="url(#lakeWaterGrad)"
+            stroke="#102534"
+            strokeWidth="3"
+            opacity="0.95"
+          />
+          {/* Lake Water Ripple Shimmers */}
+          <path d="M 500 390 Q 560 385, 620 390" stroke="#00d2ff" strokeWidth="1" opacity="0.3" fill="none" />
+          <path d="M 540 430 Q 610 425, 680 430" stroke="#ff1e2d" strokeWidth="1" opacity="0.25" fill="none" />
+          <path d="M 580 460 Q 640 455, 710 460" stroke="#00d2ff" strokeWidth="0.8" opacity="0.25" fill="none" />
+
+          {/* Paddock Headquarters, Garages & Motorhomes */}
+          <g id="paddockComplex" opacity="0.9">
+            {/* Main Pit Garages Structure */}
+            <rect x="250" y="605" width="220" height="38" rx="4" fill="#121622" stroke="#252d42" strokeWidth="1.5" />
+            {/* 6 Individual Garage Bays */}
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <g key={`garage-${i}`} transform={`translate(${260 + i * 35}, 612)`}>
+                <rect x="0" y="0" width="26" height="24" rx="2" fill="#090c12" stroke="#1f273a" strokeWidth="1" />
+                <rect x="4" y="4" width="18" height="4" fill="#e10600" opacity="0.75" />
+                <rect x="4" y="10" width="18" height="10" fill="#f8fafc" opacity="0.15" />
+              </g>
+            ))}
+
+            {/* Race Control & Timing Tower (4-Story High-Tech Glass Tower) */}
+            <g transform="translate(485, 590)">
+              <rect x="0" y="0" width="48" height="55" rx="5" fill="#151b2a" stroke="#00d2ff" strokeWidth="1.2" />
+              <rect x="6" y="8" width="36" height="12" rx="2" fill="#0284c7" opacity="0.4" />
+              <rect x="6" y="24" width="36" height="10" rx="2" fill="#000000" />
+              <text x="24" y="32" fill="#22c55e" fontSize="7" fontFamily="'JetBrains Mono', monospace" textAnchor="middle" fontWeight="bold">
+                RACE: GREEN
+              </text>
+              <line x1="24" y1="0" x2="24" y2="-12" stroke="#94a3b8" strokeWidth="2" />
+              <circle cx="24" cy="-14" r="3" fill="#ff1801" className="animate-ping" />
+            </g>
+
+            {/* Team Motorhomes & Transporters in Paddock Infield */}
+            <rect x="260" y="555" width="55" height="22" rx="3" fill="#1a202c" stroke="#334155" strokeWidth="1" />
+            <rect x="325" y="555" width="55" height="22" rx="3" fill="#1a202c" stroke="#334155" strokeWidth="1" />
+            <rect x="390" y="555" width="55" height="22" rx="3" fill="#1a202c" stroke="#334155" strokeWidth="1" />
+          </g>
+
+          {/* ========================================================
+              TACTICAL GPS INFIELD COMPASS & TOPOGRAPHIC MATRIX
+              ======================================================== */}
+          <g id="tacticalInfieldCompass" pointerEvents="none" opacity="0.85">
+            {/* Topographic Contour Elevation Waves across Infield Terrain */}
+            <path d="M 400 480 Q 560 410, 760 450 T 1020 430" stroke="rgba(255, 24, 1, 0.12)" strokeWidth="1.2" strokeDasharray="3 4" fill="none" />
+            <path d="M 440 515 Q 600 445, 800 485 T 1060 465" stroke="rgba(255, 255, 255, 0.07)" strokeWidth="1" strokeDasharray="4 6" fill="none" />
+            <path d="M 420 440 Q 580 380, 780 415 T 980 395" stroke="rgba(56, 189, 248, 0.12)" strokeWidth="1" strokeDasharray="2 4" fill="none" />
+            <path d="M 470 545 Q 640 480, 830 520 T 1090 500" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="0.8" strokeDasharray="6 8" fill="none" />
+
+            {/* Tactical Circuit Compass Rose Centered at (640, 440) */}
+            <g transform="translate(640, 440)">
+              {/* Outer Azimuth Degree Dial */}
+              <circle cx="0" cy="0" r="70" fill="rgba(6, 9, 15, 0.55)" stroke="rgba(255, 255, 255, 0.14)" strokeWidth="1.2" />
+              <circle cx="0" cy="0" r="64" fill="none" stroke="rgba(255, 24, 1, 0.3)" strokeWidth="1" strokeDasharray="3 6" />
+              <circle cx="0" cy="0" r="46" fill="none" stroke="rgba(255, 255, 255, 0.1)" strokeWidth="0.8" />
+              <circle cx="0" cy="0" r="28" fill="none" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="0.8" strokeDasharray="2 4" />
+
+              {/* Crosshair Alignment Guides */}
+              <line x1="-80" y1="0" x2="80" y2="0" stroke="rgba(255, 255, 255, 0.18)" strokeWidth="1" strokeDasharray="4 4" />
+              <line x1="0" y1="-80" x2="0" y2="80" stroke="rgba(255, 255, 255, 0.18)" strokeWidth="1" strokeDasharray="4 4" />
+
+              {/* 45-degree Diagonal Ticks */}
+              <line x1="-50" y1="-50" x2="-42" y2="-42" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1" />
+              <line x1="50" y1="-50" x2="42" y2="-42" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1" />
+              <line x1="-50" y1="50" x2="-42" y2="42" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1" />
+              <line x1="50" y1="50" x2="42" y2="42" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1" />
+
+              {/* Cardinal Compass Markers */}
+              {/* North Pointer */}
+              <polygon points="0,-68 -5,-54 5,-54" fill="#ff1801" filter="url(#circuitRedGlow)" />
+              <text x="0" y="-74" fill="#ff1801" fontSize="10" fontFamily="'Orbitron', sans-serif" fontWeight="900" textAnchor="middle">
+                N
+              </text>
+              {/* East */}
+              <text x="76" y="4" fill="#9ca3af" fontSize="9" fontFamily="'Rajdhani', sans-serif" fontWeight="bold" textAnchor="middle">
+                E
+              </text>
+              {/* South */}
+              <text x="0" y="80" fill="#9ca3af" fontSize="9" fontFamily="'Rajdhani', sans-serif" fontWeight="bold" textAnchor="middle">
+                S
+              </text>
+              {/* West */}
+              <text x="-76" y="4" fill="#9ca3af" fontSize="9" fontFamily="'Rajdhani', sans-serif" fontWeight="bold" textAnchor="middle">
+                W
+              </text>
+
+              {/* Center Gyro Core */}
+              <circle cx="0" cy="0" r="10" fill="#0b0f19" stroke="#ff1801" strokeWidth="1.5" />
+              <circle cx="0" cy="0" r="4" fill="#ffffff" />
+
+              {/* Technical Telemetry Badges around Compass */}
+              <text x="0" y="24" fill="#6b7280" fontSize="6.5" fontFamily="'JetBrains Mono', monospace" letterSpacing="1.5px" textAnchor="middle">
+                AUTODROME GP
+              </text>
+              <text x="0" y="34" fill="#ef4444" fontSize="6" fontFamily="'JetBrains Mono', monospace" letterSpacing="1px" textAnchor="middle" opacity="0.8">
+                GPS: 45°38'N 09°16'E
+              </text>
+            </g>
+          </g>
+
+          {/* ========================================================
+              LAYER 3: GRANDSTANDS & SPECTATOR ARENAS
+              ======================================================== */}
+          {/* Main Straight Grandstand (Canopy Roof & Seating) */}
+          <g transform="translate(200, 745)">
+            {/* Grandstand Foundation */}
+            <rect x="0" y="0" width="240" height="34" rx="4" fill="#0f141f" stroke="#252d40" strokeWidth="1.5" />
+            {/* Canopy Roof */}
+            <polygon points="-10,-4 250,-4 240,8 0,8" fill="#e2e8f0" opacity="0.85" />
+            {/* Seating Rows Texture */}
+            <line x1="10" y1="14" x2="230" y2="14" stroke="#ff1801" strokeWidth="2" strokeDasharray="3 2" opacity="0.6" />
+            <line x1="10" y1="20" x2="230" y2="20" stroke="#ffffff" strokeWidth="2" strokeDasharray="3 2" opacity="0.4" />
+            <line x1="10" y1="26" x2="230" y2="26" stroke="#38bdf8" strokeWidth="2" strokeDasharray="3 2" opacity="0.5" />
+          </g>
+
+          {/* Turn 1 Grandstand */}
+          <g transform="translate(70, 420) rotate(15)">
+            <rect x="0" y="0" width="70" height="28" rx="3" fill="#0f141f" stroke="#252d40" strokeWidth="1.2" />
+            <polygon points="-5,-3 75,-3 70,6 0,6" fill="#e2e8f0" opacity="0.8" />
+            <line x1="5" y1="12" x2="65" y2="12" stroke="#ff1801" strokeWidth="1.8" strokeDasharray="2 2" opacity="0.7" />
+          </g>
+
+          {/* North Hairpin Arena Grandstand */}
+          <g transform="translate(1420, 310) rotate(-20)">
+            <rect x="0" y="0" width="130" height="34" rx="4" fill="#0f141f" stroke="#252d40" strokeWidth="1.5" />
+            <polygon points="-5,-4 135,-4 130,8 0,8" fill="#e2e8f0" opacity="0.85" />
+            <line x1="8" y1="15" x2="122" y2="15" stroke="#ff1801" strokeWidth="2" strokeDasharray="3 2" opacity="0.6" />
+            <line x1="8" y1="22" x2="122" y2="22" stroke="#ffffff" strokeWidth="2" strokeDasharray="3 2" opacity="0.4" />
+          </g>
+
+          {/* Parabolica Arena Grandstand */}
+          <g transform="translate(620, 775)">
+            <rect x="0" y="0" width="160" height="30" rx="4" fill="#0f141f" stroke="#252d40" strokeWidth="1.5" />
+            <polygon points="-5,-3 165,-3 160,7 0,7" fill="#e2e8f0" opacity="0.8" />
+            <line x1="8" y1="14" x2="152" y2="14" stroke="#ff1801" strokeWidth="2" strokeDasharray="3 2" opacity="0.6" />
+          </g>
+
+          {/* ========================================================
+              LAYER 4: STADIUM FLOODLIGHT GANTRIES (14 HIGH-MAST TOWERS)
+              ======================================================== */}
+          {[
+            { x: 130, y: 550 },
+            { x: 140, y: 350 },
+            { x: 260, y: 190 },
+            { x: 440, y: 120 },
+            { x: 680, y: 120 },
+            { x: 920, y: 130 },
+            { x: 1140, y: 115 },
+            { x: 1380, y: 170 },
+            { x: 1530, y: 350 },
+            { x: 1410, y: 560 },
+            { x: 1180, y: 560 },
+            { x: 940, y: 640 },
+            { x: 700, y: 780 },
+            { x: 380, y: 760 },
+          ].map((fl, idx) => (
+            <g key={`floodlight-${idx}`} pointerEvents="none">
+              {/* Radial Light Cone Illuminating Track Surface */}
+              <circle cx={fl.x} cy={fl.y} r="110" fill="url(#floodlightCone)" />
+              {/* Floodlight Mast Structure */}
+              <circle cx={fl.x} cy={fl.y} r="3.5" fill="#475569" stroke="#94a3b8" strokeWidth="1" />
+              {/* 4-Lamp Head Array */}
+              <rect x={fl.x - 7} y={fl.y - 7} width="14" height="4" rx="1" fill="#f8fafc" />
+              {/* Red Aviation Warning Beacon on Top */}
+              <circle cx={fl.x} cy={fl.y - 8} r="1.5" fill="#ff1801" className="floodlight-beacon" />
+            </g>
+          ))}
+
+          {/* ========================================================
+              LAYER 5: SECONDARY & CONNECTING SERVICE ROUTES
+              ======================================================== */}
+          {/* Outer High-Speed Bypass Route */}
+          <path
+            d={OUTER_BYPASS_PATH}
             fill="none"
-            stroke="#12131a"
+            stroke="#0a0d14"
+            strokeWidth="18"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.8"
+          />
+          <path
+            d={OUTER_BYPASS_PATH}
+            fill="none"
+            stroke="#151b27"
             strokeWidth="12"
             strokeLinecap="round"
             strokeLinejoin="round"
-            opacity="0.75"
+            opacity="0.9"
           />
           <path
-            d={OUTER_LOOP_PATH}
+            d={OUTER_BYPASS_PATH}
             fill="none"
-            stroke="#ff1e2d"
-            strokeWidth="1.5"
-            strokeDasharray="4 6"
-            opacity="0.35"
+            stroke="#ffffff"
+            strokeWidth="1.2"
+            strokeDasharray="6 8"
+            opacity="0.3"
           />
 
-          {/* Inner Technical Loop */}
+          {/* Inner Technical Testing Route */}
           <path
             d={INNER_LOOP_PATH}
             fill="none"
-            stroke="#14161f"
+            stroke="#0a0d14"
+            strokeWidth="20"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.8"
+          />
+          <path
+            d={INNER_LOOP_PATH}
+            fill="none"
+            stroke="#151b27"
             strokeWidth="14"
             strokeLinecap="round"
             strokeLinejoin="round"
-            opacity="0.8"
+            opacity="0.9"
           />
           <path
             d={INNER_LOOP_PATH}
             fill="none"
-            stroke="#ff1e2d"
+            stroke="#ff1801"
             strokeWidth="1.5"
-            strokeDasharray="6 6"
+            strokeDasharray="4 6"
             opacity="0.4"
           />
 
-          {/* Pit Lane Service Road */}
+          {/* Pit Lane Service Route */}
           <path
             d={PIT_LANE_PATH}
             fill="none"
-            stroke="#13141c"
-            strokeWidth="10"
+            stroke="#0a0d14"
+            strokeWidth="18"
             strokeLinecap="round"
             strokeLinejoin="round"
-            opacity="0.8"
+            opacity="0.9"
+          />
+          <path
+            d={PIT_LANE_PATH}
+            fill="none"
+            stroke="#181e2b"
+            strokeWidth="12"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.95"
           />
           <path
             d={PIT_LANE_PATH}
             fill="none"
             stroke="#ffffff"
             strokeWidth="1.2"
-            strokeDasharray="4 4"
+            strokeDasharray="5 5"
             opacity="0.4"
           />
 
-          {/* LAYER 3: Main Championship GP Circuit */}
-          {/* Outer Track Road Border / Runoff Barrier */}
+          {/* ========================================================
+              LAYER 6: PRIMARY CHAMPIONSHIP GRAND PRIX CIRCUIT
+              ======================================================== */}
+          {/* 1. Broad Gravel Runoff Shoulder Foundation */}
           <path
-            d={MAIN_CIRCUIT_PATH}
+            d={PRIMARY_CIRCUIT_PATH}
             fill="none"
-            stroke="#0b0c10"
-            strokeWidth="22"
+            stroke="#0a0c13"
+            strokeWidth="52"
             strokeLinecap="round"
             strokeLinejoin="round"
-            opacity="0.9"
+            opacity="0.95"
           />
 
-          {/* Main Asphalt Road Surface */}
+          {/* 2. Armco Steel Safety Barrier Foundation */}
           <path
-            d={MAIN_CIRCUIT_PATH}
+            d={PRIMARY_CIRCUIT_PATH}
             fill="none"
-            stroke="url(#asphaltGradient)"
-            strokeWidth="15"
+            stroke="#1c2230"
+            strokeWidth="44"
             strokeLinecap="round"
             strokeLinejoin="round"
+            opacity="0.85"
           />
 
-          {/* Red & White Alternating Kerbs */}
+          {/* 3. Red & White Rumble Kerbs Foundation (Underneath Asphalt) */}
           <path
-            d={MAIN_CIRCUIT_PATH}
+            d={PRIMARY_CIRCUIT_PATH}
             fill="none"
             stroke="#ffffff"
-            strokeWidth="17"
-            strokeDasharray="4 4"
-            opacity="0.3"
+            strokeWidth="38"
+            strokeDasharray="8 8"
+            opacity="0.95"
           />
           <path
-            d={MAIN_CIRCUIT_PATH}
+            d={PRIMARY_CIRCUIT_PATH}
             fill="none"
-            stroke="#ff1801"
-            strokeWidth="17"
-            strokeDasharray="4 4"
-            strokeDashoffset="4"
-            opacity="0.45"
+            stroke="#e10600"
+            strokeWidth="38"
+            strokeDasharray="8 8"
+            strokeDashoffset="8"
+            opacity="0.98"
           />
 
-          {/* Invisible Reference Path for DOM Coordinate & Distance Calculations */}
+          {/* 4. White Track Boundary Limit (Outer Edge Line) */}
+          <path
+            d={PRIMARY_CIRCUIT_PATH}
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.8)"
+            strokeWidth="31"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* 5. Solid Dark Asphalt Road Core (Sits over Kerbs, peeking 3.5px kerbs on each edge) */}
+          <path
+            d={PRIMARY_CIRCUIT_PATH}
+            fill="none"
+            stroke="#121520"
+            strokeWidth="29"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* 6. Wet Specular Sheen Layer (Realistic AAA Road Shimmer) */}
+          <path
+            d={PRIMARY_CIRCUIT_PATH}
+            fill="none"
+            stroke="url(#wetAsphaltSheen)"
+            strokeWidth="25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.75"
+          />
+
+          {/* 7. Centerline Dashed Lane Markings */}
+          <path
+            d={PRIMARY_CIRCUIT_PATH}
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.25)"
+            strokeWidth="1.2"
+            strokeDasharray="14 18"
+          />
+
+          {/* Heavy Braking Skid Marks (Tire Rubber Trails on Approaches) */}
+          <g opacity="0.65" pointerEvents="none">
+            {/* Approach to Turn 1 Senna 'S' */}
+            <path d="M 235 600 C 210 575, 180 540, 165 510" stroke="#000000" strokeWidth="7" fill="none" strokeDasharray="14 6" />
+            {/* Approach to North Hairpin */}
+            <path d="M 1370 185 C 1420 205, 1460 235, 1475 265" stroke="#000000" strokeWidth="8" fill="none" strokeDasharray="12 5" />
+            {/* Approach to Double Chicane */}
+            <path d="M 1445 425 C 1430 455, 1400 480, 1375 495" stroke="#000000" strokeWidth="7" fill="none" strokeDasharray="10 5" />
+          </g>
+
+          {/* Starting Grid Boxes (10 Numbered Grid Slots on Main Straight) */}
+          <g id="startingGridBoxes" pointerEvents="none">
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((slot) => {
+              const offsetX = 310 - slot * 24;
+              const offsetY = 700 + (slot % 2 === 0 ? -6 : 6);
+              return (
+                <rect
+                  key={`grid-slot-${slot}`}
+                  x={offsetX}
+                  y={offsetY - 5}
+                  width="18"
+                  height="10"
+                  fill="none"
+                  stroke="#ffffff"
+                  strokeWidth="1.2"
+                  opacity="0.75"
+                />
+              );
+            })}
+          </g>
+
+          {/* Start/Finish Checkered Gantry Line at (300, 700) */}
+          <g transform="translate(300, 700) rotate(88)" pointerEvents="none">
+            <line x1="-16" y1="0" x2="16" y2="0" stroke="#ffffff" strokeWidth="4" strokeDasharray="4 4" />
+            <line x1="-16" y1="4" x2="16" y2="4" stroke="#000000" strokeWidth="4" strokeDasharray="4 4" />
+          </g>
+
+          {/* Invisible Mathematical Target Path for Precise Length & Tangent Calculations */}
           <path
             ref={pathRef}
-            id="circuitMainPath"
-            d={MAIN_CIRCUIT_PATH}
+            id="grandPrixMainPath"
+            d={PRIMARY_CIRCUIT_PATH}
             fill="none"
             stroke="transparent"
             strokeWidth="1"
           />
 
-          {/* LAYER 4: Glowing Red Neon Racing Line */}
+          {/* ========================================================
+              LAYER 7: 3D ELEVATED FLYOVER BRIDGE & OVERPASS
+              ======================================================== */}
+          {/* Bridge overpass at intersection (x: 1060, y: 500) */}
+          <g id="flyoverBridge3D" filter="url(#bridgeElevationShadow)" pointerEvents="none">
+            {/* Concrete Structural Abutments */}
+            <rect x="1025" y="475" width="70" height="50" rx="3" fill="#1c202c" stroke="#374151" strokeWidth="1.5" />
+            {/* Upper Bridge Asphalt Deck */}
+            <path
+              d="M 1025 500 C 1045 500, 1075 500, 1095 500"
+              stroke="#252a3a"
+              strokeWidth="34"
+              strokeLinecap="square"
+            />
+            {/* High-Visibility White Road Limits on Bridge */}
+            <line x1="1025" y1="483" x2="1095" y2="483" stroke="#ffffff" strokeWidth="1.5" />
+            <line x1="1025" y1="517" x2="1095" y2="517" stroke="#ffffff" strokeWidth="1.5" />
+            {/* Armco Guardrails with Red LED Lighting Strips */}
+            <line x1="1025" y1="480" x2="1095" y2="480" stroke="#ff1801" strokeWidth="2.5" filter="url(#circuitRedGlow)" />
+            <line x1="1025" y1="520" x2="1095" y2="520" stroke="#ff1801" strokeWidth="2.5" filter="url(#circuitRedGlow)" />
+          </g>
+
+          {/* ========================================================
+              LAYER 8: GLOWING RED RACING LINE (DYNAMIC APEX FLOW)
+              ======================================================== */}
           <path
-            d={MAIN_CIRCUIT_PATH}
+            d={PRIMARY_CIRCUIT_PATH}
             fill="none"
-            stroke="url(#racingLineGrad)"
-            strokeWidth="2.5"
-            strokeDasharray="10 8"
-            filter="url(#f1NeonRedGlow)"
+            stroke="url(#redRacingLineGrad)"
+            strokeWidth="3.2"
+            strokeDasharray="14 10"
+            filter="url(#circuitRedGlow)"
             className="racing-line-flow"
           />
 
-          {/* LAYER 5: Elevated Flyover Bridge & Overpass at EXPERIENCE (524, 287) */}
-          <g pointerEvents="none">
-            {/* Bridge shadow underneath */}
-            <path
-              d="M 495 292 C 510 292, 540 292, 555 292"
-              stroke="#000000"
-              strokeWidth="24"
-              opacity="0.85"
-            />
-            {/* Bridge elevated deck */}
-            <path
-              d="M 498 287 C 512 287, 538 287, 552 287"
-              stroke="#2c2f3d"
-              strokeWidth="18"
-              strokeLinecap="square"
-            />
-            {/* Bridge guardrails with LED lights */}
-            <line x1="498" y1="277" x2="552" y2="277" stroke="#ff1e2d" strokeWidth="1.5" filter="url(#f1NeonRedGlow)" />
-            <line x1="498" y1="297" x2="552" y2="297" stroke="#ff1e2d" strokeWidth="1.5" filter="url(#f1NeonRedGlow)" />
+          {/* ========================================================
+              LAYER 9: TRACKSIDE TELEMETRY OVERLAYS & SPONSOR BOARDS
+              ======================================================== */}
+          {/* DRS Zone 1 Overhead Gantry (Back Straight at 1060, 155) */}
+          <g transform="translate(1060, 135)" pointerEvents="none">
+            <rect x="0" y="0" width="60" height="14" rx="2" fill="#0369a1" stroke="#38bdf8" strokeWidth="1" />
+            <text x="30" y="10" fill="#ffffff" fontSize="8" fontFamily="'Rajdhani', sans-serif" fontWeight="bold" textAnchor="middle">
+              DRS ZONE 1
+            </text>
           </g>
 
-          {/* LAYER 6: Start/Finish Grid & Trackside Signage */}
-          {/* Chequered Start Line at HOME (289, 299) */}
-          <g transform="translate(289, 299) rotate(80)" pointerEvents="none">
-            <line x1="-10" y1="0" x2="10" y2="0" stroke="#ffffff" strokeWidth="3" strokeDasharray="3 3" />
-            <line x1="-10" y1="3" x2="10" y2="3" stroke="#000000" strokeWidth="3" strokeDasharray="3 3" />
+          {/* DRS Zone 2 Overhead Gantry (Main Straight at 450, 715) */}
+          <g transform="translate(450, 680)" pointerEvents="none">
+            <rect x="0" y="0" width="60" height="14" rx="2" fill="#0369a1" stroke="#38bdf8" strokeWidth="1" />
+            <text x="30" y="10" fill="#ffffff" fontSize="8" fontFamily="'Rajdhani', sans-serif" fontWeight="bold" textAnchor="middle">
+              DRS ZONE 2
+            </text>
           </g>
 
-          {/* LAYER 7: Animated F1 Racing Car */}
+          {/* Speed Trap Radar Gantry at (1220, 155) */}
+          <g transform="translate(1220, 135)" pointerEvents="none">
+            <rect x="0" y="0" width="50" height="14" rx="2" fill="#7f1d1d" stroke="#ef4444" strokeWidth="1" />
+            <text x="25" y="10" fill="#ffffff" fontSize="7.5" fontFamily="'Rajdhani', sans-serif" fontWeight="bold" textAnchor="middle">
+              SPEED TRAP
+            </text>
+          </g>
+
+          {/* Sector Boundary Lines */}
+          <g pointerEvents="none" opacity="0.75">
+            {/* Sector 1 End (580, 150) */}
+            <line x1="580" y1="130" x2="580" y2="170" stroke="#f59e0b" strokeWidth="3" strokeDasharray="4 3" />
+            {/* Sector 2 End (1420, 470) */}
+            <line x1="1405" y1="470" x2="1445" y2="470" stroke="#38bdf8" strokeWidth="3" strokeDasharray="4 3" />
+          </g>
+
+          {/* ========================================================
+              LAYER 10: HIGH-FIDELITY ANIMATED F1 TELEMETRY CAR
+              ======================================================== */}
           <g
             transform={`translate(${carState.x}, ${carState.y}) rotate(${carState.angle})`}
-            className="f1-car-shadow"
+            filter="url(#f1CarShadow)"
             pointerEvents="none"
           >
-            {/* Red Underglow Halo */}
-            <circle cx="0" cy="0" r="14" fill="#ff1801" opacity="0.45" filter="url(#f1NeonRedGlow)" />
+            {/* Twin Forward Headlight Projection Beams */}
+            <polygon
+              points="14,-5 120,-28 120,28 14,5"
+              fill="url(#headlightBeam)"
+              className="car-headlights"
+            />
 
-            {/* Rear Exhaust Flame Particles */}
+            {/* Neon Underglow Ambient Halo */}
+            <circle cx="0" cy="0" r="18" fill="#ff1801" opacity="0.5" filter="url(#circuitRedGlow)" />
+
+            {/* Twin Exhaust Flame Jets during acceleration bursts */}
             {isDriving && (
-              <path
-                d="M -16 -2 L -24 0 L -16 2 Z"
-                fill="#ffaa00"
-                opacity="0.8"
-                filter="url(#f1NeonRedGlow)"
-              />
+              <g>
+                <polygon points="-16,-3 -32,-2 -16,-1" fill="#f59e0b" opacity="0.9" filter="url(#circuitRedGlow)" />
+                <polygon points="-16,1 -32,2 -16,3" fill="#f59e0b" opacity="0.9" filter="url(#circuitRedGlow)" />
+              </g>
             )}
 
-            {/* F1 Car Body */}
-            {/* Front Wing */}
-            <rect x="10" y="-8" width="3" height="16" rx="1" fill="#18181b" stroke="#ffffff" strokeWidth="0.5" />
-            {/* Nose Cone */}
-            <path d="M 12 0 L 2 -3 L -10 -4 L -12 -4 L -12 4 L -10 4 L 2 3 Z" fill="#ff1801" stroke="#a0000c" strokeWidth="0.5" />
-            {/* Cockpit / Halo */}
-            <circle cx="-1" cy="0" r="3.2" fill="#09090b" stroke="#ffffff" strokeWidth="0.6" />
-            {/* Driver Helmet (Yellow/Red visor) */}
-            <circle cx="-1" cy="0" r="1.8" fill="#ffd60a" />
-            {/* Sidepods & Airbox */}
-            <rect x="-8" y="-6" width="9" height="12" rx="2" fill="#e10600" />
-            {/* Rear Wing */}
-            <rect x="-14" y="-8.5" width="2.5" height="17" rx="1" fill="#18181b" stroke="#e10600" strokeWidth="0.6" />
-            {/* 4 Black Pirelli Slick Tyres */}
-            <rect x="4" y="-10" width="6" height="3" rx="1" fill="#000000" stroke="#ff1801" strokeWidth="0.4" />
-            <rect x="4" y="7" width="6" height="3" rx="1" fill="#000000" stroke="#ff1801" strokeWidth="0.4" />
-            <rect x="-11" y="-10.5" width="6.5" height="3.5" rx="1" fill="#000000" stroke="#ff1801" strokeWidth="0.4" />
-            <rect x="-11" y="7" width="6.5" height="3.5" rx="1" fill="#000000" stroke="#ff1801" strokeWidth="0.4" />
-            {/* Blinking Rain Light on Rear Wing */}
-            <circle cx="-14.5" cy="0" r="1" fill="#ffffff" className="animate-ping" />
+            {/* Front Aerodynamic Wing & Carbon Endplates */}
+            <rect x="11" y="-10" width="3.5" height="20" rx="1" fill="#18181b" stroke="#ffffff" strokeWidth="0.6" />
+            <rect x="14.5" y="-10" width="1" height="3" fill="#e10600" />
+            <rect x="14.5" y="7" width="1" height="3" fill="#e10600" />
+
+            {/* Sculpted Nose Cone & Chassis */}
+            <path
+              d="M 13 0 L 2 -4 L -11 -5 L -14 -5 L -14 5 L -11 5 L 2 4 Z"
+              fill="#ff1801"
+              stroke="#80000a"
+              strokeWidth="0.6"
+            />
+
+            {/* Driver Cockpit & Titanium Halo Ring */}
+            <circle cx="-1" cy="0" r="3.8" fill="#09090b" stroke="#e4e4e7" strokeWidth="0.8" />
+            {/* Driver Helmet (Fluorescent Yellow/Red visor) */}
+            <circle cx="-1" cy="0" r="2.2" fill="#ffd60a" />
+
+            {/* Sidepods with Air Radiator Inlets */}
+            <rect x="-9" y="-8" width="11" height="16" rx="2.5" fill="#e10600" stroke="#80000a" strokeWidth="0.5" />
+            <rect x="-8" y="-7" width="3" height="3" rx="0.5" fill="#18181b" />
+            <rect x="-8" y="4" width="3" height="3" rx="0.5" fill="#18181b" />
+
+            {/* Rear Wing Structure */}
+            <rect x="-16" y="-11" width="3" height="22" rx="1" fill="#18181b" stroke="#e10600" strokeWidth="0.8" />
+
+            {/* 4 Black Pirelli P-Zero Slick Tyres with Red Sidewalls */}
+            <rect x="4" y="-13" width="7.5" height="4" rx="1.2" fill="#000000" stroke="#ff1801" strokeWidth="0.5" />
+            <rect x="4" y="9" width="7.5" height="4" rx="1.2" fill="#000000" stroke="#ff1801" strokeWidth="0.5" />
+            <rect x="-13" y="-13.5" width="8" height="4.5" rx="1.2" fill="#000000" stroke="#ff1801" strokeWidth="0.5" />
+            <rect x="-13" y="9" width="8" height="4.5" rx="1.2" fill="#000000" stroke="#ff1801" strokeWidth="0.5" />
+
+            {/* Rapid Strobe FIA Safety Rain Light on Rear Wing */}
+            <circle cx="-16.5" cy="0" r="1.5" fill="#ffffff" className="animate-ping" />
           </g>
 
-          {/* LAYER 8: The 13 Grand Prix Checkpoint Beacons */}
-          {CHECKPOINTS.map((cp) => {
-            const isCurrent = activeCheckpoint === cp.id || currentSection === cp.id;
+          {/* ========================================================
+              LAYER 11: THE 12 GRAND PRIX CHECKPOINT GPS STATIONS
+              ======================================================== */}
+          {SECTOR_CHECKPOINTS.map((cp, idx) => {
+            const isCurrent = activeCheckpoint === cp.id || activeId === cp.id;
+            const isCompleted = idx < activeIdx;
             const isHovered = hoveredCp === cp.id;
 
             return (
@@ -509,144 +1144,258 @@ export const TrackMap = ({
                 }}
                 onMouseLeave={() => setHoveredCp(null)}
               >
-                {/* Outer Pulsing Beacon Halo */}
+                {/* Active Concentric Sonar Pulse Rings */}
                 {isCurrent && (
-                  <circle
-                    cx={cp.x}
-                    cy={cp.y}
-                    r="16"
-                    fill="none"
-                    stroke="#ff1801"
-                    strokeWidth="2"
-                    className="beacon-pulse"
-                    filter="url(#f1NeonRedGlow)"
-                  />
+                  <>
+                    <circle
+                      cx={cp.x}
+                      cy={cp.y}
+                      r="16"
+                      fill="none"
+                      stroke="#ff1801"
+                      strokeWidth="2.5"
+                      className="beacon-sonar-1"
+                      filter="url(#circuitRedGlow)"
+                    />
+                    <circle
+                      cx={cp.x}
+                      cy={cp.y}
+                      r="24"
+                      fill="none"
+                      stroke="#ffffff"
+                      strokeWidth="1.5"
+                      className="beacon-sonar-2"
+                    />
+                  </>
                 )}
 
-                {/* Glowing Core Outer Ring */}
+                {/* Radar Diode Outer Base */}
                 <circle
                   cx={cp.x}
                   cy={cp.y}
-                  r={isCurrent ? 8 : 6.5}
-                  fill="#0c0d12"
-                  stroke={isCurrent ? '#ffffff' : '#ff1801'}
-                  strokeWidth={isCurrent ? 2.5 : 1.8}
-                  filter={isCurrent || isHovered ? 'url(#f1NeonRedGlow)' : undefined}
+                  r={isCurrent ? 10 : 8}
+                  fill="#080a10"
+                  stroke={isCurrent ? '#ffffff' : isCompleted ? '#10b981' : '#ff1801'}
+                  strokeWidth={isCurrent ? 3 : 2}
+                  className="checkpoint-marker-core"
+                  filter={isCurrent || isHovered ? 'url(#circuitRedGlow)' : undefined}
                 />
 
-                {/* Central Red Dot */}
+                {/* Central Status Core */}
                 <circle
                   cx={cp.x}
                   cy={cp.y}
-                  r={isCurrent ? 4.5 : 3}
-                  fill={isCurrent ? '#ff1801' : '#e10600'}
+                  r={isCurrent ? 5.5 : 4}
+                  fill={isCurrent ? '#ff1801' : isCompleted ? '#10b981' : '#e10600'}
                 />
 
-                {/* Connecting Stalk to Pill Label */}
-                <line
-                  x1={cp.x}
-                  y1={cp.y - 7}
-                  x2={cp.x}
-                  y2={cp.y - 14}
-                  stroke={isCurrent ? '#ff1801' : 'rgba(255,255,255,0.4)'}
-                  strokeWidth="1.2"
-                />
+                {/* Vertical Optical Guide Stalk to Tactical Label */}
+                {(() => {
+                  const isBelow = cp.id === 'finish' || cp.id === 'coding';
+                  const stalkY1 = isBelow ? cp.y + (isCurrent ? 10 : 8) : cp.y - (isCurrent ? 10 : 8);
+                  const stalkY2 = isBelow ? cp.y + 20 : cp.y - 20;
+                  const badgeY = isBelow ? cp.y + 34 : cp.y - 34;
 
-                {/* Checkpoint Pill Box (Exact Reference Match) */}
-                <g transform={`translate(${cp.x}, ${cp.y - 25})`}>
-                  <rect
-                    x="-36"
-                    y="-10"
-                    width="72"
-                    height="20"
-                    rx="3.5"
-                    className="checkpoint-pill"
-                    fill={isCurrent ? '#e10600' : 'rgba(10, 11, 16, 0.92)'}
-                    stroke={isCurrent ? '#ffffff' : isHovered ? '#ff1801' : 'rgba(255, 255, 255, 0.22)'}
-                    strokeWidth={isCurrent ? '1.5' : '1'}
-                    filter="drop-shadow(0 2px 6px rgba(0,0,0,0.85))"
-                  />
-                  <text
-                    x="0"
-                    y="3.5"
-                    textAnchor="middle"
-                    className="checkpoint-text"
-                    fill={isCurrent ? '#ffffff' : '#f4f4f5'}
-                    style={{
-                      fontFamily: "'Rajdhani', sans-serif",
-                      fontWeight: isCurrent ? '800' : '700',
-                      fontSize: '10.5px',
-                      letterSpacing: '1px',
-                      userSelect: 'none',
-                    }}
-                  >
-                    {cp.label}
-                  </text>
-                </g>
+                  return (
+                    <>
+                      <line
+                        x1={cp.x}
+                        y1={stalkY1}
+                        x2={cp.x}
+                        y2={stalkY2}
+                        stroke={isCurrent ? '#ff1801' : 'rgba(255,255,255,0.45)'}
+                        strokeWidth="1.4"
+                      />
+
+                      {/* Checkpoint Tactical Glass Badge */}
+                      <g transform={`translate(${cp.x}, ${badgeY})`}>
+                        {/* Badge Background Pill */}
+                        <rect
+                          x="-46"
+                          y="-12"
+                          width="92"
+                          height="24"
+                          rx="4.5"
+                          className="checkpoint-badge"
+                          fill={isCurrent ? '#e10600' : 'rgba(8, 10, 16, 0.94)'}
+                          stroke={
+                            isCurrent
+                              ? '#ffffff'
+                              : isHovered
+                              ? '#ff1801'
+                              : cp.id === 'finish'
+                              ? '#f59e0b'
+                              : isCompleted
+                              ? 'rgba(16, 185, 129, 0.6)'
+                              : 'rgba(255, 255, 255, 0.22)'
+                          }
+                          strokeWidth={isCurrent ? '1.8' : '1'}
+                          filter="drop-shadow(0 4px 10px rgba(0,0,0,0.9))"
+                        />
+
+                        {/* Sector Number Tag */}
+                        <text
+                          x="-36"
+                          y="4"
+                          fill={isCurrent ? '#ffffff' : cp.id === 'finish' ? '#f59e0b' : '#ff1801'}
+                          fontSize="9.5"
+                          fontFamily="'JetBrains Mono', monospace"
+                          fontWeight="bold"
+                        >
+                          {cp.sectorNum}
+                        </text>
+
+                        {/* Divider */}
+                        <line
+                          x1="-20"
+                          y1="-6"
+                          x2="-20"
+                          y2="6"
+                          stroke={isCurrent ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.15)'}
+                          strokeWidth="1"
+                        />
+
+                        {/* Checkpoint Section Name */}
+                        <text
+                          x="10"
+                          y="4"
+                          textAnchor="middle"
+                          className="checkpoint-text"
+                          fill={isCurrent ? '#ffffff' : '#f4f4f5'}
+                          style={{
+                            fontSize: '11px',
+                            fontWeight: isCurrent ? '800' : '700',
+                            letterSpacing: '1px',
+                          }}
+                        >
+                          {cp.label}
+                        </text>
+
+                        {/* Checkered Flag Pattern for Finish or Completed Icon */}
+                        {cp.id === 'finish' && !isCurrent ? (
+                          <g transform="translate(33, -5)">
+                            <rect x="0" y="0" width="4" height="4" fill="#ffffff" />
+                            <rect x="4" y="0" width="4" height="4" fill="#000000" />
+                            <rect x="0" y="4" width="4" height="4" fill="#000000" />
+                            <rect x="4" y="4" width="4" height="4" fill="#ffffff" />
+                          </g>
+                        ) : (
+                          isCompleted && !isCurrent && (
+                            <circle cx="36" cy="0" r="4" fill="#10b981" />
+                          )
+                        )}
+                      </g>
+                    </>
+                  );
+                })()}
               </g>
             );
           })}
         </svg>
-      </div>
+      </main>
 
-      {/* Floating Telemetry Card at Bottom-Left (Reference Match) */}
-      <div className="floating-telemetry-card">
-        <div className="flex flex-col">
-          <span className="text-[10px] font-mono-tech text-[#8e8e93] uppercase tracking-widest font-semibold">
-            POSITION
-          </span>
-          <span className="font-orbitron font-extrabold text-base sm:text-lg text-white">
-            01<span className="text-xs text-[#71717a] font-normal">/01</span>
-          </span>
+      {/* 4. Bottom Motorsport Telemetry Console & Quick-Jump Ribbon */}
+      <footer className="trackmap-bottom-console" aria-label="Circuit telemetry bottom console">
+        {/* Left: Position & Speed with Dynamic Tachometer */}
+        <div className="tactical-pill flex items-center gap-4 px-4 py-2">
+          {/* Position */}
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono-tech text-[#9ca3af] uppercase tracking-widest font-semibold">
+              POS
+            </span>
+            <span className="font-orbitron font-extrabold text-base sm:text-lg text-white">
+              01<span className="text-xs text-[#6b7280] font-normal">/01</span>
+            </span>
+          </div>
+
+          <div className="w-[1px] h-8 bg-white/10" />
+
+          {/* Speed */}
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono-tech text-[#9ca3af] uppercase tracking-widest font-semibold">
+              SPEED
+            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="font-orbitron font-extrabold text-base sm:text-lg text-white">
+                {currentSpeed}
+              </span>
+              <span className="text-[10px] text-[#9ca3af] font-mono-tech">KM/H</span>
+            </div>
+          </div>
+
+          <div className="w-[1px] h-8 bg-white/10 hidden sm:block" />
+
+          {/* Dynamic RPM Tachometer Bars */}
+          <div className="hidden sm:flex flex-col gap-1">
+            <span className="text-[9px] font-mono-tech text-[#6b7280] uppercase tracking-wider">
+              REV METER
+            </span>
+            <div className="tachometer-bar">
+              {[...Array(12)].map((_, i) => {
+                const isLit = i < Math.round((currentSpeed / 350) * 12);
+                const colorClass =
+                  i < 5 ? 'green' : i < 8 ? 'yellow' : i < 11 ? 'red' : 'purple';
+                return (
+                  <span
+                    key={`tacho-${i}`}
+                    className={`tacho-seg ${colorClass} ${isLit ? 'lit' : ''}`}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col">
-          <span className="text-[10px] font-mono-tech text-[#8e8e93] uppercase tracking-widest font-semibold">
-            SPEED
-          </span>
-          <span className="font-orbitron font-extrabold text-base sm:text-lg text-white">
-            {currentSpeed} <span className="text-xs text-[#8e8e93] font-normal">KM/H</span>
-          </span>
-        </div>
+        {/* Center: Sector Quick-Jump Navigation Ribbon */}
+        <nav className="sector-ribbon tactical-pill" aria-label="Direct sector navigation">
+          {SECTOR_CHECKPOINTS.map((cp) => {
+            const isCurrent = activeCheckpoint === cp.id;
+            return (
+              <button
+                key={`ribbon-${cp.id}`}
+                onClick={() => handleCheckpointClick(cp)}
+                className={`sector-ribbon-btn ${isCurrent ? 'active' : ''}`}
+                title={`Jump to Sector ${cp.sectorNum}: ${cp.label}`}
+              >
+                <span>{cp.sectorNum}</span> {cp.label}
+              </button>
+            );
+          })}
+        </nav>
 
-        <div className="flex flex-col">
-          <span className="text-[10px] font-mono-tech text-[#8e8e93] uppercase tracking-widest font-semibold">
-            CURRENT SECTION
-          </span>
-          <span className="font-racing font-bold text-base sm:text-lg text-[#ff1801] tracking-wider uppercase drop-shadow-[0_0_8px_rgba(255,24,1,0.6)]">
-            {activeCpData.label}
-          </span>
-        </div>
+        {/* Right: Active Section Dossier & Progress */}
+        <div className="tactical-pill flex items-center gap-4 px-4 py-2">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono-tech text-[#9ca3af] uppercase tracking-widest font-semibold">
+              CURRENT SECTOR
+            </span>
+            <span className="font-racing font-bold text-base sm:text-lg text-[#ff1801] tracking-wider uppercase drop-shadow-[0_0_8px_rgba(255,24,1,0.6)]">
+              {activeCpData.label}
+            </span>
+          </div>
 
-        <div className="hidden lg:flex flex-col border-l border-white/10 pl-6">
-          <span className="text-[10px] font-mono-tech text-[#71717a] uppercase tracking-widest">
-            {activeCpData.desc}
-          </span>
-          <span className="font-racing text-xs tracking-[2px] text-[#a1a1aa] uppercase font-bold mt-0.5">
-            YOUR JOURNEY &bull; MY PORTFOLIO
-          </span>
-        </div>
-      </div>
+          <div className="w-[1px] h-8 bg-white/10" />
 
-      {/* Right-Side Official F1 Typography Banner (Reference Match) */}
-      <aside className="trackmap-f1-banner" aria-label="Formula 1 motorsport pillars">
-        {/* Official F1 Logo Vector */}
-        <div className="f1-banner-logo">
-          <svg viewBox="0 0 100 24" className="w-24 h-6 text-[#e10600] fill-current">
-            <path d="M0 0 L25 0 L15 24 L0 24 Z" />
-            <path d="M28 0 L58 0 L52 10 L39 10 L36 14 L49 14 L44 24 L22 24 Z" />
-            <path d="M62 0 L75 0 L65 24 L52 24 Z" />
-          </svg>
-        </div>
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono-tech text-[#9ca3af] uppercase tracking-widest font-semibold">
+              CHECKPOINT
+            </span>
+            <span className="font-orbitron font-extrabold text-sm sm:text-base text-white">
+              {activeCpData.sectorNum}
+              <span className="text-xs text-[#6b7280] font-normal">/12</span>
+            </span>
+          </div>
 
-        {/* 4 Pillars with Red Telemetry Accent */}
-        <div className="f1-banner-text border-r-2 border-[#ff1801]/60 pr-3">
-          <span className="f1-banner-item active">SPEED</span>
-          <span className="f1-banner-item active">SKILLS</span>
-          <span className="f1-banner-item">DISCIPLINE</span>
-          <span className="f1-banner-item">PROGRESS</span>
+          <div className="hidden lg:flex flex-col border-l border-white/10 pl-4 max-w-[240px]">
+            <span className="text-[10px] font-mono-tech text-[#9ca3af] truncate">
+              {activeCpData.title}
+            </span>
+            <span className="text-[10px] text-[#6b7280] truncate font-sans">
+              {activeCpData.desc}
+            </span>
+          </div>
         </div>
-      </aside>
+      </footer>
     </div>
   );
 };

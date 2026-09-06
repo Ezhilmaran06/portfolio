@@ -1,16 +1,20 @@
 /* ============================================================
-   TRACKMAP.CSS — F1 MASSIVE MULTI-ROUTE CIRCUIT MAP
+   TRACKMAP.CSS — MASSIVE CINEMATIC AAA RACING CIRCUIT SYSTEM
    ============================================================ */
 
+/* Main Container: Full viewport panoramic stage */
 .trackmap-container {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color: #050507;
+  height: 100vh;
+  background-color: #030407;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  user-select: none;
+  perspective: 1400px;
 }
 
 /* Modal Overlay Mode */
@@ -18,46 +22,102 @@
   position: fixed;
   inset: 0;
   z-index: 250;
-  background: rgba(5, 5, 8, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 16px 24px;
+  background: rgba(3, 4, 7, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
-/* Background Artwork */
-.trackmap-bg-artwork {
+/* Background World Environment Layer */
+.trackmap-world-env {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  opacity: 0.92;
-  filter: contrast(1.15) brightness(0.95);
+  background: 
+    radial-gradient(ellipse 90% 60% at 50% 20%, rgba(20, 28, 48, 0.4) 0%, transparent 80%),
+    radial-gradient(circle at 85% 30%, rgba(225, 6, 0, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 15% 70%, rgba(225, 6, 0, 0.06) 0%, transparent 50%),
+    linear-gradient(to bottom, #020306 0%, #06080e 45%, #080a12 85%, #030407 100%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Vignette & Cinematic Lighting Overlay */
-.trackmap-vignette {
+/* Starfield / City Atmospheric Dust */
+.trackmap-stars {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 40%, rgba(3, 3, 5, 0.75) 100%),
-              linear-gradient(to bottom, rgba(5, 5, 8, 0.7) 0%, transparent 20%, transparent 80%, rgba(5, 5, 8, 0.9) 100%);
+  background-image: 
+    radial-gradient(1px 1px at 15% 15%, rgba(255, 255, 255, 0.6) 50%, transparent),
+    radial-gradient(1.5px 1.5px at 28% 8%, rgba(255, 255, 255, 0.8) 50%, transparent),
+    radial-gradient(1px 1px at 45% 18%, rgba(255, 255, 255, 0.5) 50%, transparent),
+    radial-gradient(2px 2px at 62% 10%, rgba(255, 255, 255, 0.7) 50%, transparent),
+    radial-gradient(1px 1px at 78% 22%, rgba(255, 255, 255, 0.6) 50%, transparent),
+    radial-gradient(1.5px 1.5px at 91% 12%, rgba(255, 255, 255, 0.7) 50%, transparent),
+    radial-gradient(1px 1px at 38% 30%, rgba(255, 255, 255, 0.4) 50%, transparent),
+    radial-gradient(1px 1px at 83% 40%, rgba(255, 255, 255, 0.5) 50%, transparent);
+  opacity: 0.8;
   pointer-events: none;
   z-index: 2;
 }
 
-/* Interactive SVG Layer */
-.trackmap-svg-canvas {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  height: 100%;
-  max-height: calc(100vh - 120px);
-  display: block;
+/* Vignette & Cinematic Camera Border */
+.trackmap-vignette {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 85% 85% at 50% 50%, transparent 55%, rgba(2, 2, 4, 0.75) 100%),
+    linear-gradient(to bottom, rgba(2, 3, 6, 0.85) 0%, transparent 12%, transparent 84%, rgba(2, 3, 6, 0.95) 100%),
+    linear-gradient(to right, rgba(2, 3, 6, 0.8) 0%, transparent 10%, transparent 90%, rgba(2, 3, 6, 0.8) 100%);
+  pointer-events: none;
+  z-index: 15;
 }
 
-/* Racing Line Pulse Animation */
+/* Interactive 3D Stage Wrapper */
+.trackmap-stage-wrapper {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The SVG Canvas: Expands to 85-95% of viewport with 2.5D perspective tilt */
+.trackmap-svg-canvas {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: calc(100vh - 90px);
+  display: block;
+  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.95));
+  transform-origin: 50% 50%;
+  transition: transform 0.65s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+/* Camera Mode Transitions */
+.camera-full {
+  transform: perspective(1000px) rotateX(16deg) scale(1.02);
+}
+
+.camera-follow {
+  transform-origin: center center;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.camera-focus {
+  transform-origin: center center;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.camera-sector {
+  transform-origin: center center;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Pulsing Red Racing Line Flow */
 @keyframes racingLineFlow {
   0% {
     stroke-dashoffset: 200;
@@ -68,49 +128,69 @@
 }
 
 .racing-line-flow {
-  animation: racingLineFlow 15s linear infinite;
+  animation: racingLineFlow 10s linear infinite;
 }
 
-/* Beacon Pulse Ring */
-@keyframes beaconPulse {
+/* Beacon Sonar Ring Animation */
+@keyframes beaconSonar {
   0% {
-    transform: scale(0.8);
+    r: 10px;
     opacity: 0.9;
+    stroke-width: 2.5px;
   }
   50% {
-    transform: scale(1.6);
-    opacity: 0.3;
+    r: 26px;
+    opacity: 0.4;
+    stroke-width: 1.5px;
   }
   100% {
-    transform: scale(2.2);
+    r: 38px;
     opacity: 0;
+    stroke-width: 0.5px;
   }
 }
 
-.beacon-pulse {
-  transform-origin: center;
-  animation: beaconPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+.beacon-sonar-1 {
+  animation: beaconSonar 2.2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
 }
 
-/* Checkpoint Node Interaction */
+.beacon-sonar-2 {
+  animation: beaconSonar 2.2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+  animation-delay: 1.1s;
+}
+
+/* Red LED Floodlight Glow Pulse */
+@keyframes floodlightBlink {
+  0%, 100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+.floodlight-beacon {
+  animation: floodlightBlink 3s ease-in-out infinite;
+}
+
+/* Checkpoint Node Styling & Hover Effects */
 .checkpoint-node {
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform-box: fill-box;
-  transform-origin: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .checkpoint-node:hover {
-  transform: scale(1.18);
-  filter: drop-shadow(0 0 12px rgba(255, 30, 45, 0.9));
+  filter: drop-shadow(0 0 16px rgba(255, 30, 45, 0.95));
 }
 
-.checkpoint-pill {
-  transition: all 0.25s ease;
+.checkpoint-node:hover .checkpoint-marker-core {
+  fill: #ff1801;
+  stroke: #ffffff;
+  stroke-width: 2.5px;
 }
 
-.checkpoint-node:hover .checkpoint-pill {
-  fill: #ff1e2d;
+.checkpoint-node:hover .checkpoint-badge {
+  fill: #e10600;
   stroke: #ffffff;
 }
 
@@ -119,107 +199,193 @@
   font-weight: 800;
 }
 
-/* Floating Telemetry Card (Reference Match: Bottom-Left) */
-.floating-telemetry-card {
-  position: absolute;
-  bottom: 84px;
-  left: 36px;
-  z-index: 40;
-  background: rgba(8, 9, 13, 0.88);
+.checkpoint-badge {
+  transition: all 0.25s ease;
+}
+
+.checkpoint-text {
+  font-family: 'Rajdhani', sans-serif;
+  transition: all 0.25s ease;
+}
+
+/* F1 Car Headlight Beam */
+.car-headlights {
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Top Telemetry Header */
+.trackmap-top-bar {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 28px 6px 28px;
+}
+
+/* Glassmorphism Tactical Pill */
+.tactical-pill {
+  background: rgba(10, 13, 20, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-left: 3px solid #ff1e2d;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 8px;
-  padding: 12px 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7),
-              0 0 20px rgba(255, 30, 45, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Camera Switcher Buttons */
+.camera-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a1a1aa;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.camera-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 30, 45, 0.5);
+}
+
+.camera-btn.active {
+  background: #e10600;
+  color: #ffffff;
+  border-color: #ff3b30;
+  box-shadow: 0 0 14px rgba(225, 6, 0, 0.6);
+}
+
+/* Floating Bottom Telemetry Console */
+.trackmap-bottom-console {
+  position: relative;
+  z-index: 30;
   display: flex;
   align-items: center;
-  gap: 28px;
-  pointer-events: auto;
-  transition: transform 0.2s ease;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 28px 16px 28px;
 }
 
-.floating-telemetry-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 30, 45, 0.4);
-}
-
-/* Right-Side F1 Typography Banner (Reference Match) */
-.trackmap-f1-banner {
-  position: absolute;
-  top: 130px;
-  right: 36px;
-  z-index: 35;
+/* Dynamic RPM Tachometer Bar */
+.tachometer-bar {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  pointer-events: none;
-  user-select: none;
-}
-
-.f1-banner-logo {
-  filter: drop-shadow(0 0 10px rgba(225, 6, 0, 0.5));
-  margin-bottom: 18px;
-}
-
-.f1-banner-text {
-  display: flex;
-  flex-direction: column;
   gap: 3px;
-  text-align: right;
+  align-items: center;
 }
 
-.f1-banner-item {
+.tacho-seg {
+  width: 4px;
+  height: 14px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  transition: background 0.15s ease;
+}
+
+.tacho-seg.green.lit {
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
+}
+
+.tacho-seg.yellow.lit {
+  background: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.8);
+}
+
+.tacho-seg.red.lit {
+  background: #e10600;
+  box-shadow: 0 0 8px rgba(225, 6, 0, 0.9);
+}
+
+.tacho-seg.purple.lit {
+  background: #a855f7;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 1);
+}
+
+/* Sector Jump Ribbon */
+.sector-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  max-width: 580px;
+  padding: 4px 8px;
+  scrollbar-width: none;
+}
+
+.sector-ribbon::-webkit-scrollbar {
+  display: none;
+}
+
+.sector-ribbon-btn {
   font-family: 'Rajdhani', sans-serif;
-  font-weight: 800;
-  font-size: 15px;
-  letter-spacing: 3.5px;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  background: rgba(18, 22, 32, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #71717a;
-  text-transform: uppercase;
-  line-height: 1.25;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.f1-banner-item.active {
+.sector-ribbon-btn:hover {
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 30, 45, 0.6);
+  border-color: rgba(255, 30, 45, 0.4);
+  background: rgba(30, 36, 52, 0.9);
 }
 
-/* Vehicle Glow & Trail */
-.f1-car-shadow {
-  filter: drop-shadow(0 0 8px rgba(255, 24, 1, 0.85))
-          drop-shadow(0 0 16px rgba(255, 24, 1, 0.4));
+.sector-ribbon-btn.active {
+  color: #ffffff;
+  background: #e10600;
+  border-color: #ff3b30;
+  box-shadow: 0 0 12px rgba(225, 6, 0, 0.5);
 }
 
-/* Responsive adjustments */
+/* Mobile & Tablet Responsiveness */
 @media (max-width: 1024px) {
-  .floating-telemetry-card {
-    left: 20px;
-    bottom: 74px;
-    gap: 16px;
-    padding: 10px 14px;
+  .trackmap-top-bar {
+    padding: 10px 16px 4px 16px;
   }
-  .trackmap-f1-banner {
-    right: 18px;
-    top: 90px;
+  .trackmap-bottom-console {
+    padding: 4px 16px 12px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
-  .f1-banner-item {
-    font-size: 12px;
-    letter-spacing: 2px;
+  .sector-ribbon {
+    max-width: 100%;
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
   }
 }
 
 @media (max-width: 768px) {
-  .floating-telemetry-card {
-    left: 12px;
-    right: 12px;
-    bottom: 68px;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 12px;
+  .trackmap-top-bar {
+    padding: 8px 12px 4px 12px;
   }
-  .trackmap-f1-banner {
-    display: none;
+  .tactical-pill {
+    padding: 6px 10px;
+  }
+  .camera-btn {
+    font-size: 9.5px;
+    padding: 4px 8px;
+  }
+  .trackmap-bottom-console {
+    padding: 4px 10px 10px 10px;
+  }
+  .hide-on-mobile {
+    display: none !important;
   }
 }
