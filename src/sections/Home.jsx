@@ -42,7 +42,7 @@ export function Home({ onStartJourney, onViewProjects }) {
 
   return (
     <section
-      id="hero"
+      id="home"
       className="home-wrap"
       aria-label="Home — Driver Profile"
     >

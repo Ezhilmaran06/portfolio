@@ -40,7 +40,7 @@ export const CodingProfiles = ({ onNext, onPrev }) => {
   };
 
   return (
-    <section id="coding-profiles" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="coding" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"

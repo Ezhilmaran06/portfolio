@@ -38,7 +38,8 @@ export function Navigation({
     if (id === 'trackmap') {
       onOpenTrackMap?.();
     } else {
-      onNavigate?.(id);
+      const target = id === 'hero' ? 'home' : id;
+      onNavigate?.(target);
     }
     setMobileOpen(false);
   };
@@ -50,7 +51,7 @@ export function Navigation({
           {/* ---- LOGO ---- */}
           <button
             className="nav-logo-btn"
-            onClick={() => handleNav('hero')}
+            onClick={() => handleNav('home')}
             aria-label="Go to home"
           >
             <div className="nav-logo-box" aria-hidden="true">E</div>
@@ -65,7 +66,9 @@ export function Navigation({
           {/* ---- CENTER NAV LINKS (desktop) ---- */}
           <ul className="nav-links" role="list">
             {NAV_ITEMS.map(({ id, label }) => {
-              const isActive = currentSection === id || (id === 'hero' && currentSection === 'hero');
+              const isActive =
+                currentSection === id ||
+                (id === 'hero' && (currentSection === 'hero' || currentSection === 'home'));
               return (
                 <li key={id} className="nav-link-item">
                   <button

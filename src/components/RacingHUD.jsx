@@ -1,38 +1,6 @@
 import { MapPin, Gauge } from 'lucide-react';
+import { getSectionById } from '../data/sections';
 import '../styles/home.css';
-
-const SECTION_LABELS = {
-  hero:           'HOME',
-  trackmap:       'TRACK MAP',
-  about:          'ABOUT',
-  education:      'EDUCATION',
-  skills:         'SKILLS',
-  projects:       'PROJECTS',
-  experience:     'EXPERIENCE',
-  achievements:   'ACHIEVEMENTS',
-  certifications: 'CERTIFICATIONS',
-  coding:         'CODING PROFILES',
-  resume:         'RESUME',
-  contact:        'CONTACT',
-  finish:         'FINISH LINE',
-};
-
-// How many segments to light up per section (out of 10)
-const SECTION_PROGRESS = {
-  hero:           1,
-  about:          2,
-  education:      3,
-  skills:         4,
-  projects:       5,
-  experience:     6,
-  achievements:   7,
-  certifications: 8,
-  trackmap:       8,
-  coding:         9,
-  resume:         9,
-  contact:        10,
-  finish:         10,
-};
 
 const TOTAL_SEGS = 10;
 
@@ -40,11 +8,22 @@ const TOTAL_SEGS = 10;
  * RacingHUD — fixed bottom telemetry bar.
  * Matches the F1 dashboard reference design exactly.
  */
-export function RacingHUD({ currentSection = 'hero', speed = 319, onOpenTrackMap }) {
+export function RacingHUD({
+  currentSection = 'home',
+  speed = 319,
+  scrollProgress = 0,
+  onOpenTrackMap,
+}) {
   if (currentSection === 'loading' || currentSection === 'racestart') return null;
 
-  const label = SECTION_LABELS[currentSection] ?? 'TRACK';
-  const activeSeg = SECTION_PROGRESS[currentSection] ?? 1;
+  const sec = getSectionById(currentSection);
+  const label = sec.label || 'HOME';
+
+  // Compute active segments from scroll progress or section index
+  const activeSeg = Math.min(
+    TOTAL_SEGS,
+    Math.max(1, Math.round(scrollProgress * (TOTAL_SEGS - 1)) + 1)
+  );
 
   return (
     <aside className="hud-bar" role="complementary" aria-label="Racing telemetry HUD">

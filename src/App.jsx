@@ -1,56 +1,80 @@
 import { useState, useEffect, useRef } from 'react';
 import { soundManager } from './utils/audio';
+import { usePortfolioScroll } from './utils/usePortfolioScroll';
 
-// New pixel-accurate components
-import { Navigation }  from './components/Navigation';
-import { RacingHUD }   from './components/RacingHUD';
-import { Home }        from './sections/Home';
+// Header Navigation & Telemetry HUD
+import { Navigation } from './components/Navigation';
+import { RacingHUD } from './components/RacingHUD';
 
-// Loading + Race Start (unchanged)
-import { LoadingScreen }  from './components/LoadingScreen/LoadingScreen';
-import { RaceStart }      from './components/RaceStart/RaceStart';
+// Loading + Race Start screens
+import { LoadingScreen } from './components/LoadingScreen/LoadingScreen';
+import { RaceStart } from './components/RaceStart/RaceStart';
 
-// All portfolio sections (unchanged)
-import { About }          from './components/About/About';
-import { Education }      from './components/Education/Education';
-import { Skills }         from './components/Skills/Skills';
-import { Projects }       from './components/Projects/Projects';
-import { Experience }     from './components/Experience/Experience';
-import { Achievements }   from './components/Achievements/Achievements';
+// 12 Standard Portfolio Sections in Natural Vertical Sequence
+import { Home } from './sections/Home';
+import { About } from './components/About/About';
+import { Education } from './components/Education/Education';
+import { Skills } from './components/Skills/Skills';
+import { Projects } from './components/Projects/Projects';
+import { Experience } from './components/Experience/Experience';
+import { Achievements } from './components/Achievements/Achievements';
 import { Certifications } from './components/Certifications/Certifications';
 import { CodingProfiles } from './components/CodingProfiles/CodingProfiles';
-import { Resume }         from './components/Resume/Resume';
-import { Contact }        from './components/Contact/Contact';
-import { FinishLine }     from './components/FinishLine/FinishLine';
-import { TrackMap }       from './components/TrackMap/TrackMap';
+import { Resume } from './components/Resume/Resume';
+import { Contact } from './components/Contact/Contact';
+import { FinishLine } from './components/FinishLine/FinishLine';
+
+// Secondary Navigation Circuit Maps (Desktop Grand Prix + Mobile Vertical Route)
+import { TrackMap } from './components/TrackMap/TrackMap';
+import { MobileTrackNav } from './components/MobileTrackNav';
 
 export function App() {
-  const [currentSection, setCurrentSection] = useState('loading');
-  const [recruiterMode, setRecruiterMode]   = useState(false);
-  const [isMuted, setIsMuted]               = useState(soundManager.getMuted());
-  const [trackMapOpen, setTrackMapOpen]     = useState(false);
-  const [speed, setSpeed]                   = useState(319);
+  const [appState, setAppState] = useState('loading'); // 'loading' | 'racestart' | 'ready'
+  const [recruiterMode, setRecruiterMode] = useState(false);
+  const [isMuted, setIsMuted] = useState(soundManager.getMuted());
+  const [trackMapOpen, setTrackMapOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
 
+  // Dynamic Scroll Progress & Synchronized Telemetry
+  const {
+    currentSection,
+    scrollProgress,
+    speed: scrollSpeed,
+    scrollToSection,
+  } = usePortfolioScroll();
+
+  const [simulatedSpeed, setSimulatedSpeed] = useState(null);
   const speedIntervalRef = useRef(null);
+
+  // Screen resize listener for responsive mobile route navigation
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const simulateAcceleration = () => {
     if (speedIntervalRef.current) clearInterval(speedIntervalRef.current);
-    let current = 120;
+    let current = 140;
     speedIntervalRef.current = setInterval(() => {
       current += Math.floor(Math.random() * 25) + 15;
-      if (current >= 319) {
-        current = 315 + Math.floor(Math.random() * 10);
+      if (current >= 325) {
+        current = 320 + Math.floor(Math.random() * 10);
         clearInterval(speedIntervalRef.current);
+        setTimeout(() => setSimulatedSpeed(null), 1200);
       }
-      setSpeed(current);
-    }, 80);
+      setSimulatedSpeed(current);
+    }, 70);
   };
 
-  const handleNavigate = (section) => {
+  const handleNavigate = (sectionId) => {
     soundManager.playClick();
     simulateAcceleration();
-    setCurrentSection(section);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToSection(sectionId);
   };
 
   const handleToggleMute = () => {
@@ -60,15 +84,11 @@ export function App() {
 
   const handleToggleRecruiterMode = () => {
     setRecruiterMode((prev) => !prev);
-    if (currentSection === 'loading' || currentSection === 'racestart') {
-      setCurrentSection('hero');
-    }
   };
 
   const handleRestartJourney = () => {
     soundManager.playClick();
-    setCurrentSection('racestart');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToSection('home');
   };
 
   const handleDownloadResume = () => {
@@ -81,7 +101,7 @@ export function App() {
     document.body.removeChild(a);
   };
 
-  // Keyboard shortcuts
+  // Global Keyboard Shortcuts
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === 'm' || e.key === 'M') handleToggleMute();
@@ -92,26 +112,28 @@ export function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  // ---- Screens ----
-  if (currentSection === 'loading') {
+  // Display initial loading sequence
+  if (appState === 'loading') {
     return (
       <LoadingScreen
-        onComplete={() => setCurrentSection('racestart')}
-        onSkip={() => setCurrentSection('hero')}
+        onComplete={() => setAppState('racestart')}
+        onSkip={() => setAppState('ready')}
       />
     );
   }
 
-  if (currentSection === 'racestart') {
+  // Display race launch gantry
+  if (appState === 'racestart') {
     return (
       <RaceStart
-        onStartComplete={() => setCurrentSection('hero')}
-        onSkip={() => setCurrentSection('hero')}
+        onStartComplete={() => setAppState('ready')}
+        onSkip={() => setAppState('ready')}
       />
     );
   }
 
-  // ---- Main app (nav + content + HUD) ----
+  const effectiveSpeed = simulatedSpeed ?? scrollSpeed;
+
   return (
     <div
       style={{
@@ -124,7 +146,7 @@ export function App() {
         fontFamily: "'Chakra Petch', sans-serif",
       }}
     >
-      {/* Fixed top navigation */}
+      {/* Fixed top navigation bar */}
       <Navigation
         currentSection={currentSection}
         onNavigate={handleNavigate}
@@ -135,75 +157,84 @@ export function App() {
         onOpenTrackMap={() => setTrackMapOpen(true)}
       />
 
-      {/* Main content */}
-      <main>
-        {recruiterMode ? (
-          /* Recruiter mode: all sections stacked */
-          <div>
-            <Home
-              onStartJourney={() => handleNavigate('about')}
-              onViewProjects={() => handleNavigate('projects')}
-            />
-            <About     onNext={() => handleNavigate('education')}    onPrev={() => handleNavigate('hero')} />
-            <Education onNext={() => handleNavigate('skills')}       onPrev={() => handleNavigate('about')} />
-            <Skills    onNext={() => handleNavigate('projects')}     onPrev={() => handleNavigate('education')} />
-            <Projects  onNext={() => handleNavigate('experience')}   onPrev={() => handleNavigate('skills')} />
-            <Experience   onNext={() => handleNavigate('achievements')}  onPrev={() => handleNavigate('projects')} />
-            <Achievements onNext={() => handleNavigate('certifications')} onPrev={() => handleNavigate('experience')} />
-            <Certifications onNext={() => handleNavigate('coding')}  onPrev={() => handleNavigate('achievements')} />
-            <CodingProfiles onNext={() => handleNavigate('resume')}  onPrev={() => handleNavigate('certifications')} />
-            <Resume    onNext={() => handleNavigate('contact')}      onPrev={() => handleNavigate('coding')} />
-            <Contact   onNext={() => handleNavigate('finish')}       onPrev={() => handleNavigate('resume')} />
-            <FinishLine onRestart={handleRestartJourney} onDownloadResume={handleDownloadResume} />
-          </div>
-        ) : (
-          /* Race mode: one section at a time */
-          <>
-            {currentSection === 'hero' && (
-              <Home
-                onStartJourney={() => handleNavigate('about')}
-                onViewProjects={() => handleNavigate('projects')}
-              />
-            )}
-            {currentSection === 'trackmap' && (
-              <TrackMap
-                currentSection={currentSection}
-                onNavigate={handleNavigate}
-                isOpen={true}
-                onClose={() => handleNavigate('hero')}
-                isInline={true}
-              />
-            )}
-            {currentSection === 'about'          && <About          onNext={() => handleNavigate('education')}      onPrev={() => handleNavigate('hero')} />}
-            {currentSection === 'education'      && <Education      onNext={() => handleNavigate('skills')}         onPrev={() => handleNavigate('about')} />}
-            {currentSection === 'skills'         && <Skills         onNext={() => handleNavigate('projects')}       onPrev={() => handleNavigate('education')} />}
-            {currentSection === 'projects'       && <Projects       onNext={() => handleNavigate('experience')}     onPrev={() => handleNavigate('skills')} />}
-            {currentSection === 'experience'     && <Experience     onNext={() => handleNavigate('achievements')}   onPrev={() => handleNavigate('projects')} />}
-            {currentSection === 'achievements'   && <Achievements   onNext={() => handleNavigate('certifications')} onPrev={() => handleNavigate('experience')} />}
-            {currentSection === 'certifications' && <Certifications onNext={() => handleNavigate('coding')}        onPrev={() => handleNavigate('achievements')} />}
-            {currentSection === 'coding'         && <CodingProfiles onNext={() => handleNavigate('resume')}        onPrev={() => handleNavigate('certifications')} />}
-            {currentSection === 'resume'         && <Resume         onNext={() => handleNavigate('contact')}       onPrev={() => handleNavigate('coding')} />}
-            {currentSection === 'contact'        && <Contact        onNext={() => handleNavigate('finish')}        onPrev={() => handleNavigate('resume')} />}
-            {currentSection === 'finish'         && <FinishLine     onRestart={handleRestartJourney}               onDownloadResume={handleDownloadResume} />}
-          </>
-        )}
+      {/* Main portfolio content — Pure, natural vertical scrolling flow */}
+      <main id="portfolio-main">
+        <Home
+          onStartJourney={() => handleNavigate('about')}
+          onViewProjects={() => handleNavigate('projects')}
+        />
+        <About
+          onNext={() => handleNavigate('education')}
+          onPrev={() => handleNavigate('home')}
+        />
+        <Education
+          onNext={() => handleNavigate('skills')}
+          onPrev={() => handleNavigate('about')}
+        />
+        <Skills
+          onNext={() => handleNavigate('projects')}
+          onPrev={() => handleNavigate('education')}
+        />
+        <Projects
+          onNext={() => handleNavigate('experience')}
+          onPrev={() => handleNavigate('skills')}
+        />
+        <Experience
+          onNext={() => handleNavigate('achievements')}
+          onPrev={() => handleNavigate('projects')}
+        />
+        <Achievements
+          onNext={() => handleNavigate('certifications')}
+          onPrev={() => handleNavigate('experience')}
+        />
+        <Certifications
+          onNext={() => handleNavigate('coding')}
+          onPrev={() => handleNavigate('achievements')}
+        />
+        <CodingProfiles
+          onNext={() => handleNavigate('resume')}
+          onPrev={() => handleNavigate('certifications')}
+        />
+        <Resume
+          onNext={() => handleNavigate('contact')}
+          onPrev={() => handleNavigate('coding')}
+        />
+        <Contact
+          onNext={() => handleNavigate('finish')}
+          onPrev={() => handleNavigate('resume')}
+        />
+        <FinishLine
+          onRestart={handleRestartJourney}
+          onDownloadResume={handleDownloadResume}
+        />
       </main>
 
-      {/* Fixed bottom racing HUD */}
+      {/* Fixed bottom racing telemetry HUD */}
       <RacingHUD
         currentSection={currentSection}
-        speed={speed}
+        speed={effectiveSpeed}
+        scrollProgress={scrollProgress}
         onOpenTrackMap={() => setTrackMapOpen(true)}
       />
 
-      {/* Track Map overlay modal */}
-      <TrackMap
-        currentSection={currentSection}
-        onNavigate={handleNavigate}
-        isOpen={trackMapOpen}
-        onClose={() => setTrackMapOpen(false)}
-        isInline={false}
-      />
+      {/* Secondary Track Map Navigation Overview */}
+      {isMobile ? (
+        <MobileTrackNav
+          isOpen={trackMapOpen}
+          onClose={() => setTrackMapOpen(false)}
+          currentSection={currentSection}
+          onNavigate={handleNavigate}
+        />
+      ) : (
+        <TrackMap
+          currentSection={currentSection}
+          scrollProgress={scrollProgress}
+          onNavigate={handleNavigate}
+          isOpen={trackMapOpen}
+          onClose={() => setTrackMapOpen(false)}
+          isInline={false}
+        />
+      )}
     </div>
   );
 }

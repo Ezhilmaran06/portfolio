@@ -1,180 +1,27 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Compass, X, Flag, Camera, Eye, Zap, Shield, CheckCircle2, ChevronRight, Gauge } from 'lucide-react';
 import { soundManager } from '../../utils/audio';
+import { PORTFOLIO_SECTIONS, getSectionById } from '../../data/sections';
 import '../../styles/trackmap.css';
 
 // 12 Professional Grand Prix Sectors + Navigation Data mapped across 1600x900 canvas
-export const SECTOR_CHECKPOINTS = [
-  {
-    id: 'hero',
-    sectorNum: '01',
-    label: 'HOME',
-    title: 'STARTING GRID & LAUNCH CONTROL',
-    x: 300,
-    y: 700,
-    progress: 0,
-    speed: 328,
-    sector: 'SECTOR 1',
-    desc: 'Main pit straight launch, driver profile, and cockpit readiness.',
-  },
-  {
-    id: 'about',
-    sectorNum: '02',
-    label: 'ABOUT',
-    title: "TURN 1 SENNA 'S' & BIOGRAPHY",
-    x: 170,
-    y: 490,
-    progress: 8,
-    speed: 215,
-    sector: 'SECTOR 1',
-    desc: 'Driver background, problem-solving philosophy, and technical roots.',
-  },
-  {
-    id: 'education',
-    sectorNum: '03',
-    label: 'EDUCATION',
-    title: 'KEMMEL STRAIGHT & ACADEMIC DOSSIER',
-    x: 230,
-    y: 270,
-    progress: 17,
-    speed: 295,
-    sector: 'SECTOR 1',
-    desc: 'B.Tech in Information Technology, core CS foundations, and academic honors.',
-  },
-  {
-    id: 'experience',
-    sectorNum: '04',
-    label: 'EXPERIENCE',
-    title: 'HIGH-SPEED CREST & CAREER GRAND PRIX',
-    x: 500,
-    y: 155,
-    progress: 26,
-    speed: 322,
-    sector: 'SECTOR 1',
-    desc: 'Professional engineering readiness, internships, and production delivery.',
-  },
-  {
-    id: 'skills',
-    sectorNum: '05',
-    label: 'SKILLS',
-    title: 'TECHNICAL S-CURVES & ENGINE TELEMETRY',
-    x: 800,
-    y: 185,
-    progress: 36,
-    speed: 238,
-    sector: 'SECTOR 2',
-    desc: 'React, Node.js, Next.js, TypeScript, Tailwind, and full-stack performance.',
-  },
-  {
-    id: 'projects',
-    sectorNum: '06',
-    label: 'PROJECTS',
-    title: 'DRS BACK STRAIGHT & PRODUCTION APPS',
-    x: 1160,
-    y: 155,
-    progress: 48,
-    speed: 342,
-    sector: 'SECTOR 2',
-    desc: 'Flagship full-stack machines, live deployments, and architecture blueprints.',
-  },
-  {
-    id: 'achievements',
-    sectorNum: '07',
-    label: 'ACHIEVEMENTS',
-    title: 'NORTH HAIRPIN & CHAMPIONSHIP PODIUMS',
-    x: 1460,
-    y: 280,
-    progress: 59,
-    speed: 172,
-    sector: 'SECTOR 2',
-    desc: 'Hackathon victories, national competition awards, and elite recognitions.',
-  },
-  {
-    id: 'certifications',
-    sectorNum: '08',
-    label: 'CERTIFICATIONS',
-    title: 'DOUBLE CHICANE & VERIFIED LICENSES',
-    x: 1380,
-    y: 490,
-    progress: 69,
-    speed: 208,
-    sector: 'SECTOR 2',
-    desc: 'Industry-standard cloud, web, and software development certifications.',
-  },
-  {
-    id: 'coding',
-    sectorNum: '09',
-    label: 'CODING',
-    title: 'FLYOVER OVERPASS & CODE METRICS',
-    x: 1100,
-    y: 505,
-    progress: 79,
-    speed: 276,
-    sector: 'SECTOR 3',
-    desc: 'LeetCode, GitHub commit streaks, algorithmic problem solving & DSA.',
-  },
-  {
-    id: 'resume',
-    sectorNum: '10',
-    label: 'RESUME',
-    title: 'SWITCHBACK SWEEPER & TECHNICAL CV',
-    x: 860,
-    y: 640,
-    progress: 87,
-    speed: 242,
-    sector: 'SECTOR 3',
-    desc: 'Comprehensive engineering CV, verified milestones, and 1-click PDF download.',
-  },
-  {
-    id: 'contact',
-    sectorNum: '11',
-    label: 'CONTACT',
-    title: 'PARABOLICA ARENA & PIT WALL RADIO',
-    x: 580,
-    y: 740,
-    progress: 94,
-    speed: 304,
-    sector: 'SECTOR 3',
-    desc: 'Direct communication channels, pit wall radio, and career inquiries.',
-  },
-  {
-    id: 'finish',
-    sectorNum: '12',
-    label: 'FINISH',
-    title: 'CHECKERED FLAG & VICTORY LAP',
-    x: 390,
-    y: 700,
-    progress: 100,
-    speed: 338,
-    sector: 'SECTOR 3',
-    desc: 'Final lap celebration, career summary, and restart journey command.',
-  },
-];
+export const SECTOR_CHECKPOINTS = PORTFOLIO_SECTIONS;
 
 // Coordinate geometry on 1600x900 canvas spanning 85% of screen
 export const PRIMARY_CIRCUIT_PATH =
   'M 300 700 C 230 700, 160 630, 150 540 C 140 450, 150 380, 190 320 C 230 260, 290 220, 380 180 C 470 140, 560 145, 660 160 C 740 175, 780 195, 840 215 C 900 235, 960 215, 1020 175 C 1070 140, 1140 145, 1240 155 C 1340 165, 1430 195, 1475 255 C 1515 315, 1495 395, 1445 445 C 1395 495, 1335 505, 1260 520 C 1190 535, 1140 520, 1060 500 C 990 480, 940 520, 890 590 C 840 660, 780 725, 680 750 C 570 775, 470 750, 410 715 C 360 690, 335 700, 300 700 Z';
 
-// Secondary Routes
-export const INNER_LOOP_PATH =
-  'M 840 215 C 890 270, 930 350, 940 430 C 950 510, 930 560, 890 590';
-
-export const OUTER_BYPASS_PATH =
-  'M 190 320 C 140 240, 220 120, 450 100 C 700 80, 1100 85, 1340 110 C 1470 125, 1540 200, 1475 255';
-
-export const PIT_LANE_PATH =
-  'M 560 735 C 470 705, 400 660, 300 660 C 230 660, 190 620, 175 540';
-
 export const TrackMap = ({
-  currentSection = 'hero',
+  currentSection = 'home',
+  scrollProgress = 0,
   onNavigate,
   isOpen = true,
   onClose,
   isInline = false,
 }) => {
   // Normalize section id to match checkpoint list
-  const activeId = currentSection === 'trackmap' ? 'hero' : currentSection;
-  const initialCp = SECTOR_CHECKPOINTS.find((c) => c.id === activeId) || SECTOR_CHECKPOINTS[0];
+  const activeId = currentSection === 'trackmap' || currentSection === 'hero' ? 'home' : currentSection;
+  const initialCp = getSectionById(activeId);
 
   const [activeCheckpoint, setActiveCheckpoint] = useState(activeId);
   const [carState, setCarState] = useState({ x: initialCp.x, y: initialCp.y, angle: -170 });
@@ -189,9 +36,9 @@ export const TrackMap = ({
 
   // Sync state if external section changes
   useEffect(() => {
-    const targetId = currentSection === 'trackmap' ? 'hero' : currentSection;
+    const targetId = currentSection === 'trackmap' || currentSection === 'hero' ? 'home' : currentSection;
     setActiveCheckpoint(targetId);
-    const cp = SECTOR_CHECKPOINTS.find((c) => c.id === targetId) || SECTOR_CHECKPOINTS[0];
+    const cp = getSectionById(targetId);
     setCarState((prev) => ({ ...prev, x: cp.x, y: cp.y }));
     setCurrentSpeed(cp.speed);
   }, [currentSection]);
@@ -776,90 +623,15 @@ export const TrackMap = ({
           ))}
 
           {/* ========================================================
-              LAYER 5: SECONDARY & CONNECTING SERVICE ROUTES
+              LAYER 5: TACTICAL PERIMETER RUNOFF & MARSHAL ACCESS PATHS
               ======================================================== */}
-          {/* Outer High-Speed Bypass Route */}
+          {/* Subtle circuit boundary contour */}
           <path
-            d={OUTER_BYPASS_PATH}
+            d="M 190 320 C 140 240, 220 120, 450 100 C 700 80, 1100 85, 1340 110 C 1470 125, 1540 200, 1475 255"
             fill="none"
-            stroke="#0a0d14"
-            strokeWidth="18"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.8"
-          />
-          <path
-            d={OUTER_BYPASS_PATH}
-            fill="none"
-            stroke="#151b27"
-            strokeWidth="12"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.9"
-          />
-          <path
-            d={OUTER_BYPASS_PATH}
-            fill="none"
-            stroke="#ffffff"
+            stroke="rgba(255, 255, 255, 0.08)"
             strokeWidth="1.2"
             strokeDasharray="6 8"
-            opacity="0.3"
-          />
-
-          {/* Inner Technical Testing Route */}
-          <path
-            d={INNER_LOOP_PATH}
-            fill="none"
-            stroke="#0a0d14"
-            strokeWidth="20"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.8"
-          />
-          <path
-            d={INNER_LOOP_PATH}
-            fill="none"
-            stroke="#151b27"
-            strokeWidth="14"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.9"
-          />
-          <path
-            d={INNER_LOOP_PATH}
-            fill="none"
-            stroke="#ff1801"
-            strokeWidth="1.5"
-            strokeDasharray="4 6"
-            opacity="0.4"
-          />
-
-          {/* Pit Lane Service Route */}
-          <path
-            d={PIT_LANE_PATH}
-            fill="none"
-            stroke="#0a0d14"
-            strokeWidth="18"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.9"
-          />
-          <path
-            d={PIT_LANE_PATH}
-            fill="none"
-            stroke="#181e2b"
-            strokeWidth="12"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.95"
-          />
-          <path
-            d={PIT_LANE_PATH}
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="1.2"
-            strokeDasharray="5 5"
-            opacity="0.4"
           />
 
           {/* ========================================================
