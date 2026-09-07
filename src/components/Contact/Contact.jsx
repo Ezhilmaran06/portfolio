@@ -34,7 +34,7 @@ export const Contact = ({ onNext, onPrev }) => {
   };
 
   return (
-    <section id="contact" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="contact" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -50,7 +50,7 @@ export const Contact = ({ onNext, onPrev }) => {
               15. CONTACT
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> CONTACT ME{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               LET'S BUILD SOMETHING GREAT
@@ -73,7 +73,7 @@ export const Contact = ({ onNext, onPrev }) => {
       {/* Grid: Left Comms Coordinates | Right Radio Message Form */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Coordinates */}
-        <div className="lg:col-span-5 glass-panel rounded-2xl p-6 sm:p-8 border border-white/15 space-y-6">
+        <div className="lg:col-span-5 racing-card corner-brackets rounded-2xl p-6 sm:p-8 space-y-6 stagger-1 reveal-on-scroll">
           <div className="flex items-center gap-2 text-xs font-mono-tech text-[#ff3b30] tracking-widest uppercase pb-3 border-b border-white/10">
             <span>PIT WALL RADIO &bull; DIRECT CHANNELS</span>
           </div>
@@ -176,7 +176,7 @@ export const Contact = ({ onNext, onPrev }) => {
         </div>
 
         {/* Right Column: Radio Message Form (Reference Screen 15 Match) */}
-        <div className="lg:col-span-7 glass-panel rounded-2xl p-6 sm:p-8 border border-white/15">
+        <div className="lg:col-span-7 racing-card corner-brackets rounded-2xl p-6 sm:p-8 space-y-6 stagger-2 reveal-on-scroll">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="font-mono-tech text-xs text-[#8e8e93] uppercase tracking-wider block mb-1.5">

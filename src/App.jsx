@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { soundManager } from './utils/audio';
 import { usePortfolioScroll } from './utils/usePortfolioScroll';
+import { useScrollReveal } from './utils/useScrollReveal';
 
 // Header Navigation & Telemetry HUD
 import { Navigation } from './components/Navigation';
@@ -36,6 +37,9 @@ export function App() {
   const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' ? window.innerWidth < 768 : false
   );
+
+  // Initialize premium motorsport scroll reveal observer
+  useScrollReveal(appState);
 
   // Dynamic Scroll Progress & Synchronized Telemetry
   const {

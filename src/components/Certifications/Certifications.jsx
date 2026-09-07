@@ -20,7 +20,7 @@ export const Certifications = ({ onNext, onPrev }) => {
   };
 
   return (
-    <section id="certifications" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="certifications" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -36,7 +36,7 @@ export const Certifications = ({ onNext, onPrev }) => {
               12. CERTIFICATIONS
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> CERTIFICATIONS{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               PROOF OF PROGRESS
@@ -63,10 +63,10 @@ export const Certifications = ({ onNext, onPrev }) => {
           {certifications.map((cert, idx) => (
             <div
               key={cert.id}
-              className={`glass-panel rounded-2xl p-6 border transition-all duration-300 flex flex-col justify-between group ${
+              className={`racing-card corner-brackets rounded-2xl p-6 border transition-all duration-300 flex flex-col justify-between group stagger-${idx + 1} reveal-on-scroll ${
                 activeCertIndex === idx
-                  ? 'border-[#e10600] shadow-[0_0_25px_rgba(225,6,0,0.3)] bg-white/5'
-                  : 'border-white/10 hover:border-white/20'
+                  ? 'border-[#e10600] shadow-[0_0_25px_rgba(225,6,0,0.35)] bg-white/5'
+                  : 'border-white/10 hover:border-[#e10600]/40'
               }`}
             >
               {/* Document Certificate Thumbnail */}

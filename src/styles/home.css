@@ -473,12 +473,13 @@
 }
 
 .btn-home-primary {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 9px;
   padding: 14px 30px;
   background: linear-gradient(170deg, #ff2636 0%, #c0000f 100%);
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.18);
   border-radius: 9px;
   font-family: 'Rajdhani', sans-serif;
   font-weight: 800;
@@ -488,19 +489,43 @@
   color: #fff;
   cursor: pointer;
   box-shadow: 0 0 28px rgba(255,30,45,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.btn-home-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.btn-home-primary:hover::before {
+  left: 180%;
 }
 
 .btn-home-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 40px rgba(255,30,45,0.65), inset 0 1px 0 rgba(255,255,255,0.3);
+  box-shadow: 0 0 40px rgba(255,30,45,0.7), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.btn-home-primary:hover svg {
+  transform: translateX(4px);
+  transition: transform 0.25s ease;
 }
 
 .btn-home-primary:active {
-  transform: translateY(0);
+  transform: translateY(1px) scale(0.99);
 }
 
 .btn-home-secondary {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -516,13 +541,40 @@
   color: #fff;
   cursor: pointer;
   backdrop-filter: blur(8px);
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.btn-home-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.btn-home-secondary:hover::before {
+  left: 180%;
 }
 
 .btn-home-secondary:hover {
   transform: translateY(-2px);
   border-color: rgba(255,30,45,0.55);
-  box-shadow: 0 0 18px rgba(255,30,45,0.2);
+  box-shadow: 0 0 20px rgba(255,30,45,0.3);
+}
+
+.btn-home-secondary:hover svg {
+  transform: translateX(4px);
+  transition: transform 0.25s ease;
+}
+
+.btn-home-secondary:active {
+  transform: translateY(1px) scale(0.99);
 }
 
 /* Stats area */
@@ -560,7 +612,7 @@
 
 /* --- Stat Card --- */
 .stat-card {
-  background: #0c0c10;
+  background: rgba(12, 12, 16, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 10px;
   padding: 13px 13px 11px;
@@ -569,7 +621,8 @@
   gap: 3px;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.25s ease, transform 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .stat-card::before {
@@ -583,8 +636,14 @@
 }
 
 .stat-card:hover {
-  border-color: rgba(255, 30, 45, 0.28);
-  transform: translateY(-1px);
+  border-color: rgba(255, 30, 45, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 30, 45, 0.15), inset 0 1px 0 rgba(255, 30, 45, 0.2);
+}
+
+.stat-card:hover .stat-card-icon svg {
+  transform: scale(1.1) rotate(4deg);
+  transition: transform 0.25s ease;
 }
 
 .stat-card-icon {

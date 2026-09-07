@@ -8,7 +8,7 @@ export const Experience = ({ onNext, onPrev }) => {
   const { experience } = portfolioData;
 
   return (
-    <section id="experience" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="experience" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -24,7 +24,7 @@ export const Experience = ({ onNext, onPrev }) => {
               10. EXPERIENCE
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> EXPERIENCE{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               PIT STOP JOURNEY
@@ -45,7 +45,7 @@ export const Experience = ({ onNext, onPrev }) => {
       </div>
 
       {/* Main Garage Card with F1 Car in Pit Stop */}
-      <div className="relative rounded-3xl overflow-hidden glass-panel border border-white/15 p-6 sm:p-12 min-h-[440px] flex flex-col justify-between shadow-2xl">
+      <div className="relative rounded-3xl overflow-hidden racing-card corner-brackets p-6 sm:p-12 min-h-[440px] flex flex-col justify-between shadow-2xl">
         {/* Background Visual */}
         <div
           className="absolute inset-0 bg-cover bg-center filter brightness-90 contrast-110"

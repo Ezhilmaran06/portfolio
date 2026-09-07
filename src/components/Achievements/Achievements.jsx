@@ -27,7 +27,7 @@ export const Achievements = ({ onNext, onPrev }) => {
   };
 
   return (
-    <section id="achievements" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="achievements" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -43,7 +43,7 @@ export const Achievements = ({ onNext, onPrev }) => {
               11. ACHIEVEMENTS
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> ACHIEVEMENTS{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               TROPHIES ON MY TRACK
@@ -65,10 +65,10 @@ export const Achievements = ({ onNext, onPrev }) => {
 
       {/* Podium Telemetry Cards Grid (Reference Match) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {achievements.map((item) => (
+        {achievements.map((item, idx) => (
           <div
             key={item.id}
-            className="glass-panel rounded-2xl p-6 border border-white/15 relative overflow-hidden flex flex-col justify-between group hover:border-[#e10600]/50 transition-all duration-300 shadow-lg hover:shadow-[0_10px_30px_rgba(225,6,0,0.2)]"
+            className={`racing-card corner-brackets rounded-2xl p-6 border border-white/15 relative overflow-hidden flex flex-col justify-between group hover:border-[#e10600]/60 transition-all duration-300 shadow-lg hover:shadow-[0_12px_35px_rgba(225,6,0,0.25)] stagger-${(idx % 3) + 1} reveal-on-scroll`}
           >
             <div className="flex items-start justify-between mb-4">
               <div className="p-3 rounded-xl bg-black/50 border border-white/10 group-hover:scale-110 transition-transform">

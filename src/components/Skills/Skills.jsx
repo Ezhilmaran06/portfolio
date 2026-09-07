@@ -31,7 +31,7 @@ export const Skills = ({ onNext, onPrev }) => {
   ];
 
   return (
-    <section id="skills" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="skills" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -47,7 +47,7 @@ export const Skills = ({ onNext, onPrev }) => {
               7. SKILLS
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> SKILLS{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               DRIVER STATS
@@ -69,17 +69,17 @@ export const Skills = ({ onNext, onPrev }) => {
 
       {/* 4 Telemetry Performance Dashboard Panels */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-        {categories.map((cat) => {
+        {categories.map((cat, catIdx) => {
           const IconComponent = cat.icon;
           return (
             <div
               key={cat.id}
-              className="glass-panel rounded-2xl p-5 sm:p-6 border border-white/15 relative overflow-hidden flex flex-col justify-between group hover:border-[#e10600]/40 transition-all duration-300"
+              className={`racing-card corner-brackets rounded-2xl p-5 sm:p-6 border border-white/15 relative overflow-hidden flex flex-col justify-between group hover:border-[#e10600]/50 transition-all duration-300 stagger-${catIdx + 1} reveal-on-scroll`}
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-5">
                 <div className="flex items-center gap-2.5">
-                  <span className="w-2 h-2 rounded-full bg-[#e10600]" />
-                  <IconComponent className="w-4 h-4 text-[#ff1801]" />
+                  <span className="w-2 h-2 rounded-full bg-[#e10600] group-hover:shadow-[0_0_8px_#ff1801] transition-shadow" />
+                  <IconComponent className="w-4 h-4 text-[#ff1801] group-hover:scale-110 group-hover:rotate-6 transition-transform" />
                   <h3 className="font-racing font-bold text-base sm:text-lg tracking-wider text-white uppercase">
                     {cat.data.title}
                   </h3>
@@ -105,7 +105,7 @@ export const Skills = ({ onNext, onPrev }) => {
                     {/* Progress Bar Gauge */}
                     <div className="w-full h-2 rounded-full bg-black/60 border border-white/10 overflow-hidden p-0.5">
                       <div
-                        className="h-full bg-gradient-to-r from-[#b30000] via-[#e10600] to-[#ff3b30] rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(225,6,0,0.5)]"
+                        className="h-full bg-gradient-to-r from-[#b30000] via-[#e10600] to-[#ff3b30] rounded-full transition-all duration-700 shadow-[0_0_8px_rgba(225,6,0,0.5)] group-hover:shadow-[0_0_12px_#ff1801]"
                         style={{ width: `${skill.percentage}%` }}
                       />
                     </div>
@@ -118,7 +118,7 @@ export const Skills = ({ onNext, onPrev }) => {
       </div>
 
       {/* Engineering Tools Telemetry Strip */}
-      <div className="glass-panel rounded-2xl p-5 border border-white/15 mt-6 flex flex-wrap items-center justify-between gap-4">
+      <div className="racing-card rounded-2xl p-5 border border-white/15 mt-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <Wrench className="w-4 h-4 text-[#e10600]" />
           <span className="font-racing font-bold text-sm text-white uppercase tracking-wider">
@@ -130,7 +130,7 @@ export const Skills = ({ onNext, onPrev }) => {
           {skills.tools.map((tool, idx) => (
             <span
               key={idx}
-              className="px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-chakra text-[#d1d1d6] tracking-wider hover:border-[#e10600]/40 transition-colors"
+              className="px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-chakra text-[#d1d1d6] tracking-wider hover:border-[#e10600]/50 hover:bg-white/10 hover:text-white transition-all"
             >
               {tool}
             </span>

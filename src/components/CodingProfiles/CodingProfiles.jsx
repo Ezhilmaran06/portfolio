@@ -40,7 +40,7 @@ export const CodingProfiles = ({ onNext, onPrev }) => {
   };
 
   return (
-    <section id="coding" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="coding" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -56,7 +56,7 @@ export const CodingProfiles = ({ onNext, onPrev }) => {
               13. CODING PROFILES
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> CODING PROFILES{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               PERFORMANCE TELEMETRY
@@ -79,7 +79,7 @@ export const CodingProfiles = ({ onNext, onPrev }) => {
       {/* Telemetry Cards Grid (Reference Match) */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
         {/* Card 1: GitHub Card */}
-        <div className="md:col-span-4 glass-panel rounded-2xl p-6 border border-white/15 flex flex-col justify-between group hover:border-[#e10600]/40 transition-all">
+        <div className="md:col-span-4 racing-card corner-brackets rounded-2xl p-6 border border-white/15 flex flex-col justify-between group hover:border-[#e10600]/50 transition-all stagger-1 reveal-on-scroll">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 rounded-xl bg-black/60 border border-white/10 group-hover:scale-105 transition-transform">
@@ -127,7 +127,7 @@ export const CodingProfiles = ({ onNext, onPrev }) => {
         </div>
 
         {/* Card 2: LeetCode Telemetry Card */}
-        <div className="md:col-span-4 glass-panel rounded-2xl p-6 border border-white/15 flex flex-col justify-between group hover:border-[#e10600]/40 transition-all">
+        <div className="md:col-span-4 racing-card corner-brackets rounded-2xl p-6 border border-white/15 flex flex-col justify-between group hover:border-[#e10600]/50 transition-all stagger-2 reveal-on-scroll">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 rounded-xl bg-black/60 border border-white/10 group-hover:scale-105 transition-transform">
@@ -169,7 +169,7 @@ export const CodingProfiles = ({ onNext, onPrev }) => {
         </div>
 
         {/* Card 3: Heatmap Matrix Card */}
-        <div className="md:col-span-4 glass-panel rounded-2xl p-6 border border-white/15 flex flex-col justify-between group hover:border-[#e10600]/40 transition-all">
+        <div className="md:col-span-4 racing-card corner-brackets rounded-2xl p-6 border border-white/15 flex flex-col justify-between group hover:border-[#e10600]/50 transition-all stagger-3 reveal-on-scroll">
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">

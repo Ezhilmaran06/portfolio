@@ -8,7 +8,7 @@ export const Education = ({ onNext, onPrev }) => {
   const { education } = portfolioData;
 
   return (
-    <section id="education" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="education" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -24,7 +24,7 @@ export const Education = ({ onNext, onPrev }) => {
               6. EDUCATION
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> EDUCATION{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               MILESTONES ON MY TRACK
@@ -47,7 +47,7 @@ export const Education = ({ onNext, onPrev }) => {
       {/* Content Grid: Left Pitstop Garage Visual | Right Racing Timeline */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Left Column: Pit-lane visual */}
-        <div className="lg:col-span-5 relative rounded-2xl overflow-hidden glass-panel border border-white/15 p-2 h-full min-h-[340px] flex flex-col justify-end">
+        <div className="lg:col-span-5 relative rounded-2xl overflow-hidden racing-card corner-brackets p-2 h-full min-h-[340px] flex flex-col justify-end stagger-1 reveal-on-scroll">
           <div
             className="absolute inset-0 bg-cover bg-center filter brightness-95 contrast-110"
             style={{ backgroundImage: `url('/assets/portfolio/06-education.webp')` }}
@@ -66,16 +66,16 @@ export const Education = ({ onNext, onPrev }) => {
         </div>
 
         {/* Right Column: Track Timeline with Glowing Milestones */}
-        <div className="lg:col-span-7 space-y-6 relative before:absolute before:inset-0 before:left-6 sm:before:left-8 before:w-0.5 before:bg-gradient-to-b before:from-[#e10600] before:via-[#ff1801]/60 before:to-white/10">
+        <div className="lg:col-span-7 space-y-6 relative before:absolute before:inset-0 before:left-6 sm:before:left-8 before:w-0.5 before:bg-gradient-to-b before:from-[#e10600] before:via-[#ff1801]/60 before:to-white/10 stagger-2 reveal-on-scroll">
           {education.map((item, idx) => (
             <div key={idx} className="relative flex items-start gap-4 sm:gap-6 group">
               {/* Waypoint Glowing Milestone Node */}
-              <div className="relative z-10 flex-shrink-0 w-12 sm:w-16 h-12 sm:h-16 rounded-full bg-[#0e0f14] border-2 border-[#e10600] shadow-[0_0_15px_rgba(225,6,0,0.5)] flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="relative z-10 flex-shrink-0 w-12 sm:w-16 h-12 sm:h-16 rounded-full bg-[#0e0f14] border-2 border-[#e10600] shadow-[0_0_20px_rgba(225,6,0,0.6)] flex items-center justify-center group-hover:scale-110 group-hover:shadow-[0_0_25px_#ff1801] transition-all duration-300">
                 <GraduationCap className="w-5 sm:w-6 h-5 sm:h-6 text-[#ff3b30]" />
               </div>
 
               {/* Milestone Card */}
-              <div className="flex-1 glass-panel rounded-xl p-5 border border-white/10 group-hover:border-[#e10600]/40 transition-all duration-300">
+              <div className="flex-1 racing-card corner-brackets rounded-xl p-5 border border-white/10 group-hover:border-[#e10600]/50 transition-all duration-300">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                   <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-white/5 border border-white/10 text-xs font-mono-tech text-[#ff1801]">
                     <Calendar className="w-3 h-3 text-[#e10600]" />

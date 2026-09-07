@@ -8,7 +8,7 @@ export const About = ({ onNext, onPrev }) => {
   const { driver } = portfolioData;
 
   return (
-    <section id="about" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="about" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Circuit Night Track */}
       <div
         className="absolute inset-0 bg-cover bg-left md:bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -24,7 +24,7 @@ export const About = ({ onNext, onPrev }) => {
               5. ABOUT ME
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> ABOUT ME{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               DRIVER PROFILE
@@ -48,7 +48,7 @@ export const About = ({ onNext, onPrev }) => {
       {/* Main Grid: Left Portrait & Bio | Right Driver Telemetry Card */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         {/* Left Column: Portrait & Slogan */}
-        <div className="lg:col-span-5 flex flex-col glass-panel rounded-2xl p-6 border border-white/15 relative overflow-hidden">
+        <div className="lg:col-span-5 flex flex-col racing-card corner-brackets rounded-2xl p-6 relative overflow-hidden stagger-1 reveal-on-scroll">
           {/* Top Red Racing Accent */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e10600] to-transparent" />
 
@@ -93,7 +93,7 @@ export const About = ({ onNext, onPrev }) => {
         </div>
 
         {/* Right Column: Driver Telemetry Specs Card */}
-        <div className="lg:col-span-7 glass-panel rounded-2xl p-6 sm:p-8 border border-white/15 flex flex-col justify-between relative">
+        <div className="lg:col-span-7 racing-card corner-brackets rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative stagger-2 reveal-on-scroll">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#e10600]/10 rounded-bl-full blur-2xl pointer-events-none" />
 
           <div>

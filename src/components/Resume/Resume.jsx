@@ -22,7 +22,7 @@ export const Resume = ({ onNext, onPrev }) => {
   };
 
   return (
-    <section id="resume" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="resume" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -38,7 +38,7 @@ export const Resume = ({ onNext, onPrev }) => {
               14. RESUME
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> DRIVER RESUME{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               DOWNLOAD &amp; VIEW
@@ -59,7 +59,7 @@ export const Resume = ({ onNext, onPrev }) => {
       </div>
 
       {/* Main Garage Card with Document Mockup (Reference Screen 14 Match) */}
-      <div className="relative rounded-3xl overflow-hidden glass-panel border border-white/15 p-6 sm:p-12 flex flex-col justify-center items-center shadow-2xl min-h-[460px]">
+      <div className="relative rounded-3xl overflow-hidden racing-card corner-brackets p-6 sm:p-12 flex flex-col justify-center items-center shadow-2xl min-h-[460px] stagger-1 reveal-on-scroll">
         {/* Pit Lane Atmosphere Background */}
         <div
           className="absolute inset-0 bg-cover bg-center filter brightness-90 contrast-110"

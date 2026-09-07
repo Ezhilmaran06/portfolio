@@ -19,7 +19,7 @@ export const Projects = ({ onNext, onPrev }) => {
   };
 
   return (
-    <section id="projects" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none">
+    <section id="projects" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
@@ -53,7 +53,7 @@ export const Projects = ({ onNext, onPrev }) => {
               8. PROJECTS
             </span>
           </div>
-          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1">
+          <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
             <span className="text-[#e10600]">///</span> PROJECTS{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
               BUILT FOR IMPACT
@@ -74,7 +74,7 @@ export const Projects = ({ onNext, onPrev }) => {
       </div>
 
       {/* Featured Project Showcase Card (Reference Screen 08 Match) */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-10 border border-white/15 relative overflow-hidden shadow-2xl">
+      <div className="racing-card corner-brackets rounded-3xl p-6 sm:p-10 border border-white/15 relative overflow-hidden shadow-2xl stagger-1 reveal-on-scroll">
         <div className="absolute top-0 right-0 w-80 h-80 bg-[#e10600]/10 rounded-bl-full blur-3xl pointer-events-none" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">

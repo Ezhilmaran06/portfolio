@@ -72,7 +72,7 @@ export const FinishLine = ({ onRestart, onDownloadResume }) => {
       </div>
 
       {/* Central Finish Gantry & Celebration Banner */}
-      <div className="relative z-10 flex flex-col items-center justify-center my-auto text-center px-4 max-w-3xl mx-auto">
+      <div className="relative z-10 flex flex-col items-center justify-center my-auto text-center px-6 py-8 max-w-3xl mx-auto racing-card corner-brackets-all reveal-on-scroll">
         {/* FINISH Gantry Badge */}
         <div className="inline-flex items-center gap-3 px-8 py-2 rounded-xl bg-black/80 border-2 border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.2)] mb-6">
           <span className="text-xl">🏁</span>
