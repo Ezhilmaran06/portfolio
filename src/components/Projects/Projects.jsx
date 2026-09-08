@@ -1,62 +1,78 @@
 import { useState } from 'react';
 import { portfolioData } from '../../data/portfolio';
+import { ProjectCard } from './ProjectCard';
 import { ProjectDetailsModal } from '../ProjectDetails/ProjectDetailsModal';
-import { ChevronRight, ChevronLeft, GitBranch, Laptop } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Wrench } from 'lucide-react';
 import { soundManager } from '../../utils/audio';
-
-
 
 export const Projects = ({ onNext, onPrev }) => {
   const { projects } = portfolioData;
-  const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(projects[0]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  const currentProject = projects[selectedProjectIndex] || projects[0];
-
-  const handleSelectProject = (index) => {
+  const handleOpenDetails = (project) => {
     soundManager.playClick();
-    setSelectedProjectIndex(index);
+    setSelectedProject(project);
+    setModalOpen(true);
+  };
+
+  const handleFilterClick = (filterId) => {
+    soundManager.playClick();
+    setActiveFilter(filterId);
+    if (filterId !== 'all') {
+      const targetElement = document.getElementById(`project-sector-${filterId}`);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   };
 
   return (
-    <section id="projects" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll">
+    <section
+      id="projects"
+      className="relative w-full py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto select-none reveal-on-scroll"
+      aria-label="Projects Section"
+    >
       {/* Background Atmosphere */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none filter brightness-90 contrast-110"
         style={{ backgroundImage: `url('/assets/portfolio/08-projects.webp')` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/70 to-[#08080a]/90 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-[#08080a]/75 to-[#08080a]/90 pointer-events-none" />
 
       {/* Top Telemetry Bar matching Reference Screen 08 */}
-      <div className="w-full mb-6 px-4 py-2 rounded-lg bg-black/60 border border-white/10 flex items-center justify-between text-xs font-mono-tech text-[#8e8e93]">
-        <div className="flex items-center gap-6">
+      <div className="relative z-10 w-full mb-6 px-4 py-2.5 rounded-lg bg-black/60 border border-white/10 flex items-center justify-between text-xs font-mono-tech text-[#8e8e93]">
+        <div className="flex items-center gap-4 sm:gap-6">
           <span>
-            <strong className="text-white font-orbitron">01</strong>/01
+            <strong className="text-white font-orbitron">04</strong>/04 BUILDS
           </span>
-          <span>
-            <strong className="text-white font-orbitron">000</strong> KM/H
+          <span className="hidden sm:inline">
+            <strong className="text-white font-orbitron">100%</strong> REPO VERIFIED
           </span>
-          <span className="text-[#e10600] font-racing font-bold tracking-wider uppercase">
-            SECTOR 02 &bull; PROJECTS
+          <span className="text-[#e10600] font-racing font-bold tracking-wider uppercase flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#e10600] animate-pulse" />
+            SECTOR 02 &bull; ENGINEERING GARAGE
           </span>
         </div>
-        <span className="hidden sm:inline tracking-widest text-[10px] uppercase">
-          YOUR JOURNEY &bull; MY PORTFOLIO
+        <span className="hidden md:inline tracking-widest text-[10px] uppercase text-white/60">
+          DEVELOPMENT PADDOCK &bull; FOUR CHECKPOINTS
         </span>
       </div>
 
-      {/* Header matching Reference */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
+      {/* Header */}
+      <div className="relative z-10 flex items-center justify-between border-b border-white/10 pb-4 mb-8">
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-mono-tech text-xs tracking-widest text-[#e10600] uppercase">
-              8. PROJECTS
+            <span className="font-mono-tech text-xs tracking-widest text-[#e10600] uppercase flex items-center gap-1.5">
+              <Wrench className="w-3.5 h-3.5 text-[#e10600]" />
+              8. PROJECTS &bull; DEVELOPMENT PADDOCK
             </span>
           </div>
           <h2 className="font-racing font-black tracking-[3px] text-2xl sm:text-4xl text-white uppercase italic flex items-center gap-2 mt-1 section-title-accent">
-            <span className="text-[#e10600]">///</span> PROJECTS{' '}
+            <span className="text-[#e10600]">///</span> PROJECT GARAGE{' '}
             <span className="text-[#8e8e93] text-lg sm:text-2xl font-normal not-italic">
-              BUILT FOR IMPACT
+              ENGINEERED BUILDS
             </span>
           </h2>
         </div>
@@ -67,150 +83,97 @@ export const Projects = ({ onNext, onPrev }) => {
             onNext();
           }}
           className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/5 hover:bg-[#e10600]/20 border border-white/15 hover:border-[#e10600]/50 text-xs font-racing font-bold tracking-widest text-white uppercase transition-all duration-200 cursor-pointer"
+          aria-label="Navigate to next section"
         >
           <span>NEXT</span>
           <ChevronRight className="w-4 h-4 text-[#e10600]" />
         </button>
       </div>
 
-      {/* Featured Project Showcase Card (Reference Screen 08 Match) */}
-      <div className="racing-card corner-brackets rounded-3xl p-6 sm:p-10 border border-white/15 relative overflow-hidden shadow-2xl stagger-1 reveal-on-scroll">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-[#e10600]/10 rounded-bl-full blur-3xl pointer-events-none" />
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left Column: Project Telemetry & Actions */}
-          <div className="lg:col-span-6 flex flex-col items-start text-left">
-            {/* Project Number Monogram */}
-            <div className="flex items-center gap-4 mb-4">
-              <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#e10600] to-[#800000] text-white font-racing font-black text-2xl flex items-center justify-center shadow-[0_0_20px_rgba(225,6,0,0.5)] border border-[#ff3b30]">
-                {currentProject.number}
-              </span>
-              <span className="font-mono-tech text-xs tracking-widest text-[#8e8e93] uppercase">
-                ACTIVE CHECKPOINT
-              </span>
-            </div>
-
-            {/* Project Title */}
-            <h3 className="font-racing font-bold text-2xl sm:text-3xl text-white uppercase tracking-wide mb-3">
-              {currentProject.title}
-            </h3>
-
-            {/* Description */}
-            <p className="font-chakra text-sm sm:text-base text-[#d1d1d6] leading-relaxed mb-6">
-              {currentProject.shortDescription}
-            </p>
-
-            {/* Tech Badges */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {currentProject.tags.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-chakra text-[#ff1801] tracking-wider"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {/* Buttons: VIEW DETAILS & GITHUB */}
-            <div className="flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => {
-                  soundManager.playClick();
-                  setModalOpen(true);
-                }}
-                className="btn-racing-primary px-6 sm:px-8 py-3 text-sm cursor-pointer"
-              >
-                <span>VIEW DETAILS</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-
-              <a
-                href={currentProject.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-racing-secondary px-6 sm:px-8 py-3 text-sm cursor-pointer"
-              >
-                <GitBranch className="w-4 h-4" />
-                <span>GITHUB</span>
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column: Device Laptop Preview */}
-          <div className="lg:col-span-6 flex justify-center relative">
-            <div className="relative w-full max-w-lg aspect-video rounded-2xl overflow-hidden glass-panel border border-white/15 p-2 shadow-2xl group cursor-pointer"
-              onClick={() => {
-                soundManager.playClick();
-                setModalOpen(true);
-              }}
-            >
-              <div className="relative w-full h-full rounded-xl overflow-hidden bg-black/60 flex items-center justify-center">
-                <img
-                  src={currentProject.image}
-                  alt={currentProject.title}
-                  className="w-full h-full object-contain filter contrast-110 group-hover:scale-105 transition-transform duration-500"
-                  onError={(e) => {
-                    (e.target).src = '/assets/portfolio/08-projects.webp';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="font-racing font-bold text-xs text-white uppercase tracking-wider flex items-center gap-1">
-                    <Laptop className="w-3.5 h-3.5 text-[#e10600]" />
-                    CLICK TO INSPECT GARAGE
-                  </span>
-                  <span className="font-mono-tech text-[10px] text-[#ff3b30]">EXPAND</span>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* Circuit Checkpoint Trackline Navigation */}
+      <div className="relative z-10 mb-8 p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/10">
+        <div className="flex items-center justify-between text-[11px] font-mono-tech text-[#8e8e93] mb-3">
+          <span className="uppercase tracking-widest text-white/70">
+            SECTOR CHECKPOINT PROGRESSION
+          </span>
+          <span className="text-[#ff1801] tracking-wider hidden sm:inline">
+            SELECT BAY TO INSPECT
+          </span>
         </div>
 
-        {/* Bottom Selector Carousel Tabs (Reference Screen 08 Match) */}
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-wrap items-center gap-3 sm:gap-4">
+        {/* Checkpoint Sector Connector Buttons */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <button
+            onClick={() => handleFilterClick('all')}
+            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-racing font-bold tracking-wider uppercase transition-all cursor-pointer border ${
+              activeFilter === 'all'
+                ? 'bg-[#e10600] text-white border-[#ff3b30] shadow-[0_0_15px_rgba(225,6,0,0.4)]'
+                : 'bg-white/5 border-white/10 text-[#8e8e93] hover:text-white hover:border-white/25'
+            }`}
+          >
+            ALL SECTORS (4)
+          </button>
+
           {projects.map((proj, idx) => {
-            const isSelected = selectedProjectIndex === idx;
+            const isActive = activeFilter === proj.number;
+            const nextProj = projects[idx + 1];
             return (
-              <button
-                key={proj.id}
-                onClick={() => handleSelectProject(idx)}
-                className={`flex items-center gap-3 px-4 sm:px-6 py-3 rounded-xl border transition-all cursor-pointer ${
-                  isSelected
-                    ? 'bg-[#e10600]/20 border-[#e10600] shadow-[0_0_15px_rgba(225,6,0,0.3)] text-white'
-                    : 'bg-white/5 border-white/10 hover:border-white/25 text-[#8e8e93] hover:text-white'
-                }`}
-              >
-                <span
-                  className={`font-racing font-bold text-sm ${
-                    isSelected ? 'text-[#ff3b30]' : 'text-[#8e8e93]'
+              <div key={proj.id} className="flex items-center gap-2">
+                <button
+                  onClick={() => handleFilterClick(proj.number)}
+                  className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs font-racing font-bold tracking-wider uppercase transition-all cursor-pointer border ${
+                    isActive
+                      ? 'bg-[#e10600] text-white border-[#ff3b30] shadow-[0_0_15px_rgba(225,6,0,0.4)]'
+                      : 'bg-white/5 border-white/10 text-[#8e8e93] hover:text-white hover:border-white/25'
                   }`}
                 >
-                  {proj.number}
-                </span>
-                <span className="font-racing font-bold text-xs sm:text-sm tracking-wider uppercase">
-                  {proj.title.split('(')[0].trim().toUpperCase()}
-                </span>
-              </button>
+                  <span className={isActive ? 'text-white' : 'text-[#ff1801]'}>
+                    {proj.number}
+                  </span>
+                  <span>{proj.shortTitle}</span>
+                </button>
+                {nextProj && (
+                  <span className="text-white/20 hidden md:inline font-mono-tech text-xs">
+                    &rarr;
+                  </span>
+                )}
+              </div>
             );
           })}
         </div>
       </div>
 
+      {/* Multi-Card Engineering Garage Grid */}
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        {projects.map((proj, idx) => {
+          const nextProj = projects[idx + 1];
+          return (
+            <ProjectCard
+              key={proj.id}
+              project={proj}
+              onOpenDetails={handleOpenDetails}
+              nextProjectTitle={nextProj ? `${nextProj.number} ${nextProj.shortTitle}` : null}
+            />
+          );
+        })}
+      </div>
+
       {/* Footer Navigation */}
-      <div className="flex items-center justify-between border-t border-white/10 pt-6 mt-10">
+      <div className="relative z-10 flex items-center justify-between border-t border-white/10 pt-6 mt-12">
         <button
           onClick={() => {
             soundManager.playClick();
             onPrev();
           }}
           className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-racing font-bold text-[#8e8e93] hover:text-white uppercase transition-colors cursor-pointer"
+          aria-label="Previous section"
         >
           <ChevronLeft className="w-4 h-4" />
           <span>PREV</span>
         </button>
 
         <span className="font-mono-tech text-[10px] tracking-[2px] text-[#545458] uppercase">
-          GARAGE 02 &bull; SECTOR COMPLETE
+          GARAGE 02 &bull; ALL 4 SECTORS READY
         </span>
 
         <button
@@ -219,6 +182,7 @@ export const Projects = ({ onNext, onPrev }) => {
             onNext();
           }}
           className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-[#e10600] hover:bg-[#ff1801] text-xs font-racing font-bold text-white uppercase transition-all duration-200 cursor-pointer shadow-[0_0_15px_rgba(225,6,0,0.4)]"
+          aria-label="Next section"
         >
           <span>NEXT</span>
           <ChevronRight className="w-4 h-4" />
@@ -227,7 +191,7 @@ export const Projects = ({ onNext, onPrev }) => {
 
       {/* Deep Dive Modal (Screen 09) */}
       <ProjectDetailsModal
-        project={currentProject}
+        project={selectedProject}
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
       />

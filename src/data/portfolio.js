@@ -13,7 +13,7 @@ export const portfolioData = {
     bio: 'Passionate about building scalable solutions, solving real world problems, and continuously learning new technologies.',
     stats: {
       dsa: '240+',
-      projects: '2+',
+      projects: '4',
       cgpa: '7.64',
       learning: '∞',
     },
@@ -84,107 +84,338 @@ export const portfolioData = {
     {
       id: 'dpc-tool',
       number: '01',
-      title: 'Digital Processing Compliance Tool (DPC Tool)',
+      sector: 'SECTOR 01',
+      callsign: 'COMPLIANCE ENGINE',
+      title: 'Digital Processing Compliance Tool',
+      shortTitle: 'DPC TOOL',
+      category: 'COMPLIANCE / ENTERPRISE WEB APPLICATION',
+      type: 'ENTERPRISE WEB APP',
       shortDescription:
-        'A web-based compliance monitoring system to track digital processing activities and ensure organizational policy adherence.',
-      tags: ['React', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
-      githubUrl: 'https://github.com/Ezhilmaran06',
-      liveDemoUrl: '',
-      image: '/assets/portfolio/08-projects.webp',
+        'A web-based compliance monitoring and management platform designed to centralize policies, monitor compliance activities, manage violations, track workflows, and maintain audit visibility through dashboards and reporting.',
+      tags: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS'],
+      githubUrl: 'https://github.com/Ezhilmaran06/digital_processing_Compliance',
+      liveDemoUrl: null,
+      image: '/images/projects/dpc-tool-mockup.png',
+      telemetry: {
+        system: 'ENTERPRISE WEB APP',
+        status: 'ENGINEERED',
+        modules: 'POLICY / AUDIT / WORKFLOW',
+      },
+      keyFeatures: [
+        'Secure authentication with 4-tier Role-Based Access Control (Employee, Manager, Admin, Auditor)',
+        'Change request approval lifecycle (Employee creates → Manager approves → Auditor verifies)',
+        'Immutable security audit logging with exportable CSV telemetry reports',
+        'Real-time analytical KPI dashboards and compliance rating trackers',
+        'Centralized policy governance and proactive violation alerts',
+      ],
+      myContribution:
+        'Designed and developed the full-stack MERN compliance platform, implemented 4-tier RBAC authentication middleware, authored RESTful APIs for change requests and immutable audit trails, and built responsive analytics dashboards.',
       details: {
         overview:
-          'The Digital Processing Compliance Tool (DPC Tool) is an enterprise-grade compliance monitoring platform engineered to oversee, audit, and validate digital processing activities against organizational policies and security protocols.',
+          'The Digital Processing Compliance Tool (ChangeFlow) is a production-ready enterprise compliance platform engineered to oversee, audit, and validate digital processing activities against organizational policies and security protocols. It centralizes policy management, tracks change request lifecycles, and maintains an immutable audit trail for full regulatory governance.',
         problem:
-          'Modern enterprises grapple with fragmented digital processing workflows, non-standardized audit documentation, and manual compliance tracking which increases operational overhead and regulatory risk.',
+          'Modern enterprises suffer from fragmented change-request communications, non-standardized audit documentation, and manual compliance tracking that introduce regulatory exposure, security oversights, and operational bottlenecks.',
         solution:
-          'Constructed a centralized monitoring architecture that evaluates policy adherence in real time, automates audit trail logging, and provides intuitive telemetry dashboards with instant violation notifications.',
+          'Engineered a centralized MERN web platform that formalizes compliance approval workflows across employee, manager, admin, and auditor tiers, maintains tamper-proof immutable audit logs, and delivers instant status visibility through telemetry dashboards.',
         features: [
-          'Secure authentication with encrypted JWT token sessions',
-          'Granular Role-Based Access Control (RBAC) separating employee and auditor privileges',
-          'Automated policy engine flagging out-of-compliance processing events',
-          'Immutable audit trail logs with timestamped operational telemetry',
-          'Real-time analytical dashboard with processing volume and compliance rating metrics',
-          'Exportable audit reports formatted for executive review',
+          {
+            id: '01',
+            title: 'ROLE-BASED ACCESS CONTROL (RBAC)',
+            desc: 'Secure authentication with role validation separating Employee, Manager, Admin, and Auditor privileges.',
+          },
+          {
+            id: '02',
+            title: 'APPROVAL LIFECYCLE ENGINE',
+            desc: 'Automated state machine tracking requests: Employee creates → Manager approves/rejects → Auditor verifies.',
+          },
+          {
+            id: '03',
+            title: 'IMMUTABLE AUDIT LOGGING',
+            desc: 'Security-grade timestamped audit trail capturing every state change with instant CSV report export.',
+          },
+          {
+            id: '04',
+            title: 'REAL-TIME ANALYTICS DASHBOARD',
+            desc: 'Interactive KPI cards tracking total, pending, approved, and rejected compliance requests.',
+          },
+          {
+            id: '05',
+            title: 'POLICY GOVERNANCE CONTROLS',
+            desc: 'Centralized administrative controls for organizational policy compliance and violation monitoring.',
+          },
         ],
         techStack: [
           { category: 'Frontend', technologies: 'React.js, Tailwind CSS, Lucide Icons, Responsive Layouts' },
           { category: 'Backend', technologies: 'Node.js, Express.js RESTful Architecture' },
-          { category: 'Database', technologies: 'MongoDB with Mongoose ODM & indexing' },
-          { category: 'Security', technologies: 'JSON Web Tokens (JWT), Bcrypt password hashing' },
+          { category: 'Database', technologies: 'MongoDB with Mongoose ODM & Indexing' },
+          { category: 'Security', technologies: 'JSON Web Tokens (JWT), Bcrypt Password Hashing, CORS Whitelist' },
+        ],
+        architecture: [
+          { step: 'CLIENT LAYER', detail: 'React.js & Tailwind CSS responsive dashboard interfaces' },
+          { step: 'API GATEWAY', detail: 'Express.js REST router with JWT authentication & RBAC middleware' },
+          { step: 'BUSINESS LOGIC', detail: 'Change request lifecycle state machine & compliance policy engine' },
+          { step: 'DATA & AUDIT LAYER', detail: 'MongoDB collections with immutable audit logs and indexed queries' },
         ],
         myContribution:
-          'Engineered full-stack responsive dashboard, designed RESTful APIs for compliance event ingestion, authored role-based middleware, and implemented data visualization components for telemetry monitoring.',
-        screenshots: ['/assets/portfolio/09-project-details.webp', '/assets/portfolio/08-projects.webp'],
+          'Full-stack engineering of the application: designed the MongoDB schemas for change requests and audit logs, implemented JWT token authentication with RBAC middleware, built role-specific dashboard views, and integrated real-time KPI metrics.',
+        challenges:
+          'Enforcing strict multi-level role authorization across stateful change-request transitions while ensuring the audit trail remains strictly immutable and protected against retroactive modification.',
+        screenshots: ['/images/projects/dpc-tool-mockup.png', '/assets/portfolio/08-projects.webp'],
         futureScope:
-          'Integrating automated AI compliance anomaly detectors and webhook integrations with enterprise Slack/Teams channels.',
+          'Integration of automated AI-driven compliance anomaly detectors and enterprise webhook notifications for Slack and Microsoft Teams.',
       },
     },
     {
-      id: 'finance-dashboard',
+      id: 'fleetflow',
       number: '02',
-      title: 'Personal Finance Dashboard',
+      sector: 'SECTOR 02',
+      callsign: 'FLEET COMMAND',
+      title: 'FleetFlow — Transport Management System',
+      shortTitle: 'FLEETFLOW',
+      category: 'FLEET / LOGISTICS / TRANSPORT MANAGEMENT',
+      type: 'TRANSPORT OS',
       shortDescription:
-        'Interactive dashboard for tracking income, expenses, savings goals, and financial health insights with visual analytics.',
-      tags: ['React', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Chart.js'],
-      githubUrl: 'https://github.com/Ezhilmaran06',
-      liveDemoUrl: '',
+        'A modern fleet and transport management platform designed to manage vehicles, drivers, trips, dispatch operations, deliveries, and logistics workflows through a centralized operational interface.',
+      tags: ['React 18', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'Recharts', 'Bootstrap 5', 'Multer', 'JWT'],
+      githubUrl: 'https://github.com/Ezhilmaran06/fleetflow_transport_management',
+      liveDemoUrl: null,
       image: '/assets/portfolio/08-projects.webp',
+      telemetry: {
+        system: 'TRANSPORT OS',
+        domain: 'LOGISTICS',
+        modules: 'FLEET / DISPATCH / DELIVERY',
+      },
+      keyFeatures: [
+        'Real-time vehicle telematics, odometer tracking, and maintenance schedules',
+        'Intelligent dispatch, route planning, driver assignments, and trip telemetry',
+        'Safety compliance, driver logs, inspection workflows, and document vault via Multer',
+        'Multi-role operational dashboards for Admins, Dispatchers, Drivers, and Maintenance',
+        'Operational analytics, fuel economy metrics, turnaround telemetry, and audit logs via Recharts',
+      ],
+      myContribution:
+        'Architected enterprise logistics workflows, developed RESTful backend controllers for trips, vehicles, drivers, and fuel tracking, integrated Multer for secure compliance document storage, and built telematics analytics with Recharts.',
       details: {
         overview:
-          'A comprehensive personal wealth telemetry dashboard that centralizes transactions, automates expenditure tagging, tracks monthly savings targets, and projects cash-flow health.',
+          'FleetFlow is an enterprise-grade Fleet and Transport Management System built on the MERN stack. It empowers logistics coordinators, dispatchers, drivers, and maintenance managers with a unified command center to streamline vehicle allocation, optimize delivery dispatches, enforce regulatory safety compliance, and maximize fleet uptime.',
         problem:
-          'Users face difficulties maintaining financial discipline due to tedious manual recording across disparate banking apps and lack of predictive visual budgeting analytics.',
+          'Logistics organizations struggle with fragmented vehicle tracking, manual paper dispatch slips, missed maintenance intervals, unmonitored fuel expenses, and expiring driver certifications that create operational bottlenecks and safety liabilities.',
         solution:
-          'Created a responsive, interactive dashboard that computes dynamic savings rates, visualizes spending distributions via interactive charts, and enforces budget thresholds.',
+          'Engineered a centralized transport operating platform that synchronizes vehicle lifecycle data, automates dispatch-to-delivery workflows, monitors fuel efficiency and maintenance schedules, and maintains a secure document vault with automated expiration alerts.',
         features: [
-          'Automated expense categorization and custom recurring payment tags',
-          'Interactive spending telemetry charts (monthly expense breakdown, cash flow velocity)',
-          'Budget threshold alerts and visual progress gauges',
-          'JWT authentication with secure multi-account session management',
-          'Exportable CSV telemetry reports for financial auditing',
+          {
+            id: '01',
+            title: 'FLEET TELEMATICS & VEHICLE REPOSITORY',
+            desc: 'Real-time vehicle status tracking, odometer logs, maintenance scheduling, and fuel consumption records.',
+          },
+          {
+            id: '02',
+            title: 'INTELLIGENT DISPATCH & ROUTING',
+            desc: 'Load planning, automated driver-to-vehicle assignments, turn-by-turn route tracking, and delivery milestones.',
+          },
+          {
+            id: '03',
+            title: 'SAFETY & COMPLIANCE VAULT',
+            desc: 'Driver inspection workflows, incident logging, and digital document uploads with expiration tracking via Multer.',
+          },
+          {
+            id: '04',
+            title: 'ROLE-TAILORED OPERATIONAL DASHBOARDS',
+            desc: 'Dedicated control interfaces and permission sets for Admins, Dispatchers, Fleet Drivers, and Technicians.',
+          },
+          {
+            id: '05',
+            title: 'LOGISTICS ANALYTICS & AUDIT TRAIL',
+            desc: 'Dynamic performance graphs, fuel economy telemetry, turnaround metrics, and system-wide audit logging powered by Recharts.',
+          },
         ],
         techStack: [
-          { category: 'Frontend', technologies: 'React.js, Tailwind CSS, Chart.js, Lucide Icons' },
-          { category: 'Backend', technologies: 'Node.js, Express.js REST API' },
-          { category: 'Database', technologies: 'MongoDB & Mongoose Schema Validation' },
-          { category: 'Security', technologies: 'JWT, CORS whitelist, Helmet.js headers' },
+          { category: 'Frontend', technologies: 'React 18 (Vite), Bootstrap 5, Lucide Icons, Recharts, Framer Motion, Axios' },
+          { category: 'Backend', technologies: 'Node.js, Express.js REST API, Morgan Logging' },
+          { category: 'Database', technologies: 'MongoDB with Mongoose ODM (20+ Models for Vehicles, Trips, Fuel, Drivers)' },
+          { category: 'Security & Media', technologies: 'JWT Authentication, Bcrypt.js, Helmet, Rate Limiting, Multer File Uploads' },
+        ],
+        architecture: [
+          { step: 'OPERATIONS CLIENT', detail: 'React 18 + Vite frontend with Recharts telemetry dashboards' },
+          { step: 'API GATEWAY & SECURITY', detail: 'Express API protected with Helmet, rate limiting, and JWT authentication' },
+          { step: 'SERVICE CONTROLLERS', detail: 'Dedicated micro-controllers for Fleet, Dispatch, Fuel, Safety, and Trips' },
+          { step: 'MEDIA & DATABASE LAYER', detail: 'Multer document vault and MongoDB cluster with indexed relational schemas' },
         ],
         myContribution:
-          'Architected MongoDB schema for double-entry tracking, created custom Chart.js telemetry widgets, and designed responsive layout with dark-mode aesthetic.',
-        screenshots: ['/assets/portfolio/09-project-details.webp', '/assets/portfolio/08-projects.webp'],
+          'Engineered the backend architecture supporting 20+ specialized domain models (Vehicles, Drivers, Trips, FuelRecords, Incidents), built RESTful API controllers with validation and pagination, integrated document upload handling, and created telemetry reporting charts.',
+        challenges:
+          'Synchronizing complex state transitions across tightly coupled operational entities (e.g., updating vehicle availability, odometer readings, and driver schedules simultaneously upon trip completion) without data race conditions.',
+        screenshots: ['/assets/portfolio/08-projects.webp', '/assets/portfolio/09-project-details.webp'],
         futureScope:
-          'Bank statement OCR parsing and automated crypto/stock portfolio tracking feeds.',
+          'Live GPS sensor integration, automated IoT fuel sensor feeds, and predictive machine learning models for preventative vehicle maintenance.',
       },
     },
     {
-      id: 'upcoming-projects',
+      id: 'event-voting',
       number: '03',
-      title: 'More Projects Coming Soon',
+      sector: 'SECTOR 03',
+      callsign: 'EVENT CONTROL',
+      title: 'Event Organization & Voting Management System',
+      shortTitle: 'EVENT & VOTING SYSTEM',
+      category: 'EVENT MANAGEMENT / VOTING SYSTEM',
+      type: 'EVENT & VOTING PLATFORM',
       shortDescription:
-        'Currently engineering high-throughput backend services and distributed system solutions in Java and Spring Boot.',
-      tags: ['Java', 'Spring Boot', 'Microservices', 'Docker', 'PostgreSQL'],
-      githubUrl: 'https://github.com/Ezhilmaran06',
-      liveDemoUrl: '',
+        'A secure web-based platform for organizing events and managing voting-related workflows through a centralized platform, ensuring secure voter verification and transparent, real-time election telemetry.',
+      tags: ['React', 'Node.js', 'Express.js', 'MySQL', 'MongoDB', 'Nodemailer', 'OTP Auth', 'Recharts', 'Sequelize'],
+      githubUrl: 'https://github.com/Ezhilmaran06/Event_Voting_Management_System',
+      liveDemoUrl: null,
       image: '/assets/portfolio/08-projects.webp',
+      telemetry: {
+        system: 'EVENT + VOTING',
+        workflow: 'ORGANIZE → PARTICIPATE → VOTE → RESULT',
+        modules: 'EVENTS / VOTING / AUDIENCE',
+      },
+      keyFeatures: [
+        'Comprehensive event lifecycle creation, scheduling, and configuration',
+        'Candidate and participant registration with profile management and showcase',
+        'Single-vote integrity enforcement backed by database unique constraints',
+        'Secure voter authentication using email OTP generation via Nodemailer',
+        'Real-time outcome telemetry and live tally analytics rendered with Recharts',
+        'Dedicated role separation for Event Administrators and Audience Voters',
+      ],
+      myContribution:
+        'Designed and implemented the dual-portal event and voting architecture, integrated email OTP verification for voter authentication, engineered database unique constraints to guarantee one-vote-per-user integrity, and built real-time visual tally dashboards.',
       details: {
         overview:
-          'New backend engineering and cloud-native microservices currently under active development, focusing on distributed caching, concurrency patterns, and event-driven architecture in Java.',
-        problem: 'Designing high-scale, low-latency transaction processing backends under heavy concurrent workloads.',
-        solution: 'Applying idiomatic Java multithreading, Spring Boot microservices, and Dockerized deployment workflows.',
+          'Event Organization & Voting Management System is a secure, web-based platform engineered for institutions, clubs, and organizations to coordinate events and conduct transparent, tamper-proof digital elections. It bridges the gap between event administration and democratic participant voting with verifiable integrity.',
+        problem:
+          'Traditional voting and event polling suffer from ballot tampering, proxy voting, double voting, slow manual ballot counting, and fragmented attendee registration.',
+        solution:
+          'Engineered a secure full-stack voting system combining email OTP voter verification, database-level unique voting constraints to mathematically prevent duplicate votes, and an instant tallying engine that outputs real-time graphical election outcomes.',
         features: [
-          'High-throughput Java concurrency architectures',
-          'Spring Security & OAuth2 integrations',
-          'Containerized microservices orchestration',
-          'Clean architecture and Domain-Driven Design (DDD)',
+          {
+            id: '01',
+            title: 'EVENT ADMINISTRATION ENGINE',
+            desc: 'Administrators create, schedule, and manage events, set voting windows, and monitor participation.',
+          },
+          {
+            id: '02',
+            title: 'CANDIDATE & PARTICIPANT REGISTRATION',
+            desc: 'Structured candidate registration with nomination profiles, bios, and eligibility verification.',
+          },
+          {
+            id: '03',
+            title: 'SECURE EMAIL OTP VERIFICATION',
+            desc: 'Dynamic one-time password generation and delivery via Nodemailer ensuring authentic voter identities.',
+          },
+          {
+            id: '04',
+            title: 'GUARANTEED SINGLE-VOTE INTEGRITY',
+            desc: 'Database-enforced unique constraints eliminating double voting and preventing ballot tampering.',
+          },
+          {
+            id: '05',
+            title: 'LIVE ELECTION TELEMETRY & TALLYING',
+            desc: 'Real-time analytical vote tally dashboards using Recharts to present instant transparent outcome charts.',
+          },
         ],
         techStack: [
-          { category: 'Backend', technologies: 'Java, Spring Boot, Spring Security' },
-          { category: 'Database', technologies: 'PostgreSQL, Redis caching' },
-          { category: 'DevOps', technologies: 'Docker, Git, Postman' },
+          { category: 'Frontend', technologies: 'React, Recharts Analytics, Lucide Icons, Axios, React Router' },
+          { category: 'Backend', technologies: 'Node.js, Express.js REST API' },
+          { category: 'Databases', technologies: 'MySQL (mysql2 / Sequelize) & MongoDB Mongoose models' },
+          { category: 'Authentication & Mail', technologies: 'Email OTP Generator, Nodemailer Transport, Session Management' },
         ],
-        myContribution: 'Full-cycle architectural design, unit testing, and performance profiling.',
-        screenshots: ['/assets/portfolio/09-project-details.webp', '/assets/portfolio/08-projects.webp'],
-        futureScope: 'Production cloud deployment on AWS / GCP with CI/CD automation.',
+        architecture: [
+          { step: 'VOTER / ADMIN PORTAL', detail: 'React-driven responsive interfaces for voters and administrators' },
+          { step: 'AUTH & OTP SERVICE', detail: 'Express authentication service with Nodemailer-driven OTP verification' },
+          { step: 'BALLOT CONTROLLER', detail: 'Transactional vote processing with duplicate ballot rejection algorithms' },
+          { step: 'RELATIONAL DATA STORE', detail: 'MySQL database with unique composite keys enforcing one vote per user per event' },
+        ],
+        myContribution:
+          'Architected the end-to-end voting and event management workflows, implemented email OTP generation and validation using Nodemailer, created relational database migrations with unique ballot constraints, and built real-time vote distribution graphs.',
+        challenges:
+          'Ensuring zero double-voting concurrency exploits during peak election traffic by implementing atomic database-level unique indexing and transactional ballot submission.',
+        screenshots: ['/assets/portfolio/08-projects.webp', '/assets/portfolio/09-project-details.webp'],
+        futureScope:
+          'Decentralized blockchain ledger integration for cryptographic ballot verification and anonymous zero-knowledge proof voting.',
+      },
+    },
+    {
+      id: 'personal-finance',
+      number: '04',
+      sector: 'SECTOR 04',
+      callsign: 'FINANCE TELEMETRY',
+      title: 'Personal Finance Dashboard',
+      shortTitle: 'FINANCE TELEMETRY',
+      category: 'FINTECH / PERSONAL FINANCE',
+      type: 'PERSONAL FINANCE',
+      shortDescription:
+        'A personal finance management dashboard designed to help users track income, expenses, savings, financial activity, and spending patterns through an interactive visual telemetry interface.',
+      tags: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Chart.js / Recharts', 'FastAPI'],
+      githubUrl: 'https://github.com/Ezhilmaran06/personal_finance_dashboard',
+      liveDemoUrl: null,
+      image: '/assets/portfolio/08-projects.webp',
+      telemetry: {
+        system: 'PERSONAL FINANCE',
+        telemetry: 'INCOME / EXPENSE / SAVINGS',
+        modules: 'BUDGET / GOALS / INVESTMENTS',
+      },
+      keyFeatures: [
+        'Comprehensive income and expense logging with multi-category classification',
+        'Dynamic budget threshold monitoring, envelope limits, and visual warning gauges',
+        'Savings goal progress tracking with milestone calculation and visual target meters',
+        'Multi-asset financial tracking across investments, loans, and net worth telemetry',
+        'Interactive visual telemetry dashboards displaying cash-flow velocity and spending distributions',
+      ],
+      myContribution:
+        'Architected double-entry transaction and ledger data models, built secure RESTful endpoints for income, expenses, budgets, loans, and goals, and implemented responsive financial visualization charts.',
+      details: {
+        overview:
+          'Personal Finance Dashboard is an interactive financial telemetry workstation designed to provide users with complete visibility over their personal cash flow. It aggregates income streams, itemizes expenses across custom categories, tracks progress toward savings targets, and visualizes financial health through responsive analytical charts.',
+        problem:
+          'Individuals often struggle with budget overruns, impulsive expenditures, and missed financial targets due to fragmented accounting across accounts and a lack of unified visual cash-flow telemetry.',
+        solution:
+          'Engineered a centralized fintech dashboard that automates expense classification, enforces user-defined budget thresholds, tracks progress toward savings goals, and renders visual analytics depicting income velocity and expense distributions.',
+        features: [
+          {
+            id: '01',
+            title: 'INCOME & EXPENSE TELEMETRY',
+            desc: 'Granular transaction logging, categorical tagging, and recurring payment tracking.',
+          },
+          {
+            id: '02',
+            title: 'BUDGET ENVELOPE CONTROLS',
+            desc: 'Customizable category budget limits with visual threshold gauges and overrun warnings.',
+          },
+          {
+            id: '03',
+            title: 'SAVINGS & GOAL PROGRESSION',
+            desc: 'Milestone tracking for short-term and long-term financial objectives with target ETA estimators.',
+          },
+          {
+            id: '04',
+            title: 'MULTI-ASSET LEDGER (LOANS & INVESTMENTS)',
+            desc: 'Holistic portfolio tracking accounting for liabilities, investments, and net worth balance.',
+          },
+          {
+            id: '05',
+            title: 'INTERACTIVE FINANCIAL CHARTS',
+            desc: 'Visual analytics displaying monthly spending velocity, expense breakdowns, and savings trajectories.',
+          },
+        ],
+        techStack: [
+          { category: 'Frontend', technologies: 'React.js, Recharts / Chart.js, Lucide Icons, Axios, React Router' },
+          { category: 'Backend', technologies: 'Node.js, Express.js REST API & Python FastAPI micro-services' },
+          { category: 'Database', technologies: 'MongoDB with Mongoose ODM (Budget, Expense, Goal, Income, Investment, Loan models)' },
+          { category: 'Security', technologies: 'JWT Authentication, Bcrypt Password Hashing, CORS Protection' },
+        ],
+        architecture: [
+          { step: 'DASHBOARD CLIENT', detail: 'React-based interactive telemetry interface with dynamic cash-flow charts' },
+          { step: 'AUTHENTICATION & API', detail: 'JWT-secured RESTful endpoints with user-scoped transaction isolation' },
+          { step: 'FINANCIAL SERVICES', detail: 'Ledger processing services for budget calculation and savings goal progress' },
+          { step: 'DATA REPOSITORY', detail: 'MongoDB database housing indexed schemas for transactions, budgets, and investments' },
+        ],
+        myContribution:
+          'Designed and developed the application architecture: structured schemas for double-entry financial tracking (Incomes, Expenses, Budgets, Goals, Investments, Loans), implemented secure JWT authentication, and developed responsive telemetry chart components.',
+        challenges:
+          'Efficiently computing aggregated financial metrics across multiple transaction collections (income, expenses, loans, investments) with sub-second response times for smooth visual chart rendering.',
+        screenshots: ['/assets/portfolio/08-projects.webp', '/assets/portfolio/09-project-details.webp'],
+        futureScope:
+          'Bank account integration via open-banking APIs, automated bank statement PDF parsing, and predictive AI budgeting insights.',
       },
     },
   ],
@@ -207,7 +438,7 @@ export const portfolioData = {
     {
       id: 'projects',
       icon: 'star',
-      metric: '2+',
+      metric: '4',
       title: 'Projects Completed',
       subtext: 'Production-ready full-stack applications',
     },
