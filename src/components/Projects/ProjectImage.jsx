@@ -80,7 +80,7 @@ export const ProjectImage = ({
   // Normal image rendering with fallback error boundary and hover telemetry
   return (
     <div
-      className={`relative w-full aspect-video rounded-xl overflow-hidden bg-black/60 border border-white/15 group cursor-pointer ${className}`}
+      className={`relative w-full aspect-video rounded-xl overflow-hidden bg-black/60 project-img-frame project-img-scanline group cursor-pointer ${className}`}
       onClick={onInspect}
       role="button"
       tabIndex={0}
@@ -95,21 +95,21 @@ export const ProjectImage = ({
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-cover object-center filter brightness-95 contrast-105 group-hover:scale-[1.04] transition-transform duration-500"
+        className="w-full h-full object-cover object-center filter brightness-95 contrast-105 group-hover:brightness-105 group-hover:scale-[1.02] transition-all duration-500 ease-out"
         loading="lazy"
         onError={() => setImageError(true)}
       />
 
       {/* Dark Vignette Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
 
       {/* Hover Telemetry Overlay */}
-      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-4 pointer-events-none">
+      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-3.5 pointer-events-none z-10">
         <span className="font-racing font-bold text-xs text-white uppercase tracking-wider flex items-center gap-1.5">
-          <Eye className="w-4 h-4 text-[#e10600]" />
+          <Eye className="w-3.5 h-3.5 text-[#e10600]" />
           INSPECT GARAGE TELEMETRY
         </span>
-        <span className="font-mono-tech text-[10px] text-[#ff3b30] uppercase tracking-widest">
+        <span className="font-mono-tech text-[10px] text-[#ff3b30] uppercase tracking-widest font-semibold">
           EXPAND
         </span>
       </div>

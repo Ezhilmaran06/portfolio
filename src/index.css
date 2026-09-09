@@ -333,6 +333,305 @@ html, body {
   pointer-events: none;
 }
 
+/* ============================================================
+   PROJECTS SECTION: TWO-PROJECT HORIZONTAL CAROUSEL
+   ============================================================ */
+
+/* Carousel Viewport Container: Strictly Contained, Zero Browser Overflow */
+.project-carousel-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 4px 0;
+}
+
+/* Horizontal Sliding Track */
+.project-carousel-track {
+  display: flex;
+  width: 100%;
+  will-change: transform;
+  transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Individual Carousel Slide: Holds Exactly 2 Project Cards on Desktop */
+.project-carousel-slide {
+  width: 100%;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .project-carousel-slide {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* Entering Slide Micro-Animation */
+.project-slide-active {
+  animation: slide-pair-settle 550ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slide-pair-settle {
+  0% {
+    opacity: 0.82;
+    transform: scale(0.98) translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Thin Red Racing Line Sweep Across Viewport During Slide Transition */
+.racing-line-sweep {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff1801, #ffffff, #ff1801, transparent);
+  box-shadow: 0 0 12px #ff1801, 0 0 24px rgba(225, 6, 0, 0.85);
+  pointer-events: none;
+  z-index: 25;
+}
+
+.racing-line-sweep.is-sweeping-next {
+  animation: sweep-left-to-right 550ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.racing-line-sweep.is-sweeping-prev {
+  animation: sweep-right-to-left 550ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sweep-left-to-right {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes sweep-right-to-left {
+  0% {
+    left: 100%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    left: -100%;
+    opacity: 0;
+  }
+}
+
+/* 2-Column Responsive Grid Layout */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* Primary Project Card with High-Definition Motorsport Border */
+.project-card-primary {
+  position: relative;
+  background: rgba(14, 15, 22, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card-primary:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 59, 48, 0.65);
+  box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.9),
+              0 0 20px rgba(225, 6, 0, 0.28),
+              inset 0 1px 0 rgba(255, 59, 48, 0.25);
+}
+
+/* Active Project Highlight State */
+.project-card-primary.is-active-project {
+  border-color: #e10600;
+  box-shadow: 0 0 25px rgba(225, 6, 0, 0.45),
+              0 16px 40px -5px rgba(0, 0, 0, 0.9),
+              inset 0 0 15px rgba(225, 6, 0, 0.12),
+              inset 0 1px 0 rgba(255, 24, 1, 0.4);
+}
+
+/* Secondary Information & Telemetry Sub-boxes */
+.project-box-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.project-box-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Technology Stack Badges with Thin Visible Border */
+.project-badge-tech {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: #ff3b30;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-badge-tech:hover {
+  border-color: #e10600;
+  background: rgba(225, 6, 0, 0.18);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(225, 6, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Project Image Container with Defined Border */
+.project-img-frame {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-img-frame:hover {
+  border-color: rgba(255, 24, 1, 0.6);
+  box-shadow: 0 0 20px rgba(225, 6, 0, 0.35);
+}
+
+/* Scanline Sweep on Project Image Hover */
+.project-img-scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-img-scanline::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 24, 1, 0.15) 50%, transparent 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-img-scanline:hover::after {
+  opacity: 1;
+  animation: scanline-pass 1.8s ease-in-out infinite;
+}
+
+@keyframes scanline-pass {
+  0% {
+    top: -50%;
+  }
+  100% {
+    top: 150%;
+  }
+}
+
+/* Telemetry Navigation Control Panel */
+.project-nav-panel {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 11, 16, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Navigation Buttons with Directional Arrow Movement */
+.project-nav-btn {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-nav-btn:hover:not(:disabled) {
+  border-color: #e10600;
+  background: rgba(225, 6, 0, 0.2);
+  box-shadow: 0 0 18px rgba(225, 6, 0, 0.45);
+}
+
+.project-nav-btn:disabled {
+  opacity: 0.35;
+  border-color: rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Counter Number Slide / Fade Transition */
+.counter-digit-slide {
+  display: inline-block;
+  animation: counter-slide-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes counter-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Project Slider 300-600ms Transitions (GPU Transform & Opacity) */
+.slide-enter-right {
+  animation: slide-in-from-right 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.slide-enter-left {
+  animation: slide-in-from-left 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slide-in-from-right {
+  0% {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-from-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Animated Border Energy Sheen */
 .racing-border-animated {
   position: relative;
@@ -522,6 +821,15 @@ html, body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #e10600;
+}
+
+/* Utility to hide scrollbars while preserving scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* ============================================================
